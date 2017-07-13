@@ -19,6 +19,7 @@ node_modules/
 
 # Bundle
 dist/
+docs/
 
 #package-loc.json
 package-loc.json
