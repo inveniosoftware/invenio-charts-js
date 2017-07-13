@@ -1,3 +1,26 @@
+/*
+ * This file is part of Invenio.
+ * Copyright (C) 2017 CERN.
+ *
+ * Invenio is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * Invenio is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Invenio; if not, write to the Free Software Foundation, Inc.,
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307, USA.
+ *
+ * In applying this license, CERN does not
+ * waive the privileges and immunities granted to it by virtue of its status
+ * as an Intergovernmental Organization or submit itself to any jurisdiction.
+ */
+
 export const barData1 = [{ user: 'Bob', downloads: 33 }, { user: 'Robin', downloads: 12 }, { user: 'Anne', downloads: 41 }, { user: 'Mark', downloads: 16 }, { user: 'Joe', downloads: 59 }, { user: 'Eve', downloads: 38 }, { user: 'Karen', downloads: 21 }, { user: 'Kirsty', downloads: 25 }, { user: 'Chris', downloads: 30 }, { user: 'Lisa', downloads: 47 }, { user: 'Tom', downloads: 5 }, { user: 'Stacy', downloads: 20 }, { user: 'Charles', downloads: 13 }, { user: 'Mary', downloads: 29 }];
 
 export const barData2 = [{ user: 'Bob', downloads: 15 }, { user: 'Robin', downloads: 25 }, { user: 'Anne', downloads: 44 }, { user: 'Mark', downloads: 4 }, { user: 'Joe', downloads: 65 }, { user: 'Eve', downloads: 21 }, { user: 'Karen', downloads: 28 }, { user: 'Kirsty', downloads: 35 }, { user: 'Chris', downloads: 50 }, { user: 'Lisa', downloads: 12 }, { user: 'Tom', downloads: 16 }, { user: 'Stacy', downloads: 15 }, { user: 'Charles', downloads: 5 }, { user: 'Mary', downloads: 75 }];

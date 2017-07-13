@@ -1,18 +1,38 @@
 const path = require('path');
+const fs = require('fs');
+const BannerWebpackPlugin = require('banner-webpack-plugin');
 
-// process.noDeprecation = true;
+const moduleLoaders = {
+  rules: [
+    {
+      test: /(\.jsx|\.js)$/,
+      exclude: /(node_modules)/,
+      use: {
+        loader: 'babel-loader'
+      }
+    },
+    {
+      test: /\.scss$/,
+      use: [{
+        loader: 'style-loader'
+      }, {
+        loader: 'css-loader'
+      }, {
+        loader: 'sass-loader'
+      }]
+    }
+  ]
+};
 
-const config = {
+module.exports = [{
+  /* Entry for the main library */
   entry: {
-    lib: path.resolve(__dirname, './src/index.js'),
-    bar: './examples/bar/index.js',
-    line: './examples/line/index.js'
+    lib: path.resolve(__dirname, './src/index.js')
   },
   devtool: 'source-map',
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-    publicPath: '/src'
+    path: path.resolve(__dirname, 'dist')
   },
   devServer: {
     hot: false,
@@ -20,35 +40,39 @@ const config = {
     publicPath: '/'
   },
   watch: true,
-  module: {
-    rules: [
-      {
-        test: /(\.jsx|\.js)$/,
-        exclude: /(node_modules)/,
-        use: {
-          loader: 'babel-loader'
+  module: moduleLoaders,
+  plugins: [
+    new BannerWebpackPlugin({
+      chunks: {
+        lib: {
+          beforeContent: `/* ${fs.readFileSync('./.license', 'utf8')} */`
         }
-      },
-      // {
-      //   test: /(\.jsx|\.js)$/,
-      //   loader: 'eslint-loader',
-      //   exclude: /node_modules/
-      // },
-      {
-        test: /\.scss$/,
-        use: [{
-          // creates style nodes from JS strings
-          loader: 'style-loader'
-        }, {
-          // translates CSS into CommonJS
-          loader: 'css-loader'
-        }, {
-          // compiles Sass to CSS
-          loader: 'sass-loader'
-        }]
       }
-    ]
-  }
-};
-
-module.exports = config;
+    })
+  ]
+},
+{
+  /* Entry for the examples */
+  entry: {
+    bar: path.resolve(__dirname, './examples/bar/index.js'),
+    line: path.resolve(__dirname, './examples/line/index.js')
+  },
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'examples/dist')
+  },
+  watch: true,
+  module: moduleLoaders,
+  plugins: [
+    new BannerWebpackPlugin({
+      chunks: {
+        line: {
+          beforeContent: `/* ${fs.readFileSync('./.license', 'utf8')} */`
+        },
+        bar: {
+          beforeContent: `/* ${fs.readFileSync('./.license', 'utf8')} */`
+        }
+      }
+    })
+  ]
+}];
