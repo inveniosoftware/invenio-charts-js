@@ -43,30 +43,50 @@ const config = {
   axis: {
     x: {
       mapTo: 'date',
-      scaleType: 'scaleTime',
-      ticks: 5,
-      ticksFormat: '',
-      visible: false
+      scaleType: 'scaleBand',
+      options: {
+        label: {
+          value: 'Date',
+          visible: true
+        },
+        line: {
+          visible: false
+        },
+        ticks: {
+          number: 7,
+          format: '',
+          visible: true
+        },
+        tickLabels: {
+          visible: true
+        },
+        gridlines: false
+      }
     },
     y: {
       mapTo: 'value',
       scaleType: 'scaleLinear',
-      ticks: 5,
-      ticksFormat: '',
-      visible: false
+      options: {
+        label: {
+          value: 'Views',
+          visible: true
+        },
+        line: {
+          visible: false
+        },
+        ticks: {
+          number: 5,
+          format: '',
+          visible: false
+        },
+        tickLabels: {
+          visible: true
+        },
+        gridlines: false
+      }
     }
   },
-  data: module.exports.myData,
-  tooltip: false,
-  gridlines: {
-    x: true,
-    y: true
-  },
-  title: 'Downloads',
-  label: {
-    x: 'Date',
-    y: 'Downloads'
-  },
+  title: 'Views',
   color: {
     scale: 'linearGradient',
     thresholds: [

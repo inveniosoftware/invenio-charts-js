@@ -60,19 +60,36 @@ class BarGraph extends Graph {
       .domain([0, d3.max(data, d => _.get(d, this.keyY))]);
 
     // Create the X Axis
-    const xAxis = d3.axisBottom(x);
+    const xAxisOptions = this.config.axis.x.options;
+    const xAxis = d3.axisBottom(x)
+      .ticks(xAxisOptions.ticks.number)
+      .tickSizeOuter(0);
+
+    // Add the X Axis to the container element
+    if (d3.select('.x.axis').empty()) {
+      this.svg.append('g')
+        .attr('transform', `translate(0, ${this.config.height})`)
+        .attr('class', 'x axis')
+        .call(xAxis);
+    } else {
+      d3.select('.x.axis')
+        .transition()
+        .duration(550)
+        .call(xAxis);
+    }
 
     // If specified, add gridlines along the X axis
-    if (this.config.gridlines.x) {
+    if (xAxisOptions.gridlines) {
       const gridlinesX = d3.axisBottom(x)
-        .tickFormat(this.config.axis.x.ticksFormat)
-        .tickSize(-this.config.height);
+        .ticks(xAxisOptions.ticks.number)
+        .tickSize(-this.config.height)
+        .tickFormat(xAxisOptions.ticks.format);
 
       if (this.config.axis.x.scaleType === 'scaleTime') {
-        gridlinesX.ticks(this.config.axis.x.ticks);
+        gridlinesX.ticks(xAxisOptions.ticks.number);
       } else {
         gridlinesX.tickValues(
-          x.domain().filter((d, i) => !(i % this.config.axis.x.ticks))
+          x.domain().filter((d, i) => !(i % xAxisOptions.ticks.number))
         );
       }
 
@@ -94,7 +111,7 @@ class BarGraph extends Graph {
     }
 
     // If specified, add label to the X Axis
-    if (this.config.label.x.length > 0) {
+    if (xAxisOptions.label.visible) {
       if (d3.select('.labelX').empty()) {
         this.svg.append('text')
           .attr('class', 'labelX')
@@ -102,43 +119,54 @@ class BarGraph extends Graph {
             `translate(${(this.config.width / 2)},
             ${this.config.height + this.config.margin.top})`)
           .attr('text-anchor', 'middle')
-          .text(this.config.label.x);
+          .text(xAxisOptions.label.value);
       } else {
         d3.select('.labelX')
-          .text(this.config.label.x);
+          .text(xAxisOptions.label.value);
       }
     }
 
-    // Add the X Axis to the container element
-    if (d3.select('.x.axis').empty()) {
-      this.svg.append('g')
-        .attr('transform', `translate(0, ${this.config.height})`)
-        .attr('class', 'x axis')
-        .call(xAxis);
-    } else {
-      d3.select('.x.axis')
-        .transition()
-        .duration(550)
-        .call(xAxis);
-    }
-
-    // If specified, hide the X axis path
-    if (!this.config.axis.x.visible) {
+    // If specified, hide the X axis line
+    if (!xAxisOptions.line.visible) {
       d3.selectAll('.x.axis path')
         .attr('style', 'display: none;');
+    }
+
+    // If specified, hide the X axis ticks
+    if (!xAxisOptions.ticks.visible) {
       d3.selectAll('.x.axis line')
         .attr('style', 'display: none;');
     }
 
+    // If specified, hide the X axis tick labels
+    if (!xAxisOptions.tickLabels.visible) {
+      d3.selectAll('.x.axis g.tick text')
+        .attr('style', 'display: none;');
+    }
+
     // Create the Y Axis
+    const yAxisOptions = this.config.axis.y.options;
     const yAxis = d3.axisLeft(y)
+      .ticks(yAxisOptions.ticks.number)
       .tickSizeOuter(0);
 
+    // Add the Y Axis to the container element
+    if (d3.select('.y.axis').empty()) {
+      this.svg.append('g')
+        .attr('class', 'y axis')
+        .call(yAxis);
+    } else {
+      d3.select('.y.axis')
+        .transition()
+        .duration(550)
+        .call(yAxis);
+    }
+
     // If specified, add gridlines along the Y axis
-    if (this.config.gridlines.y) {
+    if (yAxisOptions.gridlines) {
       const gridlinesY = d3.axisLeft(y)
-        .ticks(this.config.axis.y.ticks)
-        .tickFormat(this.config.axis.y.ticksFormat)
+        .ticks(yAxisOptions.ticks.number)
+        .tickFormat(yAxisOptions.ticks.format)
         .tickSize(-this.config.width);
 
       if (d3.select('.gridY').empty()) {
@@ -157,7 +185,7 @@ class BarGraph extends Graph {
     }
 
     // If specified, add label to the Y Axis
-    if (this.config.label.y.length > 0) {
+    if (yAxisOptions.label.visible) {
       if (d3.select('.labelY').empty()) {
         this.svg.append('text')
           .attr('class', 'labelY')
@@ -166,30 +194,28 @@ class BarGraph extends Graph {
             ${(this.config.height / 2) - this.config.margin.top})rotate(-90)`)
           .attr('text-anchor', 'middle')
           .attr('dy', '.70em')
-          .text(this.config.label.y);
+          .text(yAxisOptions.label.value);
       } else {
         d3.select('.labelY')
-          .text(this.config.label.y);
+          .text(yAxisOptions.label.value);
       }
     }
 
-    // Add the Y Axis to the container element
-    if (d3.select('.y.axis').empty()) {
-      this.svg.append('g')
-        .attr('class', 'y axis')
-        .call(yAxis);
-    } else {
-      d3.select('.y.axis')
-        .transition()
-        .duration(550)
-        .call(yAxis);
-    }
-
-    // If specified, hide the Y axis path
-    if (!this.config.axis.y.visible) {
+    // If specified, hide the Y axis line
+    if (!yAxisOptions.line.visible) {
       d3.selectAll('.y.axis path')
         .attr('style', 'display: none;');
+    }
+
+    // If specified, hide the Y axis ticks
+    if (!yAxisOptions.ticks.visible) {
       d3.selectAll('.y.axis line')
+        .attr('style', 'display: none;');
+    }
+
+    // If specified, hide the Y axis tick labels
+    if (!yAxisOptions.tickLabels.visible) {
+      d3.selectAll('.y.axis g.tick text')
         .attr('style', 'display: none;');
     }
 

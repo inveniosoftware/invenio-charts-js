@@ -38,43 +38,49 @@ const config = {
     x: {
       mapTo: 'user',
       scaleType: 'scaleBand',
-      ticks: null,
-      ticksFormat: '',
-      visible: false
+      options: {
+        label: {
+          value: 'Users',
+          visible: true
+        },
+        line: {
+          visible: false
+        },
+        ticks: {
+          number: null,
+          format: '',
+          visible: false
+        },
+        tickLabels: {
+          visible: true
+        },
+        gridlines: false
+      }
     },
     y: {
       mapTo: 'downloads',
       scaleType: 'scaleLinear',
-      ticks: null,
-      ticksFormat: '',
-      visible: false
+      options: {
+        label: {
+          value: 'Downloads',
+          visible: true
+        },
+        line: {
+          visible: false
+        },
+        ticks: {
+          number: null,
+          format: '',
+          visible: false
+        },
+        tickLabels: {
+          visible: true
+        },
+        gridlines: false
+      }
     }
   },
-  tooltip: false,
-  gridlines: {
-    x: false,
-    y: true
-  },
-  title: 'Downloads',
-  label: {
-    x: 'Users',
-    y: 'Downloads'
-  },
-  color: {
-    scale: 'linearGradient',
-    thresholds: [
-      {
-        offset: 0,
-        value: '#4CAF50',
-        opacity: 0.9
-      },
-      {
-        offset: 100,
-        value: '#C8E6C9',
-        opacity: 0.9
-      }
-    ]
-  }
+  title: 'Downloads'
 };
 
 export default config;

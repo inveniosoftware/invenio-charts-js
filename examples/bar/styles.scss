@@ -24,7 +24,8 @@
 $linecolor: #4682b4;
 $axiscolor: #808080;
 $gridcolor: #d3d3d3;
-$barcolor: #4652b4;
+$barcolor: #4682b4;
+$barhover: #a52a2a;
 
 body {
   font: 14px Roboto;
@@ -32,10 +33,10 @@ body {
 
 .bar {
   fill: $barcolor;
+}
 
-  :hover {
-    fill: brown;
-  }
+.bar:hover {
+    fill: $barhover;
 }
 
 .axis {
