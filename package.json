@@ -1,0 +1,54 @@
+{
+  "name": "invenio-statistics-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "rm -rf ./dist && webpack --env build",
+    "test": "rm -rf ./coverage && karma start",
+    "dev": "rm -rf ./dist && webpack --progress --config webpack.config.js",
+    "start": "node_modules/.bin/webpack-dev-server",
+    "doc": "rm -rf ./docs && node_modules/.bin/jsdoc -c conf.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^7.1.1",
+    "babel-plugin-lodash": "^3.2.11",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-env": "^1.6.0",
+    "css-loader": "^0.28.4",
+    "eslint": "^4.2.0",
+    "eslint-config-airbnb": "^15.0.1",
+    "eslint-loader": "^1.8.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.1.0",
+    "istanbul": "^0.4.5",
+    "jasmine": "^2.6.0",
+    "jasmine-core": "^2.6.4",
+    "jsdoc": "^3.5.0",
+    "karma": "^1.7.0",
+    "karma-coverage": "^1.1.1",
+    "karma-jasmine": "^1.1.0",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "karma-webpack": "^2.0.4",
+    "lodash-webpack-plugin": "^0.11.4",
+    "node-sass": "^4.5.3",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.18.2",
+    "webpack": "^3.1.0",
+    "webpack-dev-server": "^2.5.1"
+  },
+  "dependencies": {
+    "d3": "^4.9.1",
+    "lodash": "^4.17.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CERNDocumentServer/invenio-statistics-js.git"
+  }
+}

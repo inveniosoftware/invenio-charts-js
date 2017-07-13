@@ -1,0 +1,46 @@
+$linecolor: #4682b4;
+$axiscolor: #808080;
+$gridcolor: #d3d3d3;
+
+body {
+  font: 14px Roboto;
+}
+
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.axis {
+
+  line {
+    fill: none;
+    shape-rendering: crispEdges;
+    stroke: $axiscolor;
+    stroke-width: 1px;
+  }
+
+  text {
+    opacity: .6;
+  }
+}
+
+.gridX, .gridY {
+  path {
+    stroke-width: 0;
+  }
+
+  line {
+    shape-rendering: crispEdges;
+    stroke: $gridcolor;
+  }
+
+  .tick {
+    opacity: .7;
+    stroke: $gridcolor;
+  }
+
+}
