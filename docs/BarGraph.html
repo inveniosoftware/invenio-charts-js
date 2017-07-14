@@ -93,7 +93,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bar_bar.js.html">bar/bar.js</a>, <a href="bar_bar.js.html#line9">line 9</a>
+        <a href="bar_bar.js.html">bar/bar.js</a>, <a href="bar_bar.js.html#line32">line 32</a>
     </li></ul></dd>
     
 
@@ -213,7 +213,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="graph_graph.js.html">graph/graph.js</a>, <a href="graph_graph.js.html#line25">line 25</a>
+        <a href="graph_graph.js.html">graph/graph.js</a>, <a href="graph_graph.js.html#line52">line 52</a>
     </li></ul></dd>
     
 
@@ -326,7 +326,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="graph_graph.js.html">graph/graph.js</a>, <a href="graph_graph.js.html#line17">line 17</a>
+        <a href="graph_graph.js.html">graph/graph.js</a>, <a href="graph_graph.js.html#line44">line 44</a>
     </li></ul></dd>
     
 
@@ -382,7 +382,493 @@
     
 
     
-    <h4 class="name" id="render"><span class="type-signature"></span>render<span class="signature">(data)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id="initialize"><span class="type-signature"></span>initialize<span class="signature">(classElement)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Render an empty SVG element to the DOM.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>classElement</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The class of the SVG element.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Graph.html#initialize">Graph#initialize</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="graph_graph.js.html">graph/graph.js</a>, <a href="graph_graph.js.html#line95">line 95</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - The SVG container element.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="makeGridlinesX"><span class="type-signature"></span>makeGridlinesX<span class="signature">(xScale)</span><span class="type-signature"> &rarr; {function}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Create the gridlines for the horizontal axis.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>xScale</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The scale of the X axis.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Graph.html#makeGridlinesX">Graph#makeGridlinesX</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="graph_graph.js.html">graph/graph.js</a>, <a href="graph_graph.js.html#line61">line 61</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    gridlinesX - The gridlines of the X axis.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">function</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="makeGridlinesY"><span class="type-signature"></span>makeGridlinesY<span class="signature">(yScale)</span><span class="type-signature"> &rarr; {function}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Create the gridlines for the vertical axis.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>yScale</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The scale of the Y axis.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+    <dt class="inherited-from">Inherited From:</dt>
+    <dd class="inherited-from"><ul class="dummy"><li>
+        <a href="Graph.html#makeGridlinesY">Graph#makeGridlinesY</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="graph_graph.js.html">graph/graph.js</a>, <a href="graph_graph.js.html#line81">line 81</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    gridlinesY - The gridlines of the Y axis.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">function</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="render"><span class="type-signature"></span>render<span class="signature">(data, classElement)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
 
     
@@ -446,6 +932,29 @@
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>classElement</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The class of the SVG element.</td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -462,11 +971,6 @@
 
     
 
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="Graph.html#render">Graph#render</a>
-    </li></ul></dd>
     
 
     
@@ -488,7 +992,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="bar_bar.js.html">bar/bar.js</a>, <a href="bar_bar.js.html#line15">line 15</a>
+        <a href="bar_bar.js.html">bar/bar.js</a>, <a href="bar_bar.js.html#line39">line 39</a>
     </li></ul></dd>
     
 
@@ -515,7 +1019,7 @@
 
         
 <div class="param-desc">
-    The SVG element containing the bar graph.
+    - The SVG element containing the bar graph.
 </div>
 
 
@@ -560,7 +1064,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.0</a> on Mon Jul 10 2017 19:14:05 GMT+0200 (CEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.0</a> on Thu Jul 20 2017 15:47:08 GMT+0200 (CEST)
 </footer>
 
 <script> prettyPrint(); </script>

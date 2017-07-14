@@ -20,31 +20,30 @@
  * waive the privileges and immunities granted to it by virtue of its status
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
-
 import _ from 'lodash';
-import config from './config';
 import './styles.scss';
+import config from './config';
+import dataCDS from '../data/data-cds';
 import { BarGraph } from '../../src/index';
-import { barData1, barData2 } from '../data/data';
 
-let data1 = _.cloneDeep(barData1);
-let data2 = _.cloneDeep(barData2);
+console.log(dataCDS);
+
 let toggle = true;
+const d1 = _.cloneDeep(dataCDS.pageviewsVideosPerCountry);
+const d2 = dataCDS.pageviewsVideosPerCountry.filter((d, i) => i % 2);
 
-const graph = new BarGraph(config);
-graph.render(data1);
+const pageviewsPerCountry = new BarGraph(config.pageviewsVideosPerCountry);
+pageviewsPerCountry.render(dataCDS.pageviewsVideosPerCountry, 'pageviews');
 
 function update() {
   toggle = !toggle;
   if (toggle) {
-    data1 = _.cloneDeep(barData1);
-    graph.render(data1);
+    pageviewsPerCountry.render(d1, 'pageviews');
   } else {
-    data2 = _.cloneDeep(barData2);
-    graph.render(data2);
+    pageviewsPerCountry.render(d2, 'pageviews');
   }
 }
 
-if (document.getElementById('option')) {
-  document.getElementById('option').addEventListener('click', update);
+if (document.getElementById('toggle')) {
+  document.getElementById('toggle').addEventListener('click', update);
 }

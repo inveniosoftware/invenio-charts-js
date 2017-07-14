@@ -22,54 +22,36 @@
  */
 
 // Export configuration object
-const config = {
-  width: 800,
-  height: 400,
+const config = {};
+config.downloadVideosInterval1day = {
+  width: 1000,
+  height: 450,
   margin: {
     top: 30,
-    right: 20,
-    bottom: 30,
-    left: 50
+    right: 30,
+    bottom: 50,
+    left: 60
   },
   graph: {
     type: 'line',
     options: {
       curved: true,
-      curveType: 'curveCardinal',
-      fillArea: true,
+      curveType: 'curveLinear',
+      fillArea: false,
       fillAreaColor: '#E8F5E9'
     }
   },
   axis: {
     x: {
-      mapTo: 'date',
-      scaleType: 'scaleBand',
+      mapTo: 'time',
+      scale: {
+        type: 'scaleTime',
+        format: '%b-%Y'
+      },
       options: {
         label: {
           value: 'Date',
-          visible: true
-        },
-        line: {
           visible: false
-        },
-        ticks: {
-          number: 7,
-          format: '',
-          visible: true
-        },
-        tickLabels: {
-          visible: true
-        },
-        gridlines: false
-      }
-    },
-    y: {
-      mapTo: 'value',
-      scaleType: 'scaleLinear',
-      options: {
-        label: {
-          value: 'Views',
-          visible: true
         },
         line: {
           visible: false
@@ -77,7 +59,33 @@ const config = {
         ticks: {
           number: 5,
           format: '',
+          visible: true
+        },
+        tickLabels: {
+          visible: true,
+          rotated: false
+        },
+        gridlines: false
+      }
+    },
+    y: {
+      mapTo: 'count',
+      scale: {
+        type: 'scaleLinear',
+        format: ''
+      },
+      options: {
+        label: {
+          value: 'Downloads',
           visible: false
+        },
+        line: {
+          visible: false
+        },
+        ticks: {
+          number: 5,
+          format: '',
+          visible: true
         },
         tickLabels: {
           visible: true
@@ -86,7 +94,6 @@ const config = {
       }
     }
   },
-  title: 'Views',
   color: {
     scale: 'linearGradient',
     thresholds: [
@@ -101,6 +108,212 @@ const config = {
         opacity: 0.9
       }
     ]
+  },
+  tooltip: false,
+  circles: {
+    visible: true,
+    radius: 4,
+    color: '#4CAF50'
+  },
+  title: {
+    visible: true,
+    value: 'Video Downloads (per day)'
+  }
+};
+
+config.pageviewsVideosInterval1day = {
+  width: 1000,
+  height: 450,
+  margin: {
+    top: 30,
+    right: 30,
+    bottom: 60,
+    left: 85
+  },
+  graph: {
+    type: 'line',
+    options: {
+      curved: true,
+      curveType: 'curveMonotoneX',
+      fillArea: true,
+      fillAreaColor: '#FFF9C4'
+    }
+  },
+  axis: {
+    x: {
+      mapTo: 'time',
+      scale: {
+        type: 'scaleTime',
+        format: '%d-%b-%y'
+      },
+      options: {
+        label: {
+          value: 'Date',
+          visible: true
+        },
+        line: {
+          visible: false
+        },
+        ticks: {
+          number: 5,
+          format: '',
+          visible: false
+        },
+        tickLabels: {
+          visible: true,
+          rotated: true
+        },
+        gridlines: true
+      }
+    },
+    y: {
+      mapTo: 'count',
+      scale: {
+        type: 'scaleLinear',
+        format: ''
+      },
+      options: {
+        label: {
+          value: 'Pageviews',
+          visible: true
+        },
+        line: {
+          visible: false
+        },
+        ticks: {
+          number: 5,
+          format: '',
+          visible: false
+        },
+        tickLabels: {
+          visible: true
+        },
+        gridlines: true
+      }
+    }
+  },
+  color: {
+    scale: 'linearGradient',
+    thresholds: [
+      {
+        offset: 0,
+        value: '#E53935',
+        opacity: 0.9
+      },
+      {
+        offset: 100,
+        value: '#FFEBEE',
+        opacity: 0.9
+      }
+    ]
+  },
+  tooltip: false,
+  circles: {
+    visible: true,
+    radius: 4,
+    color: '#E53935'
+  },
+  title: {
+    visible: true,
+    value: 'Pageviews (per day)'
+  }
+};
+
+config.pageviewsVideosInterval1month = {
+  width: 1000,
+  height: 450,
+  margin: {
+    top: 30,
+    right: 30,
+    bottom: 60,
+    left: 85
+  },
+  graph: {
+    type: 'line',
+    options: {
+      curved: true,
+      curveType: 'curveMonotoneX',
+      fillArea: true,
+      fillAreaColor: '#E8F5E9'
+    }
+  },
+  axis: {
+    x: {
+      mapTo: 'time',
+      scale: {
+        type: 'scaleTime',
+        format: '%d-%b-%y'
+      },
+      options: {
+        label: {
+          value: 'Date',
+          visible: true
+        },
+        line: {
+          visible: false
+        },
+        ticks: {
+          number: 5,
+          format: '',
+          visible: false
+        },
+        tickLabels: {
+          visible: true,
+          rotated: true
+        },
+        gridlines: true
+      }
+    },
+    y: {
+      mapTo: 'count',
+      scale: {
+        type: 'scaleLinear',
+        format: ''
+      },
+      options: {
+        label: {
+          value: 'Pageviews',
+          visible: true
+        },
+        line: {
+          visible: false
+        },
+        ticks: {
+          number: 5,
+          format: '',
+          visible: false
+        },
+        tickLabels: {
+          visible: true
+        },
+        gridlines: true
+      }
+    }
+  },
+  color: {
+    scale: 'linearGradient',
+    thresholds: [
+      {
+        offset: 0,
+        value: '#1565C0',
+        opacity: 0.9
+      },
+      {
+        offset: 100,
+        value: '#BBDEFB',
+        opacity: 0.9
+      }
+    ]
+  },
+  tooltip: false,
+  circles: {
+    visible: false,
+    radius: 5,
+    color: '#1565C0'
+  },
+  title: {
+    visible: true,
+    value: 'Pageviews (per month)'
   }
 };
 

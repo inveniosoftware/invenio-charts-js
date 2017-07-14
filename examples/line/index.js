@@ -21,30 +21,31 @@
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
 
-import _ from 'lodash';
-import config from './config';
 import './styles.scss';
+import config from './config';
+import dataCDS from '../data/data-cds';
 import { LineGraph } from '../../src/index';
-import { lineData1, lineData2 } from '../data/data';
 
-let arr1 = _.cloneDeep(lineData1);
-let arr2 = _.cloneDeep(lineData2);
 let toggle = true;
 
-const graph = new LineGraph(config);
-graph.render(arr1);
+const graphPageviews2 = new LineGraph(config.pageviewsVideosInterval1month);
+graphPageviews2.render(dataCDS.pageviewsVIdeosInterval1month0, 'pageviews_month');
+
+const graphPageviews = new LineGraph(config.pageviewsVideosInterval1day);
+graphPageviews.render(dataCDS.pageviewsVideosInterval1day, 'pageviews_day');
+
+const graphDownloads = new LineGraph(config.downloadVideosInterval1day);
+graphDownloads.render(dataCDS.downloadVideosInterval1day, 'downloads');
 
 function update() {
   toggle = !toggle;
   if (toggle) {
-    arr1 = _.cloneDeep(lineData1);
-    graph.render(arr1);
+    graphPageviews2.render(dataCDS.pageviewsVIdeosInterval1month0, 'pageviews_month');
   } else {
-    arr2 = _.cloneDeep(lineData2);
-    graph.render(arr2);
+    graphPageviews2.render(dataCDS.pageviewsVIdeosInterval1month1, 'pageviews_month');
   }
 }
 
-if (document.getElementById('option')) {
-  document.getElementById('option').addEventListener('click', update);
+if (document.getElementById('toggle')) {
+  document.getElementById('toggle').addEventListener('click', update);
 }

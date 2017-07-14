@@ -21,8 +21,8 @@
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
 
-import * as d3 from 'd3';
 import _ from 'lodash';
+import * as d3 from 'd3';
 import Graph from '../graph/graph';
 
 /**
@@ -32,29 +32,31 @@ import Graph from '../graph/graph';
 class LineGraph extends Graph {
   /**
    * Create a line graph in the DOM.
-   * @param {Array<object>} - The input data.
-   * @return {Object} The SVG element containing the line graph.
+   * @param {Array<Object>} - The input data.
+   * @param {String} - The class of the SVG element.
+   * @return {Object} - The SVG element containing the line graph.
    */
-  render(data) {
+  render(data, classElement) {
     // If does not exist, create a container SVG element
-    this.svg = d3.select('.container').empty() ? super.render() : d3.select('.container');
+    this.svg = d3.select(`.${classElement}`).empty() ?
+      super.initialize(classElement) : d3.select(`.${classElement}`);
 
-    // Get the keys for the X, Y axis
-    this.keyX = this.config.axis.x.mapTo;
-    this.keyY = this.config.axis.y.mapTo;
+    // Get the options for the X, Y axis
+    const xAxisOptions = this.config.axis.x.options;
+    const yAxisOptions = this.config.axis.y.options;
 
     // Parse input data
     data.forEach((d) => {
-      if (this.config.axis.x.scaleType === 'scaleTime') {
-        _.set(d, this.keyX, d3.timeParse('%d-%b-%y')(_.get(d, this.keyX)));
+      if (this.config.axis.x.scale.type === 'scaleTime') {
+        _.set(d, this.keyX, new Date(_.get(d, this.keyX)));
       }
       _.set(d, this.keyY, +_.get(d, this.keyY));
     });
 
     // Create the scale for the X axis
-    const x = d3[this.config.axis.x.scaleType]();
+    const x = d3[this.config.axis.x.scale.type]();
 
-    if (this.config.axis.x.scaleType === 'scaleTime') {
+    if (this.config.axis.x.scale.type === 'scaleTime') {
       x.range([0, this.config.width]);
       x.domain(d3.extent(data, d => _.get(d, this.keyX)));
     } else {
@@ -63,147 +65,144 @@ class LineGraph extends Graph {
       x.padding(1);
     }
 
-    // Create the scale for the Y Axis
-    const y = d3[this.config.axis.y.scaleType]()
-      .range([this.config.height, 0])
-      .domain([0, d3.max(data, d => _.get(d, this.keyY))]);
-
     // Create the X Axis
-    const xAxisOptions = this.config.axis.x.options;
     const xAxis = d3.axisBottom(x)
-      .ticks(xAxisOptions.ticks.number)
       .tickSizeOuter(0);
 
-    if (this.config.axis.x.scaleType === 'scaleTime') {
+    if (this.config.axis.x.scale.type === 'scaleTime') {
       xAxis.ticks(xAxisOptions.ticks.number);
+      xAxis.tickFormat(d3.timeFormat(this.config.axis.x.scale.format));
     } else {
       xAxis.tickValues(
         x.domain().filter((d, i) => !(i % xAxisOptions.ticks.number)));
     }
 
     // Add the X Axis to the container element
-    if (d3.select('.x.axis').empty()) {
+    if (d3.select(`.${classElement}`).select('.x.axis').empty()) {
       this.svg.append('g')
         .attr('transform', `translate(0, ${this.config.height})`)
         .attr('class', 'x axis')
         .call(xAxis);
     } else {
-      d3.select('.x.axis')
+      d3.select(`.${classElement}`).select('.x.axis')
         .transition()
-        .duration(550)
+        .duration(500)
         .call(xAxis);
     }
 
     // If specified, add gridlines along the X axis
     if (xAxisOptions.gridlines) {
-      const gridlinesX = d3.axisBottom(x)
-        .ticks(xAxisOptions.ticks.number)
-        .tickSize(-this.config.height)
-        .tickFormat(xAxisOptions.ticks.format);
-
-      if (d3.select('.gridX').empty()) {
+      if (d3.select(`.${classElement}`).select('.gridX').empty()) {
         this.svg.append('g')
-          .attr('transform', `translate(0, ${this.config.height})`)
           .attr('class', 'gridX')
-          .call(gridlinesX);
+          .attr('transform', `translate(0, ${this.config.height})`)
+          .call(this.makeGridlinesX(x));
       } else {
-        d3.select('.gridX')
+        d3.select(`.${classElement}`).select('.gridX')
           .transition()
-          .duration(175)
+          .duration(200)
           .style('stroke-opacity', 1e-6)
           .transition()
-          .duration(475)
-          .call(gridlinesX)
+          .duration(300)
+          .call(this.makeGridlinesX(x))
           .style('stroke-opacity', 0.7);
       }
     }
 
+    // If specified, rotate the tick labels
+    if (xAxisOptions.tickLabels.rotated) {
+      d3.select(`.${classElement}`).selectAll('g.x.axis g.tick text')
+        .style('text-anchor', 'middle')
+        .attr('dx', '-.8em')
+        .attr('dy', '.85em')
+        .attr('transform', 'rotate(-25)');
+    }
+
     // If specified, add label to the X Axis
     if (xAxisOptions.label.visible) {
-      if (d3.select('.labelX').empty()) {
+      if (d3.select(`.${classElement}`).select('.labelX').empty()) {
         this.svg.append('text')
           .attr('class', 'labelX')
           .attr('transform',
-            `translate(${(this.config.width / 2)}, ${this.config.height + this.config.margin.top})`)
+            `translate(${(this.config.width / 2)}, ${this.config.height + this.config.margin.bottom})`)
           .attr('text-anchor', 'middle')
           .text(xAxisOptions.label.value);
       } else {
-        d3.select('.labelX')
+        d3.select(`.${classElement}`).select('.labelX')
           .text(xAxisOptions.label.value);
       }
     }
 
     // If specified, hide the X axis line
     if (!xAxisOptions.line.visible) {
-      d3.selectAll('.x.axis path')
+      d3.select(`.${classElement}`).selectAll('.x.axis path')
         .attr('style', 'display: none;');
     }
 
     // If specified, hide the X axis ticks
     if (!xAxisOptions.ticks.visible) {
-      d3.selectAll('.x.axis line')
+      d3.select(`.${classElement}`).selectAll('.x.axis line')
         .attr('style', 'display: none;');
     }
 
     // If specified, hide the X axis tick labels
     if (!xAxisOptions.tickLabels.visible) {
-      d3.selectAll('.x.axis g.tick text')
+      d3.select(`.${classElement}`).selectAll('.x.axis g.tick text')
         .attr('style', 'display: none;');
     }
 
+    // Create the scale for the Y Axis
+    const y = d3[this.config.axis.y.scale.type]()
+      .range([this.config.height, 0])
+      .domain([0, d3.max(data, d => _.get(d, this.keyY))]);
+
     // Create the Y Axis
-    const yAxisOptions = this.config.axis.y.options;
     const yAxis = d3.axisLeft(y)
       .ticks(yAxisOptions.ticks.number)
       .tickSizeOuter(0);
 
     // If specified, add gridlines along the Y axis
     if (yAxisOptions.gridlines) {
-      const gridlinesY = d3.axisLeft(y)
-        .ticks(yAxisOptions.ticks.number)
-        .tickFormat(yAxisOptions.ticks.format)
-        .tickSize(-this.config.width);
-
-      if (d3.select('.gridY').empty()) {
+      if (d3.select(`.${classElement}`).select('.gridY').empty()) {
         this.svg.append('g')
           .attr('class', 'gridY')
-          .call(gridlinesY);
+          .call(this.makeGridlinesY(y));
       } else {
-        d3.select('.gridY')
+        d3.select(`.${classElement}`).select('.gridY')
+          .transition()
+          .duration(200)
           .style('stroke-opacity', 1e-6)
           .transition()
-          .duration(175)
-          .call(gridlinesY)
-          .transition()
-          .duration(475)
+          .duration(300)
+          .call(this.makeGridlinesY(y))
           .style('stroke-opacity', 0.7);
       }
     }
 
     // If specified, add label to the Y Axis
     if (yAxisOptions.label.visible) {
-      if (d3.select('.labelY').empty()) {
+      if (d3.select(`.${classElement}`).select('.labelY').empty()) {
         this.svg.append('text')
           .attr('class', 'labelY')
           .attr('transform',
-            `translate(${-this.config.margin.right - 28},
+            `translate(${-this.config.margin.right - 50},
             ${(this.config.height / 2) - this.config.margin.top})rotate(-90)`)
           .attr('text-anchor', 'middle')
           .attr('dy', '.70em')
           .text(yAxisOptions.label.value);
       } else {
-        d3.select('.labelY')
+        d3.select(`.${classElement}`).select('.labelY')
           .text(yAxisOptions.label.value);
       }
     }
 
     // Add the Y Axis to the container element
-    if (d3.select('.y.axis').empty()) {
+    if (d3.select(`.${classElement}`).select('.y.axis').empty()) {
       this.svg.append('g')
         .attr('class', 'y axis')
         .call(yAxis);
     } else {
-      d3.select('.y.axis')
+      d3.select(`.${classElement}`).select('.y.axis')
         .transition()
         .duration(550)
         .call(yAxis);
@@ -211,19 +210,19 @@ class LineGraph extends Graph {
 
     // If specified, hide the Y axis line
     if (!yAxisOptions.line.visible) {
-      d3.selectAll('.y.axis path')
+      d3.select(`.${classElement}`).selectAll('.y.axis path')
         .attr('style', 'display: none;');
     }
 
     // If specified, hide the Y axis ticks
     if (!yAxisOptions.ticks.visible) {
-      d3.selectAll('.y.axis line')
+      d3.select(`.${classElement}`).selectAll('.y.axis line')
         .attr('style', 'display: none;');
     }
 
     // If specified, hide the Y axis tick labels
     if (!yAxisOptions.tickLabels.visible) {
-      d3.selectAll('.y.axis g.tick text')
+      d3.select(`.${classElement}`).selectAll('.y.axis g.tick text')
         .attr('style', 'display: none;');
     }
 
@@ -245,34 +244,66 @@ class LineGraph extends Graph {
         .y0(this.config.height)
         .y1(d => y(_.get(d, this.keyY)));
 
-      // Add the line to the SVG element
-      if (d3.select('.line').empty()) {
+      if (d3.select(`.${classElement}`).select('.area').empty()) {
         this.svg.append('path')
-          .attr('class', 'line')
-          .attr('d', line(data));
-      } else {
-        d3.select('.line')
           .transition()
-          .duration(650)
-          .attr('d', line(data));
-      }
-
-      if (d3.select('.area').empty()) {
-        this.svg.append('path')
+          .delay(400)
+          .duration(500)
           .attr('class', 'area')
           .attr('fill', this.config.graph.options.fillAreaColor)
           .attr('d', area(data));
       } else {
-        d3.select('.area')
+        d3.select(`.${classElement}`).select('.area')
           .transition()
-          .duration(650)
+          .duration(500)
           .attr('d', area(data));
       }
     }
 
+    // Add the line to the SVG element
+    if (d3.select(`.${classElement}`).select('.line').empty()) {
+      this.svg.append('path')
+        .attr('class', 'line')
+        .attr('stroke', `url(#${classElement})`)
+        .attr('d', line(data));
+
+      const totalLength = d3.select(`.${classElement}`).select('.line')
+        .node().getTotalLength();
+
+      // Smoothly draw the line on the SVG element
+      d3.select(`.${classElement}`).select('.line')
+        .attr('stroke-dasharray', `${totalLength} ${totalLength}`)
+        .attr('stroke-dashoffset', totalLength)
+        .transition()
+        .delay(400)
+        .duration(1750)
+        .ease(d3.easeLinear)
+        .attr('stroke-dashoffset', 0);
+    } else {
+      d3.select(`.${classElement}`).select('.line')
+        .transition()
+        .duration(500)
+        .attr('d', line(data));
+    }
+
+    // If specified, add circles to the line
+    if (this.config.circles.visible) {
+      this.svg.selectAll('.dot')
+        .data(data)
+        .enter().append('circle')
+        .transition()
+        .delay(500)
+        .duration(750)
+        .attr('class', 'dot')
+        .attr('cx', d => x(_.get(d, this.keyX)))
+        .attr('cy', d => y(_.get(d, this.keyY)))
+        .attr('r', this.config.circles.radius)
+        .attr('fill', this.config.circles.color);
+    }
+
     // Define the linear gradient coloring of the line
     this.svg.append('linearGradient')
-      .attr('id', 'value-gradient')
+      .attr('id', `${classElement}`)
       .attr('gradientUnits', 'userSpaceOnUse')
       .attr('x1', '0%')
       .attr('y1', '0%')
@@ -294,6 +325,21 @@ class LineGraph extends Graph {
       .attr('offset', d => d.offset)
       .attr('stop-color', d => d.color)
       .attr('stop-opacity', d => d.opacity);
+
+    // If specified, add title to the graph
+    if (this.config.title.visible) {
+      const graphTitle = d3.select(`.${classElement}`).select('g').select('.title');
+      if (graphTitle.empty()) {
+        this.svg.append('text')
+          .attr('x', (this.config.width / 2))
+          .attr('y', 0 - (this.config.margin.top / 2))
+          .attr('class', 'title')
+          .attr('text-anchor', 'middle')
+          .text(this.config.title.value);
+      } else {
+        graphTitle.text(this.config.title.value);
+      }
+    }
 
     return this.svg;
   }

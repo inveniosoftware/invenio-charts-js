@@ -22,26 +22,56 @@
  */
 
 // Export configuration object
-const config = {
-  width: 800,
-  height: 400,
+const config = {};
+config.pageviewsVideosPerCountry = {
+  width: 1000,
+  height: 450,
   margin: {
     top: 30,
     right: 20,
-    bottom: 30,
-    left: 50
+    bottom: 40,
+    left: 60
   },
   graph: {
     type: 'bar'
   },
   axis: {
     x: {
-      mapTo: 'user',
-      scaleType: 'scaleBand',
+      mapTo: 'term',
+      scale: {
+        type: 'scaleBand',
+        format: null
+      },
       options: {
         label: {
-          value: 'Users',
-          visible: true
+          value: 'Countries',
+          visible: false
+        },
+        line: {
+          visible: false
+        },
+        ticks: {
+          number: null,
+          format: '',
+          visible: false
+        },
+        tickLabels: {
+          visible: true,
+          rotated: true
+        },
+        gridlines: false
+      }
+    },
+    y: {
+      mapTo: 'count',
+      scale: {
+        type: 'scaleLinear',
+        format: ''
+      },
+      options: {
+        label: {
+          value: 'Pageviews',
+          visible: false
         },
         line: {
           visible: false
@@ -54,12 +84,66 @@ const config = {
         tickLabels: {
           visible: true
         },
-        gridlines: false
+        gridlines: true
+      }
+    }
+  },
+  title: {
+    visible: true,
+    value: 'Pageviews (per Country)'
+  },
+  color: {
+    scale: 'scaleOrdinal',
+    number: 20
+  },
+  tooltip: true
+};
+
+config.downloadUsers = {
+  width: 1000,
+  height: 450,
+  margin: {
+    top: 30,
+    right: 20,
+    bottom: 60,
+    left: 60
+  },
+  graph: {
+    type: 'bar'
+  },
+  axis: {
+    x: {
+      mapTo: 'term',
+      scale: {
+        type: 'scaleBand',
+        format: null
+      },
+      options: {
+        label: {
+          value: 'UserID',
+          visible: true
+        },
+        line: {
+          visible: false
+        },
+        ticks: {
+          number: null,
+          format: '',
+          visible: false
+        },
+        tickLabels: {
+          visible: true,
+          rotated: true
+        },
+        gridlines: true
       }
     },
     y: {
-      mapTo: 'downloads',
-      scaleType: 'scaleLinear',
+      mapTo: 'count',
+      scale: {
+        type: 'scaleLinear',
+        format: ''
+      },
       options: {
         label: {
           value: 'Downloads',
@@ -76,11 +160,19 @@ const config = {
         tickLabels: {
           visible: true
         },
-        gridlines: false
+        gridlines: true
       }
     }
   },
-  title: 'Downloads'
+  title: {
+    visible: true,
+    value: 'Video Downloads (per User)'
+  },
+  color: {
+    scale: 'scaleOrdinal',
+    number: 10
+  },
+  tooltip: true
 };
 
 export default config;

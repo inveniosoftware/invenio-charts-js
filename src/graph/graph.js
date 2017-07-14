@@ -31,6 +31,10 @@ class Graph {
    */
   constructor(config) {
     this.config = config;
+
+    // Get the keys for the X, Y axis
+    this.keyX = this.config.axis.x.mapTo;
+    this.keyY = this.config.axis.y.mapTo;
   }
 
   /**
@@ -50,13 +54,48 @@ class Graph {
   }
 
   /**
-   * Render an empty SVG element to the DOM.
-   * @return {Object} The SVG container element.
+   * Create the gridlines for the horizontal axis.
+   * @param {Function} xScale - The scale of the X axis.
+   * @return {Function} gridlinesX - The gridlines of the X axis.
    */
-  render() {
+  makeGridlinesX(xScale) {
+    const gridlinesX = d3.axisBottom(xScale)
+      .tickSize(-this.config.height)
+      .tickFormat(this.config.axis.x.options.ticks.format);
+
+    if (this.config.axis.x.scale.type === 'scaleTime') {
+      gridlinesX.ticks(this.config.axis.x.options.ticks.number);
+    } else {
+      gridlinesX.tickValues(
+        xScale.domain()
+          .filter((d, i) => !(i % this.config.axis.x.options.ticks.number)));
+    }
+    return gridlinesX;
+  }
+
+  /**
+  * Create the gridlines for the vertical axis.
+   * @param {Function} yScale - The scale of the Y axis.
+   * @return {Function} gridlinesY - The gridlines of the Y axis.
+   */
+  makeGridlinesY(yScale) {
+    const gridlinesY = d3.axisLeft(yScale)
+      .tickSize(-this.config.width)
+      .ticks(this.config.axis.y.options.ticks.number)
+      .tickFormat(this.config.axis.y.options.ticks.format);
+
+    return gridlinesY;
+  }
+
+  /**
+   * Render an empty SVG element to the DOM.
+   * @param {String} - The class of the SVG element.
+   * @return {Object} - The SVG container element.
+   */
+  initialize(classElement) {
     return d3.select('body')
       .append('svg')
-      .attr('class', 'container')
+      .attr('class', `${classElement}`)
       .attr('width', this.config.width + this.config.margin.left + this.config.margin.right)
       .attr('height', this.config.height + this.config.margin.top + this.config.margin.bottom)
       .append('g')

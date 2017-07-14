@@ -25,27 +25,46 @@ $linecolor: #4682b4;
 $axiscolor: #808080;
 $gridcolor: #d3d3d3;
 
+/* Style the dots by assigning a fill and stroke */
+.dot {
+    stroke: #fff;
+}
+
 body {
   font: 14px Roboto;
+  display: flex;
+  flex-direction: column;
+}
+
+#toggle {
+  flex: 0 1 auto;
+  align-self: center;
+  font: 13px Roboto;
+  padding: 6px;
+  margin: 5px;
+}
+
+svg {
+  flex: 0 1 auto;
+  align-self: center;
+  margin: 30px;
 }
 
 .line {
   fill: none;
-  stroke: url('#value-gradient');
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 2;
+  stroke-width: 3;
 }
 
 .area {
-  fill-opacity: .35;
+  fill-opacity: .3;
 }
 
 .axis {
 
   line {
     fill: none;
-    shape-rendering: crispEdges;
     stroke: $axiscolor;
     stroke-width: 1px;
   }
@@ -61,7 +80,6 @@ body {
   }
 
   line {
-    shape-rendering: crispEdges;
     stroke: $gridcolor;
   }
 
@@ -69,5 +87,15 @@ body {
     opacity: .7;
     stroke: $gridcolor;
   }
+}
 
+.title {
+  font: Roboto;
+  font-size: 17px;
+  text-decoration: underline;
+}
+
+.labelX, .labelY {
+  font: Roboto;
+  font-size: 14px;
 }
