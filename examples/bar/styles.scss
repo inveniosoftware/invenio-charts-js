@@ -26,26 +26,29 @@ $axiscolor: #808080;
 $gridcolor: #d3d3d3;
 $barcolor: #4682b4;
 $barhover: #a52a2a;
+$tooltip: rgba(51, 51, 51, .8);;
+$shadow: rgba(0, 0, 0, .2);
+$white: #fff;
 
 body {
-  font: 14px Roboto;
   display: flex;
   flex-direction: column;
+  font: 14px Roboto;
 }
 
 svg {
-  flex: 0 1 auto;
   align-self: center;
-  padding: 12px;
+  flex: 0 1 auto;
   margin: 25px;
+  padding: 12px;
 }
 
 #toggle {
-  flex: 0 1 auto;
   align-self: center;
+  flex: 0 1 auto;
   font: 13px Roboto;
-  padding: 6px;
   margin: 3px;
+  padding: 6px;
 }
 
 .axis {
@@ -61,7 +64,8 @@ svg {
   }
 }
 
-.gridX, .gridY {
+.gridX,
+.gridY {
   path {
     stroke-width: 0;
   }
@@ -83,7 +87,33 @@ svg {
   text-decoration: underline;
 }
 
-.labelX, .labelY {
+.labelX,
+.labelY {
   font: Roboto;
   font-size: 14px;
+}
+
+.d3-tip {
+  background-color: $tooltip;
+
+  border-radius: 5px;
+  box-shadow: -10px 10px 20px 0 $shadow;
+  box-sizing: border-box;
+  color: $white;
+  padding: 10px;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity 300ms linear;
+  z-index: 5;
+
+  &:after {
+    border-color: $tooltip transparent transparent;
+    border-style: solid;
+    border-width: 5px;
+    content: '';
+    left: 50%;
+    margin-left: -5px;
+    position: absolute;
+    top: 100%;
+  }
 }

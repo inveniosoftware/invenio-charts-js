@@ -31,11 +31,11 @@ let toggle = true;
 const graphPageviews2 = new LineGraph(config.pageviewsVideosInterval1month);
 graphPageviews2.render(dataCDS.pageviewsVIdeosInterval1month0, 'pageviews_month');
 
-const graphPageviews = new LineGraph(config.pageviewsVideosInterval1day);
-graphPageviews.render(dataCDS.pageviewsVideosInterval1day, 'pageviews_day');
+// const graphPageviews = new LineGraph(config.pageviewsVideosInterval1day);
+// graphPageviews.render(dataCDS.pageviewsVideosInterval1day, 'pageviews_day');
 
-const graphDownloads = new LineGraph(config.downloadVideosInterval1day);
-graphDownloads.render(dataCDS.downloadVideosInterval1day, 'downloads');
+// const graphDownloads = new LineGraph(config.downloadVideosInterval1day);
+// graphDownloads.render(dataCDS.downloadVideosInterval1day, 'downloads');
 
 function update() {
   toggle = !toggle;

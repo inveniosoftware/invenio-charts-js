@@ -282,15 +282,55 @@ class LineGraph extends Graph {
     } else {
       d3.select(`.${classElement}`).select('.line')
         .transition()
-        .duration(500)
+        .delay(100)
+        .duration(400)
         .attr('d', line(data));
     }
 
+    // If specified, add tooltip
+    const tooltip = d3.tip()
+      .attr('class', 'd3-tip')
+      .offset((d) => {
+        if (_.get(d, this.keyY) > (0.9 * d3.max(data, d1 => _.get(d1, this.keyY)))) {
+          return [10, 0];
+        }
+        return [-10, 0];
+      })
+      .direction((d) => {
+        if (_.get(d, this.keyY) > (0.9 * d3.max(data, d1 => _.get(d1, this.keyY)))) {
+          d3.select('.d3-tip').attr('class', 'd3-tip top');
+          return 's';
+        }
+        d3.select('.d3-tip').attr('class', 'd3-tip bottom');
+        return 'n';
+      })
+      .html(d => `
+        <strong>${this.config.axis.x.options.label.value}:</strong>
+        ${d3.timeFormat(this.config.axis.x.scale.format)(_.get(d, this.keyX))}</br>
+        <strong>${this.config.axis.y.options.label.value}:</strong>
+        ${_.get(d, this.keyY)}
+      `);
+
+    if (d3.select('.d3-tip').empty()) {
+      this.svg.call(tooltip);
+    }
+
+    const focus = d3.select(`.${classElement}`).select('g')
+      .append('g')
+      .attr('class', 'focus')
+      .style('display', 'none');
+
+    focus.append('circle')
+      .attr('stroke', this.config.circles.color)
+      .attr('fill', this.config.circles.color);
+
     // If specified, add circles to the line
-    if (this.config.circles.visible) {
-      this.svg.selectAll('.dot')
-        .data(data)
+    const circles = this.svg.selectAll('.dot');
+    if (circles.empty()) {
+      circles.data(data)
         .enter().append('circle')
+        .on('mouseover', tooltip.show)
+        .on('mouseout', tooltip.hide)
         .transition()
         .delay(500)
         .duration(750)
@@ -298,33 +338,53 @@ class LineGraph extends Graph {
         .attr('cx', d => x(_.get(d, this.keyX)))
         .attr('cy', d => y(_.get(d, this.keyY)))
         .attr('r', this.config.circles.radius)
-        .attr('fill', this.config.circles.color);
+        .attr('fill', this.config.circles.color)
+        .attr('opacity', this.config.circles.visible ? 1 : 0);
+    } else {
+      circles
+        .data(data)
+        .transition()
+        .delay(100)
+        .duration(250)
+        .style('fill-opacity', 1e-6)
+        .remove();
+
+      circles
+        .data(data)
+        .transition()
+        .delay(100)
+        .duration(400)
+        .attr('cx', d => x(_.get(d, this.keyX)))
+        .attr('cy', d => y(_.get(d, this.keyY)))
+        .attr('r', this.config.circles.radius);
     }
 
     // Define the linear gradient coloring of the line
-    this.svg.append('linearGradient')
-      .attr('id', `${classElement}`)
-      .attr('gradientUnits', 'userSpaceOnUse')
-      .attr('x1', '0%')
-      .attr('y1', '0%')
-      .attr('x2', '0%')
-      .attr('y2', '100%')
-      .selectAll('stop')
-      .data([
-        { offset: `${this.config.color.thresholds[0].offset}%`,
-          color: this.config.color.thresholds[0].value,
-          opacity: `${this.config.color.thresholds[0].value}`
-        },
-        { offset: `${this.config.color.thresholds[1].offset}%`,
-          color: this.config.color.thresholds[1].value,
-          opacity: `${this.config.color.thresholds[1].value}`
-        }
-      ])
-      .enter()
-      .append('stop')
-      .attr('offset', d => d.offset)
-      .attr('stop-color', d => d.color)
-      .attr('stop-opacity', d => d.opacity);
+    if (this.svg.select(`#${classElement}`).empty()) {
+      this.svg.append('linearGradient')
+        .attr('id', `${classElement}`)
+        .attr('gradientUnits', 'userSpaceOnUse')
+        .attr('x1', '0%')
+        .attr('y1', '0%')
+        .attr('x2', '0%')
+        .attr('y2', '100%')
+        .selectAll('stop')
+        .data([
+          { offset: `${this.config.color.thresholds[0].offset}%`,
+            color: this.config.color.thresholds[0].value,
+            opacity: `${this.config.color.thresholds[0].value}`
+          },
+          { offset: `${this.config.color.thresholds[1].offset}%`,
+            color: this.config.color.thresholds[1].value,
+            opacity: `${this.config.color.thresholds[1].value}`
+          }
+        ])
+        .enter()
+        .append('stop')
+        .attr('offset', d => d.offset)
+        .attr('stop-color', d => d.color)
+        .attr('stop-opacity', d => d.opacity);
+    }
 
     // If specified, add title to the graph
     if (this.config.title.visible) {
@@ -340,6 +400,28 @@ class LineGraph extends Graph {
         graphTitle.text(this.config.title.value);
       }
     }
+
+    const that = this;
+    function mousemove() {
+      const x0 = x.invert(d3.mouse(this)[0]);
+      // Check if mouse is inside the SVG element
+      if (d3.mouse(this)[0] <= that.config.width && d3.mouse(this)[1] <= that.config.height) {
+        const i = d3.bisector(d => _.get(d, 'time')).left(data, x0, 1);
+        const d0 = data[i - 1];
+        const d1 = data[i];
+        const point = x0 - d0.time > d1.time - x0 ? d1 : d0;
+        focus.attr('transform', `translate(${x(point.time)}, ${y(point.count)})`);
+      }
+    }
+
+    this.svg
+      .on('mouseover', () => {
+        focus.style('display', null);
+      })
+      .on('mouseout', () => {
+        focus.style('display', 'none');
+      })
+      .on('mousemove', mousemove);
 
     return this.svg;
   }

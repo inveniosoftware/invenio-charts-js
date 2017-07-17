@@ -24,30 +24,44 @@
 $linecolor: #4682b4;
 $axiscolor: #808080;
 $gridcolor: #d3d3d3;
+$tooltip: rgba(51, 51, 51, .8);;
+$shadow: rgba(0, 0, 0, .2);
+$white: #fff;
 
-/* Style the dots by assigning a fill and stroke */
 .dot {
-    stroke: #fff;
+  stroke: $white;
+}
+
+.focus {
+  circle {
+    // fill: none;
+    r: 6;
+    stroke-opacity: .75;
+    stroke-width: 6px;
+    z-index: 1;
+  }
+  transition: transform 150ms;
 }
 
 body {
-  font: 14px Roboto;
   display: flex;
   flex-direction: column;
+  font: 14px Roboto;
 }
 
 #toggle {
-  flex: 0 1 auto;
   align-self: center;
+  flex: 0 1 auto;
   font: 13px Roboto;
-  padding: 6px;
   margin: 5px;
+  padding: 6px;
 }
 
 svg {
-  flex: 0 1 auto;
   align-self: center;
+  flex: 0 1 auto;
   margin: 30px;
+  pointer-events: all;
 }
 
 .line {
@@ -98,4 +112,40 @@ svg {
 .labelX, .labelY {
   font: Roboto;
   font-size: 14px;
+}
+
+.d3-tip {
+  background-color: $tooltip;
+
+  border-radius: 5px;
+  box-shadow: -10px 10px 20px 0 $shadow;
+  box-sizing: border-box;
+  color: $white;
+  padding: 10px;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity 150ms linear;
+  z-index: 2;
+
+  &.bottom:after {
+    border-color: $tooltip transparent transparent;
+    border-style: solid;
+    border-width: 5px;
+    content: '';
+    left: 50%;
+    margin-left: -5px;
+    position: absolute;
+    top: 100%;
+  }
+
+  &.top:after {
+    border-color: transparent transparent $tooltip;
+    border-style: solid;
+    border-width: 5px;
+    bottom: 100%;
+    content: '';
+    left: 50%;
+    margin-left: -5px;
+    position: absolute;
+  }
 }

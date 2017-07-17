@@ -23,7 +23,10 @@
 
 import _ from 'lodash';
 import * as d3 from 'd3';
+import d3Tip from 'd3-tip';
 import Graph from '../graph/graph';
+
+d3.tip = d3Tip;
 
 /**
  * Class representing a Bar Graph.
@@ -234,6 +237,19 @@ class BarGraph extends Graph {
     const bars = d3.select(`.${classElement}`).select('g').selectAll('.bar');
     const colorScale = d3[this.config.color.scale](d3[`schemeCategory${this.config.color.number}`]);
 
+    // If specified, add tooltip
+    const tooltip = d3.tip()
+      .attr('class', 'd3-tip')
+      .offset([-10, 0])
+      .html(d => `
+        <strong>${this.config.axis.x.options.label.value}:</strong>
+        ${_.get(d, this.keyX)}</br>
+        <strong>${this.config.axis.y.options.label.value}:</strong>
+        ${_.get(d, this.keyY)}
+      `);
+
+    this.svg.call(tooltip);
+
     if (bars.empty()) {
       bars
         .data(data)
@@ -243,6 +259,8 @@ class BarGraph extends Graph {
         .attr('y', this.config.height)
         .attr('width', x.bandwidth())
         .attr('height', 0)
+        .on('mouseover', tooltip.show)
+        .on('mouseout', tooltip.hide)
         .attr('fill', (d, i) => colorScale(i))
         .transition()
         .duration(800)
@@ -288,13 +306,6 @@ class BarGraph extends Graph {
         .delay(300)
         .attr('y', d => y(_.get(d, this.keyY)))
         .attr('height', d => this.config.height - y(_.get(d, this.keyY)));
-    }
-
-    // If specified, add simple tooltip
-    if (this.config.tooltip) {
-      d3.select(`.${classElement}`).select('g').selectAll('.bar')
-        .append('title')
-        .text(d => `(${_.get(d, this.keyX)}, ${_.get(d, this.keyY)})`);
     }
 
     // If specified, add title to the graph

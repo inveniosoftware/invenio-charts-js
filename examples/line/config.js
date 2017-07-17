@@ -112,7 +112,7 @@ config.downloadVideosInterval1day = {
   tooltip: false,
   circles: {
     visible: true,
-    radius: 4,
+    radius: 5.5,
     color: '#4CAF50'
   },
   title: {
@@ -136,7 +136,7 @@ config.pageviewsVideosInterval1day = {
       curved: true,
       curveType: 'curveMonotoneX',
       fillArea: true,
-      fillAreaColor: '#FFF9C4'
+      fillAreaColor: '#FFCDD2'
     }
   },
   axis: {
@@ -210,7 +210,7 @@ config.pageviewsVideosInterval1day = {
   tooltip: false,
   circles: {
     visible: true,
-    radius: 4,
+    radius: 5.5,
     color: '#E53935'
   },
   title: {
@@ -305,10 +305,10 @@ config.pageviewsVideosInterval1month = {
       }
     ]
   },
-  tooltip: false,
+  tooltip: true,
   circles: {
-    visible: false,
-    radius: 5,
+    visible: true,
+    radius: 5.5,
     color: '#1565C0'
   },
   title: {
