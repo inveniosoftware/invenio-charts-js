@@ -28,9 +28,9 @@ config.downloadVideosInterval1day = {
   height: 450,
   margin: {
     top: 30,
-    right: 30,
-    bottom: 50,
-    left: 60
+    right: 80,
+    bottom: 80,
+    left: 80
   },
   graph: {
     type: 'line',
@@ -110,6 +110,11 @@ config.downloadVideosInterval1day = {
     ]
   },
   tooltip: false,
+  legend: {
+    value: 'series1',
+    visible: true,
+    position: 'bottom'
+  },
   circles: {
     visible: true,
     radius: 5.5,
@@ -117,7 +122,7 @@ config.downloadVideosInterval1day = {
   },
   title: {
     visible: true,
-    value: 'Video Downloads (per day)'
+    value: 'Video Downloads per day'
   }
 };
 
@@ -149,7 +154,7 @@ config.pageviewsVideosInterval1day = {
       options: {
         label: {
           value: 'Date',
-          visible: true
+          visible: false
         },
         line: {
           visible: false
@@ -175,7 +180,7 @@ config.pageviewsVideosInterval1day = {
       options: {
         label: {
           value: 'Pageviews',
-          visible: true
+          visible: false
         },
         line: {
           visible: false
@@ -208,6 +213,11 @@ config.pageviewsVideosInterval1day = {
     ]
   },
   tooltip: false,
+  legend: {
+    value: 'series1',
+    visible: true,
+    position: 'bottom'
+  },
   circles: {
     visible: true,
     radius: 5.5,
@@ -215,7 +225,7 @@ config.pageviewsVideosInterval1day = {
   },
   title: {
     visible: true,
-    value: 'Pageviews (per day)'
+    value: 'Pageviews per day'
   }
 };
 
@@ -247,7 +257,7 @@ config.pageviewsVideosInterval1month = {
       options: {
         label: {
           value: 'Date',
-          visible: true
+          visible: false
         },
         line: {
           visible: false
@@ -259,7 +269,7 @@ config.pageviewsVideosInterval1month = {
         },
         tickLabels: {
           visible: true,
-          rotated: true
+          rotated: false
         },
         gridlines: true
       }
@@ -273,7 +283,7 @@ config.pageviewsVideosInterval1month = {
       options: {
         label: {
           value: 'Pageviews',
-          visible: true
+          visible: false
         },
         line: {
           visible: false
@@ -289,6 +299,10 @@ config.pageviewsVideosInterval1month = {
         gridlines: true
       }
     }
+  },
+  title: {
+    visible: true,
+    value: 'Pageviews per month'
   },
   color: {
     scale: 'linearGradient',
@@ -306,14 +320,15 @@ config.pageviewsVideosInterval1month = {
     ]
   },
   tooltip: true,
+  legend: {
+    value: 'series1',
+    visible: true,
+    position: 'bottom'
+  },
   circles: {
     visible: true,
     radius: 5.5,
     color: '#1565C0'
-  },
-  title: {
-    visible: true,
-    value: 'Pageviews (per month)'
   }
 };
 

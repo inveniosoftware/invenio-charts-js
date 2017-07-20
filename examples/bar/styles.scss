@@ -33,7 +33,6 @@ $white: #fff;
 body {
   display: flex;
   flex-direction: column;
-  font: 14px Roboto;
 }
 
 svg {
@@ -46,7 +45,6 @@ svg {
 #toggle {
   align-self: center;
   flex: 0 1 auto;
-  font: 13px Roboto;
   margin: 3px;
   padding: 6px;
 }
@@ -82,15 +80,15 @@ svg {
 }
 
 .title {
-  font: Roboto;
   font-size: 17px;
   text-decoration: underline;
+  font-weight: 500;
 }
 
 .labelX,
 .labelY {
-  font: Roboto;
   font-size: 14px;
+  font-weight: normal;
 }
 
 .d3-tip {
@@ -115,5 +113,12 @@ svg {
     margin-left: -5px;
     position: absolute;
     top: 100%;
+  }
+}
+
+.legend {
+  text.label {
+    font-size: 12px;
+    font-weight: normal;
   }
 }

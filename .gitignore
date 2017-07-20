@@ -22,8 +22,5 @@ package-lock.json
 dist/
 docs/
 
-#package-loc.json
-package-loc.json
-
 # CDS data
 data-cds.js

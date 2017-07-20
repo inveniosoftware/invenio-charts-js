@@ -96,7 +96,10 @@ config.pageviewsVideosPerCountry = {
     scale: 'scaleOrdinal',
     number: 20
   },
-  tooltip: true
+  tooltip: true,
+  legend: {
+    visible: true
+  }
 };
 
 config.downloadUsers = {
@@ -172,7 +175,10 @@ config.downloadUsers = {
     scale: 'scaleOrdinal',
     number: 10
   },
-  tooltip: true
+  tooltip: true,
+  legend: {
+    visible: true
+  }
 };
 
 export default config;

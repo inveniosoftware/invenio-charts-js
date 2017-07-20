@@ -24,6 +24,7 @@
 import _ from 'lodash';
 import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
+import { legendColor } from 'd3-svg-legend';
 import Graph from '../graph/graph';
 
 d3.tip = d3Tip;
@@ -239,8 +240,26 @@ class BarGraph extends Graph {
 
     // If specified, add tooltip
     const tooltip = d3.tip()
-      .attr('class', 'd3-tip')
-      .offset([-10, 0])
+      .attr('class', `d3-tip ${classElement}`)
+      .offset((d) => {
+        // TODO Fix right, left offsets
+        const offsetX = 0;
+        let offsetY = 0;
+        if (_.get(d, this.keyY) > (1.01 * d3.max(data, d1 => _.get(d1, this.keyY)))) {
+          offsetY = 10;
+        } else {
+          offsetY = -10;
+        }
+        return [offsetY, offsetX];
+      })
+      .direction((d) => {
+        if (_.get(d, this.keyY) > (1.01 * d3.max(data, d1 => _.get(d1, this.keyY)))) {
+          d3.select(`.d3-tip.${classElement}`).attr('class', `d3-tip ${classElement} top`);
+          return 's';
+        }
+        d3.select(`.d3-tip.${classElement}`).attr('class', `d3-tip ${classElement} bottom`);
+        return 'n';
+      })
       .html(d => `
         <strong>${this.config.axis.x.options.label.value}:</strong>
         ${_.get(d, this.keyX)}</br>
@@ -254,7 +273,7 @@ class BarGraph extends Graph {
       bars
         .data(data)
         .enter().append('rect')
-        .attr('class', 'bar')
+        .attr('class', d => `bar _${_.get(d, this.keyX)}`)
         .attr('x', d => x(_.get(d, this.keyX)))
         .attr('y', this.config.height)
         .attr('width', x.bandwidth())
@@ -295,7 +314,7 @@ class BarGraph extends Graph {
         .data(data)
         .enter()
         .append('rect')
-        .attr('class', 'bar')
+        .attr('class', d => `bar _${_.get(d, this.keyX)}`)
         .attr('x', d => x(_.get(d, this.keyX)))
         .attr('y', this.config.height)
         .attr('width', x.bandwidth())
@@ -321,6 +340,47 @@ class BarGraph extends Graph {
       } else {
         graphTitle.text(this.config.title.value);
       }
+    }
+
+    // If specified, add legend to the graph
+    if (this.config.legend.visible) {
+      const legendScale = d3.scaleOrdinal()
+        .domain(data.map(d => _.get(d, this.keyX)))
+        .range(data.map((d, i) => colorScale(i)));
+
+      // Position the legend
+      // TODO: Check this.config.legend.position
+      this.svg.append('g')
+        .attr('class', 'legend')
+        .attr('transform', `translate(${this.config.width - (this.config.margin.left + this.config.margin.right)},
+          ${this.config.margin.top})`);
+
+      let toggleLegend = true;
+
+      // Create the legend
+      const legend = legendColor()
+        .shape('path', d3.symbol().type(d3.symbolSquare).size(200)())
+        .shapePadding(12)
+        .shapeWidth(30)
+        .orient('vertical')
+        .scale(legendScale)
+        .cellFilter((d, i) => i < 10)
+        .on('cellclick', (c) => {
+          const b = d3.select(`.${classElement}`).selectAll('.bar');
+          const selected = d3.select(`.${classElement}`).selectAll(`.bar._${c}`);
+          toggleLegend = !toggleLegend;
+          if (toggleLegend) {
+            b.attr('display', 'none');
+            selected.attr('display', null);
+          } else {
+            b.attr('display', null);
+            selected.attr('display', null);
+          }
+        });
+
+      // Add the legend to the SVG
+      this.svg.select('.legend')
+        .call(legend);
     }
 
     return this.svg;

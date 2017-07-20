@@ -26,8 +26,6 @@ import config from './config';
 import dataCDS from '../data/data-cds';
 import { LineGraph } from '../../src/index';
 
-let toggle = true;
-
 const graphPageviews2 = new LineGraph(config.pageviewsVideosInterval1month);
 graphPageviews2.render(dataCDS.pageviewsVIdeosInterval1month0, 'pageviews_month');
 
@@ -36,16 +34,3 @@ graphPageviews2.render(dataCDS.pageviewsVIdeosInterval1month0, 'pageviews_month'
 
 // const graphDownloads = new LineGraph(config.downloadVideosInterval1day);
 // graphDownloads.render(dataCDS.downloadVideosInterval1day, 'downloads');
-
-function update() {
-  toggle = !toggle;
-  if (toggle) {
-    graphPageviews2.render(dataCDS.pageviewsVIdeosInterval1month0, 'pageviews_month');
-  } else {
-    graphPageviews2.render(dataCDS.pageviewsVIdeosInterval1month1, 'pageviews_month');
-  }
-}
-
-if (document.getElementById('toggle')) {
-  document.getElementById('toggle').addEventListener('click', update);
-}

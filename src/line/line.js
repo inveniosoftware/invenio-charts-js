@@ -23,6 +23,7 @@
 
 import _ from 'lodash';
 import * as d3 from 'd3';
+import { legendColor } from 'd3-svg-legend';
 import Graph from '../graph/graph';
 
 /**
@@ -406,11 +407,11 @@ class LineGraph extends Graph {
       const x0 = x.invert(d3.mouse(this)[0]);
       // Check if mouse is inside the SVG element
       if (d3.mouse(this)[0] <= that.config.width && d3.mouse(this)[1] <= that.config.height) {
-        const i = d3.bisector(d => _.get(d, 'time')).left(data, x0, 1);
+        const i = d3.bisector(d => _.get(d, that.keyX)).left(data, x0, 1);
         const d0 = data[i - 1];
         const d1 = data[i];
-        const point = x0 - d0.time > d1.time - x0 ? d1 : d0;
-        focus.attr('transform', `translate(${x(point.time)}, ${y(point.count)})`);
+        const point = x0 - _.get(d0, that.keyX) > _.get(d1, that.keyX) - x0 ? d1 : d0;
+        focus.attr('transform', `translate(${x(_.get(point, that.keyX))}, ${y(_.get(point, that.keyY))})`);
       }
     }
 
@@ -422,6 +423,49 @@ class LineGraph extends Graph {
         focus.style('display', 'none');
       })
       .on('mousemove', mousemove);
+
+    // If specified, add legend to the graph
+    if (this.config.legend.visible) {
+      const legendScale = d3.scaleOrdinal()
+        .domain([`${this.config.legend.value}`])
+        .range([`${this.config.circles.color}`]);
+
+      // Position the legend
+      // TODO: Check this.config.legend.position
+      this.svg.append('g')
+        .attr('class', 'legend')
+        .attr('transform', `translate(${this.config.width / 2},
+          ${this.config.height + (this.config.margin.bottom / 1.75)})`);
+
+      let toggleLegend = true;
+
+      // Create the legend
+      const legend = legendColor()
+        .shape('path', d3.symbol().type(d3.symbolSquare).size(200)())
+        .shapePadding(12)
+        .shapeWidth(30)
+        .orient('horizontal')
+        .scale(legendScale)
+        .on('cellclick', () => {
+          const l = d3.select(`.${classElement}`).select('.line');
+          const f = d3.select(`.${classElement}`).select('.focus');
+          const c = d3.select(`.${classElement}`).selectAll('circle.dot');
+          toggleLegend = !toggleLegend;
+          if (toggleLegend) {
+            l.attr('opacity', 0);
+            c.attr('display', 'none');
+            f.attr('opacity', 0);
+          } else {
+            l.attr('opacity', 1);
+            c.attr('display', null);
+            f.attr('opacity', 1);
+          }
+        });
+
+      // Add the legend to the SVG
+      this.svg.select('.legend')
+        .call(legend);
+    }
 
     return this.svg;
   }

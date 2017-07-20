@@ -20,30 +20,11 @@
  * waive the privileges and immunities granted to it by virtue of its status
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
-import _ from 'lodash';
+
 import './styles.scss';
 import config from './config';
 import dataCDS from '../data/data-cds';
 import { BarGraph } from '../../src/index';
 
-console.log(dataCDS);
-
-let toggle = true;
-const d1 = _.cloneDeep(dataCDS.pageviewsVideosPerCountry);
-const d2 = dataCDS.pageviewsVideosPerCountry.filter((d, i) => i % 2);
-
 const pageviewsPerCountry = new BarGraph(config.pageviewsVideosPerCountry);
 pageviewsPerCountry.render(dataCDS.pageviewsVideosPerCountry, 'pageviews');
-
-function update() {
-  toggle = !toggle;
-  if (toggle) {
-    pageviewsPerCountry.render(d1, 'pageviews');
-  } else {
-    pageviewsPerCountry.render(d2, 'pageviews');
-  }
-}
-
-if (document.getElementById('toggle')) {
-  document.getElementById('toggle').addEventListener('click', update);
-}
