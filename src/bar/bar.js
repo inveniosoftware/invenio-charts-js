@@ -163,7 +163,7 @@ class BarGraph extends Graph {
 
     // Create the Y Axis
     const yAxis = d3.axisLeft(y)
-      .ticks(yAxisOptions.ticks.number)
+      .ticks(yAxisOptions.ticks.number, 's')
       .tickSizeOuter(0);
 
     // Add the Y Axis to the container element
@@ -240,26 +240,9 @@ class BarGraph extends Graph {
 
     // If specified, add tooltip
     const tooltip = d3.tip()
-      .attr('class', `d3-tip ${classElement}`)
-      .offset((d) => {
-        // TODO Fix right, left offsets
-        const offsetX = 0;
-        let offsetY = 0;
-        if (_.get(d, this.keyY) > (1.01 * d3.max(data, d1 => _.get(d1, this.keyY)))) {
-          offsetY = 10;
-        } else {
-          offsetY = -10;
-        }
-        return [offsetY, offsetX];
-      })
-      .direction((d) => {
-        if (_.get(d, this.keyY) > (1.01 * d3.max(data, d1 => _.get(d1, this.keyY)))) {
-          d3.select(`.d3-tip.${classElement}`).attr('class', `d3-tip ${classElement} top`);
-          return 's';
-        }
-        d3.select(`.d3-tip.${classElement}`).attr('class', `d3-tip ${classElement} bottom`);
-        return 'n';
-      })
+      .attr('class', `${classElement} d3-tip bottom`)
+      .offset([-10, 0])
+      .direction('n')
       .html(d => `
         <strong>${this.config.axis.x.options.label.value}:</strong>
         ${_.get(d, this.keyX)}</br>
@@ -267,7 +250,8 @@ class BarGraph extends Graph {
         ${_.get(d, this.keyY)}
       `);
 
-    this.svg.call(tooltip);
+    d3.select(`.${classElement}`)
+      .call(tooltip);
 
     if (bars.empty()) {
       bars

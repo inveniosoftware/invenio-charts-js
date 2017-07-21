@@ -32,5 +32,15 @@ graphPageviews2.render(dataCDS.pageviewsVIdeosInterval1month0, 'pageviews_month'
 const graphPageviews = new LineGraph(config.pageviewsVideosInterval1day);
 graphPageviews.render(dataCDS.pageviewsVideosInterval1day, 'pageviews_day');
 
-// const graphDownloads = new LineGraph(config.downloadVideosInterval1day);
-// graphDownloads.render(dataCDS.downloadVideosInterval1day, 'downloads');
+function update() {
+  toggle = !toggle;
+  if (toggle) {
+    graphPageviews2.render(dataCDS.pageviewsVIdeosInterval1month0, 'pageviews_month');
+  } else {
+    graphPageviews2.render(dataCDS.pageviewsVIdeosInterval1month1, 'pageviews_month');
+  }
+}
+
+if (document.getElementById('toggle')) {
+  document.getElementById('toggle').addEventListener('click', update);
+}

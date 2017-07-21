@@ -263,7 +263,7 @@ config.pageviewsVideosInterval1month = {
           visible: false
         },
         ticks: {
-          number: 5,
+          number: null,
           format: '',
           visible: false
         },
@@ -289,7 +289,7 @@ config.pageviewsVideosInterval1month = {
           visible: false
         },
         ticks: {
-          number: 5,
+          number: null,
           format: '',
           visible: false
         },
