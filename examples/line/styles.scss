@@ -29,7 +29,13 @@ $shadow: rgba(0, 0, 0, .2);
 $white: #fff;
 
 .dot {
+  clip-path: url('#clip');
   stroke: $white;
+  stroke-width: 2px;
+}
+
+.ew-resize {
+  cursor: ew-resize;
 }
 
 .focus {
@@ -61,6 +67,7 @@ svg {
 }
 
 .line {
+  clip-path: url('#clip');
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -68,6 +75,7 @@ svg {
 }
 
 .area {
+  clip-path: url('#clip');
   fill-opacity: .3;
 }
 
@@ -112,11 +120,12 @@ svg {
 
 .d3-tip {
   background-color: $tooltip;
-
   border-radius: 5px;
   box-shadow: -10px 10px 20px 0 $shadow;
   box-sizing: border-box;
   color: $white;
+  font-size: 14px;
+  font-weight: normal;
   padding: 10px;
   pointer-events: none;
   position: absolute;

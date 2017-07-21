@@ -42,6 +42,8 @@ class LineGraph extends Graph {
     this.svg = d3.select(`.${classElement}`).empty() ?
       super.initialize(classElement) : d3.select(`.${classElement}`);
 
+    const that = this;
+
     // Get the options for the X, Y axis
     const xAxisOptions = this.config.axis.x.options;
     const yAxisOptions = this.config.axis.y.options;
@@ -54,8 +56,17 @@ class LineGraph extends Graph {
       _.set(d, this.keyY, +_.get(d, this.keyY));
     });
 
+    // // Define clip path to focus on domain
+    this.svg.append('defs').append('clipPath')
+      .attr('id', 'clip')
+      .append('rect')
+      .attr('transform', 'translate(-7.5, -7.5)')
+      .attr('width', this.config.width + 15)
+      .attr('height', this.config.height + 10);
+
     // Create the scale for the X axis
     const x = d3[this.config.axis.x.scale.type]();
+    let altX = x;
 
     if (this.config.axis.x.scale.type === 'scaleTime') {
       x.range([0, this.config.width]);
@@ -237,9 +248,10 @@ class LineGraph extends Graph {
       line.curve(d3[this.config.graph.options.curveType]);
     }
 
+    let area;
     // If specified, add colored aera under the line
     if (this.config.graph.options.fillArea) {
-      const area = d3.area()
+      area = d3.area()
         .curve(d3[this.config.graph.options.curveType])
         .x(d => x(_.get(d, this.keyX)))
         .y0(this.config.height)
@@ -247,6 +259,7 @@ class LineGraph extends Graph {
 
       if (d3.select(`.${classElement}`).select('.area').empty()) {
         this.svg.append('path')
+          .data([data])
           .transition()
           .delay(400)
           .duration(500)
@@ -264,22 +277,10 @@ class LineGraph extends Graph {
     // Add the line to the SVG element
     if (d3.select(`.${classElement}`).select('.line').empty()) {
       this.svg.append('path')
+        .data([data])
         .attr('class', 'line')
         .attr('stroke', `url(#${classElement})`)
         .attr('d', line(data));
-
-      const totalLength = d3.select(`.${classElement}`).select('.line')
-        .node().getTotalLength();
-
-      // Smoothly draw the line on the SVG element
-      d3.select(`.${classElement}`).select('.line')
-        .attr('stroke-dasharray', `${totalLength} ${totalLength}`)
-        .attr('stroke-dashoffset', totalLength)
-        .transition()
-        .delay(400)
-        .duration(1750)
-        .ease(d3.easeLinear)
-        .attr('stroke-dashoffset', 0);
     } else {
       d3.select(`.${classElement}`).select('.line')
         .transition()
@@ -333,8 +334,8 @@ class LineGraph extends Graph {
         .on('mouseover', tooltip.show)
         .on('mouseout', tooltip.hide)
         .transition()
-        .delay(500)
-        .duration(750)
+        .delay(250)
+        .duration(500)
         .attr('class', 'dot')
         .attr('cx', d => x(_.get(d, this.keyX)))
         .attr('cy', d => y(_.get(d, this.keyY)))
@@ -393,7 +394,7 @@ class LineGraph extends Graph {
       if (graphTitle.empty()) {
         this.svg.append('text')
           .attr('x', (this.config.width / 2))
-          .attr('y', 0 - (this.config.margin.top / 2))
+          .attr('y', 0 - (this.config.margin.top / 1.8))
           .attr('class', 'title')
           .attr('text-anchor', 'middle')
           .text(this.config.title.value);
@@ -402,16 +403,17 @@ class LineGraph extends Graph {
       }
     }
 
-    const that = this;
     function mousemove() {
-      const x0 = x.invert(d3.mouse(this)[0]);
+      const x0 = altX.invert(d3.mouse(this)[0]);
+      d3.select(`.${classElement}`).select('.focus').select('circle')
+        .attr('opacity', 1);
       // Check if mouse is inside the SVG element
       if (d3.mouse(this)[0] <= that.config.width && d3.mouse(this)[1] <= that.config.height) {
         const i = d3.bisector(d => _.get(d, that.keyX)).left(data, x0, 1);
         const d0 = data[i - 1];
         const d1 = data[i];
         const point = x0 - _.get(d0, that.keyX) > _.get(d1, that.keyX) - x0 ? d1 : d0;
-        focus.attr('transform', `translate(${x(_.get(point, that.keyX))}, ${y(_.get(point, that.keyY))})`);
+        focus.attr('transform', `translate(${altX(_.get(point, that.keyX))}, ${y(_.get(point, that.keyY))})`);
       }
     }
 
@@ -466,6 +468,60 @@ class LineGraph extends Graph {
       this.svg.select('.legend')
         .call(legend);
     }
+
+    // // Define clip path to focus on domain
+    this.svg.append('defs').append('clipPath')
+      .attr('id', 'clip')
+      .append('rect')
+      .attr('transform', 'translate(-8, -8)')
+      .attr('width', this.config.width + 15)
+      .attr('height', this.config.height + 5);
+
+    function zoomed() {
+      altX = d3.event.transform.rescaleX(x);
+      if (d3.event.transform.k > 1) {
+        d3.select(`.${classElement}`).style('cursor', 'ew-resize');
+        d3.select(`.${classElement}`).selectAll('.dot').style('cursor', 'auto');
+      } else {
+        d3.select(`.${classElement}`).style('cursor', 'auto');
+      }
+      d3.select(`.${classElement}`).select('.focus').select('circle')
+        .attr('opacity', 0);
+      d3.select(`.${classElement}`).select('g').select('.x.axis')
+        .transition()
+        .duration(75)
+        .call(xAxis.scale(altX));
+      d3.select(`.${classElement}`).select('.line')
+        .transition()
+        .duration(75)
+        .attr('d', line.x(d => altX(d.time)));
+      d3.select(`.${classElement}`).select('.area')
+        .transition()
+        .duration(75)
+        .attr('d', area.x(d => altX(d.time)));
+      d3.select(`.${classElement}`).selectAll('.dot')
+        .transition()
+        .duration(75)
+        .attr('cx', d => altX(d.time));
+      d3.select(`.${classElement}`).select('.gridX')
+        .transition()
+        .duration(75)
+        .style('stroke-opacity', 1e-6)
+        .transition()
+        .duration(75)
+        .call(that.makeGridlinesX(altX))
+        .style('stroke-opacity', 0.7);
+    }
+
+    // Add zoom functionality
+    const zoom = d3.zoom()
+      .scaleExtent([1, 8])
+      .translateExtent([[0, 0], [this.config.width, this.config.height]])
+      .extent([[0, 0], [this.config.width, this.config.height]])
+      .on('zoom', zoomed);
+
+    d3.select(`.${classElement}`)
+      .call(zoom);
 
     return this.svg;
   }

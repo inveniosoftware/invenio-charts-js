@@ -252,7 +252,7 @@ config.pageviewsVideosInterval1month = {
       mapTo: 'time',
       scale: {
         type: 'scaleTime',
-        format: '%d-%b-%y'
+        format: '%d %b %Y'
       },
       options: {
         label: {
