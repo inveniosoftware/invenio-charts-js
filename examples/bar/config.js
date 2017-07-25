@@ -28,9 +28,9 @@ config.pageviewsVideosPerCountry = {
   height: 450,
   margin: {
     top: 30,
-    right: 20,
-    bottom: 40,
-    left: 60
+    right: 80,
+    bottom: 80,
+    left: 80
   },
   graph: {
     type: 'bar'
@@ -44,8 +44,8 @@ config.pageviewsVideosPerCountry = {
       },
       options: {
         label: {
-          value: 'Countries',
-          visible: false
+          value: 'Country',
+          visible: true
         },
         line: {
           visible: false
@@ -59,7 +59,7 @@ config.pageviewsVideosPerCountry = {
           visible: true,
           rotated: true
         },
-        gridlines: false
+        gridlines: true
       }
     },
     y: {
@@ -71,85 +71,6 @@ config.pageviewsVideosPerCountry = {
       options: {
         label: {
           value: 'Pageviews',
-          visible: false
-        },
-        line: {
-          visible: false
-        },
-        ticks: {
-          number: null,
-          format: '',
-          visible: false
-        },
-        tickLabels: {
-          visible: true
-        },
-        gridlines: true
-      }
-    }
-  },
-  title: {
-    visible: true,
-    value: 'Pageviews (per Country)'
-  },
-  color: {
-    scale: 'scaleOrdinal',
-    number: 20
-  },
-  tooltip: true,
-  legend: {
-    visible: true
-  }
-};
-
-config.downloadUsers = {
-  width: 1000,
-  height: 450,
-  margin: {
-    top: 30,
-    right: 20,
-    bottom: 60,
-    left: 60
-  },
-  graph: {
-    type: 'bar'
-  },
-  axis: {
-    x: {
-      mapTo: 'term',
-      scale: {
-        type: 'scaleBand',
-        format: null
-      },
-      options: {
-        label: {
-          value: 'UserID',
-          visible: true
-        },
-        line: {
-          visible: false
-        },
-        ticks: {
-          number: null,
-          format: '',
-          visible: false
-        },
-        tickLabels: {
-          visible: true,
-          rotated: true
-        },
-        gridlines: true
-      }
-    },
-    y: {
-      mapTo: 'count',
-      scale: {
-        type: 'scaleLinear',
-        format: ''
-      },
-      options: {
-        label: {
-          value: 'Downloads',
           visible: true
         },
         line: {
@@ -169,15 +90,13 @@ config.downloadUsers = {
   },
   title: {
     visible: true,
-    value: 'Video Downloads (per User)'
+    value: 'Pageviews per Country'
   },
-  color: {
-    scale: 'scaleOrdinal',
-    number: 10
-  },
+  colorScale: 'schemeCategory20',
   tooltip: true,
   legend: {
-    visible: true
+    visible: false,
+    position: 'side'
   }
 };
 

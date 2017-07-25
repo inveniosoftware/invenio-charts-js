@@ -23,11 +23,7 @@
 
 import _ from 'lodash';
 import * as d3 from 'd3';
-import d3Tip from 'd3-tip';
-import { legendColor } from 'd3-svg-legend';
 import Graph from '../graph/graph';
-
-d3.tip = d3Tip;
 
 /**
  * Class representing a Bar Graph.
@@ -35,339 +31,118 @@ d3.tip = d3Tip;
  */
 class BarGraph extends Graph {
   /**
-   * Create a bar graph in the DOM.
-   * @param {Array<Object>} - The input data.
-   * @param {String} - The class of the SVG element.
-   * @return {Object} - The SVG element containing the bar graph.
+   * Instantiate a Bar Graph.
    */
-  render(data, classElement) {
-    // If does not exist, create a container SVG element
-    this.svg = d3.select(`.${classElement}`).empty() ?
-      super.initialize(classElement) : d3.select(`.${classElement}`);
+  render() {
+    // Initialize the container element
+    super.initialize();
 
-    // Get the options for the X, Y axis
-    const xAxisOptions = this.config.axis.x.options;
-    const yAxisOptions = this.config.axis.y.options;
+    // Parse the current input data
+    super.parseData();
 
-    // Parse input data
-    data.forEach((d) => {
-      if (this.config.axis.x.scale.type === 'scaleTime') {
-        _.set(d, this.keyX, new Date(_.get(d, this.keyX)));
+    // Create the horizontal axis
+    super.makeAxisX(0.1);
+
+    // Create the vertical axis
+    super.makeAxisY();
+
+    // Add title
+    super.makeTitle();
+
+    // Add legend
+    super.makeLegend();
+
+    // Add tooltip
+    super.makeTooltip();
+
+    // Iterate over input data
+    this.input.forEach((outer, i) => {
+      const data = outer.data;
+
+      // Create the bars
+      const bars = d3.select(`.${this.classElement}`).select('g')
+        .selectAll(`.igj-bar.bar_${i}`);
+
+      if (bars.empty()) {
+        // Add new bars
+        bars
+          .data(data)
+          .enter().append('rect')
+          .attr('class', `igj-bar bar_${i}`)
+          .attr('x', d => this.x(_.get(d, this.keyX)))
+          .attr('y', this.config.height)
+          .attr('width', this.x.bandwidth())
+          .attr('height', 0)
+          .on('mouseover', this.tooltip.show)
+          .on('mouseout', this.tooltip.hide)
+          .attr('fill', (d, j) => this.colorScale(j))
+          .transition()
+          .duration(450)
+          .delay(150)
+          .attr('y', d => this.y(_.get(d, this.keyY)))
+          .attr('height', d => this.config.height - this.y(_.get(d, this.keyY)))
+          .style('cursor', 'pointer');
       }
-      _.set(d, this.keyY, +_.get(d, this.keyY));
     });
+  }
 
-    // Create the scale for the X axis
-    const x = d3[this.config.axis.x.scale.type]();
+  update(newInput) {
+    // Update the input data of the graph
+    super.updateData(newInput);
 
-    if (this.config.axis.x.scale.type === 'scaleTime') {
-      x.range([0, this.config.width]);
-      x.domain(d3.extent(data, d => _.get(d, this.keyX)));
-    } else {
-      x.range([0, this.config.width]);
-      x.domain(data.map(d => _.get(d, this.keyX)));
-      x.padding(0.05);
-    }
+    // Parse the current input data
+    super.parseData();
 
-    // Create the X Axis
-    const xAxis = d3.axisBottom(x)
-      .tickSizeOuter(0);
+    // Create the horizontal axis
+    super.makeAxisX(0.1);
 
-    if (this.config.axis.x.scale.type === 'scaleTime') {
-      xAxis.ticks(xAxisOptions.ticks.number);
-      xAxis.tickFormat(d3.timeFormat(this.config.axis.x.scale.format));
-    } else {
-      xAxis.tickValues(
-        x.domain().filter((d, i) => !(i % xAxisOptions.ticks.number)));
-    }
+    // Create the vertical axis
+    super.makeAxisY();
 
-    // Add the X Axis to the container element
-    if (d3.select(`.${classElement}`).select('.x.axis').empty()) {
-      this.svg.append('g')
-        .attr('transform', `translate(0, ${this.config.height})`)
-        .attr('class', 'x axis')
-        .call(xAxis);
-    } else {
-      d3.select(`.${classElement}`).select('.x.axis')
-        .transition()
-        .duration(500)
-        .call(xAxis);
-    }
+    this.input.forEach((outer, i) => {
+      // Select already existing bars in the graph
+      const bars = d3.select(`.${this.classElement}`).select('g')
+        .selectAll(`.igj-bar.bar_${i}`);
 
-    // If specified, add gridlines along the X axis
-    if (xAxisOptions.gridlines) {
-      if (d3.select(`.${classElement}`).select('.gridX').empty()) {
-        this.svg.append('g')
-          .attr('transform', `translate(0, ${this.config.height})`)
-          .attr('class', 'gridX')
-          .call(this.makeGridlinesX(x));
-      } else {
-        d3.select(`.${classElement}`).select('.gridX')
-          .transition()
-          .duration(200)
-          .style('stroke-opacity', 1e-6)
-          .transition()
-          .duration(300)
-          .call(this.makeGridlinesX(x))
-          .style('stroke-opacity', 0.7);
-      }
-    }
-
-    // If specified, add label to the X Axis
-    if (xAxisOptions.label.visible) {
-      if (d3.select(`.${classElement}`).select('.labelX').empty()) {
-        this.svg.append('text')
-          .attr('class', 'labelX')
-          .attr('transform',
-            `translate(${(this.config.width / 2)},
-            ${this.config.height + (this.config.margin.bottom - 15)})`)
-          .attr('text-anchor', 'middle')
-          .text(xAxisOptions.label.value);
-      } else {
-        d3.select(`.${classElement}`).select('.labelX')
-          .text(xAxisOptions.label.value);
-      }
-    }
-
-    // If specified, rotate the tick labels
-    if (xAxisOptions.tickLabels.rotated) {
-      d3.select(`.${classElement}`).selectAll('g.x.axis g.tick text')
-        .style('text-anchor', 'middle')
-        .attr('dx', '-.8em')
-        .attr('dy', '.55em')
-        .attr('transform', 'rotate(-25)');
-    }
-
-    // If specified, hide the X axis line
-    if (!xAxisOptions.line.visible) {
-      d3.select(`.${classElement}`).selectAll('.x.axis path')
-        .attr('style', 'display: none;');
-    }
-
-    // If specified, hide the X axis ticks
-    if (!xAxisOptions.ticks.visible) {
-      d3.select(`.${classElement}`).selectAll('.x.axis line')
-        .attr('style', 'display: none;');
-    }
-
-    // If specified, hide the X axis tick labels
-    if (!xAxisOptions.tickLabels.visible) {
-      d3.select(`.${classElement}`).selectAll('.x.axis g.tick text')
-        .attr('style', 'display: none;');
-    }
-
-    // Create the scale for the Y Axis
-    const y = d3[this.config.axis.y.scale.type]()
-      .range([this.config.height, 0])
-      .domain([0, d3.max(data, d => _.get(d, this.keyY))]);
-
-    // Create the Y Axis
-    const yAxis = d3.axisLeft(y)
-      .ticks(yAxisOptions.ticks.number, 's')
-      .tickSizeOuter(0);
-
-    // Add the Y Axis to the container element
-    if (d3.select(`.${classElement}`).select('.y.axis').empty()) {
-      this.svg.append('g')
-        .attr('class', 'y axis')
-        .call(yAxis);
-    } else {
-      d3.select(`.${classElement}`).select('.y.axis')
-        .transition()
-        .duration(550)
-        .call(yAxis);
-    }
-
-    // If specified, add gridlines along the Y axis
-    if (yAxisOptions.gridlines) {
-      const gridlinesY = d3.axisLeft(y)
-        .ticks(yAxisOptions.ticks.number)
-        .tickFormat(yAxisOptions.ticks.format)
-        .tickSize(-this.config.width);
-
-      if (d3.select(`.${classElement}`).select('.gridY').empty()) {
-        this.svg.append('g')
-          .attr('class', 'gridY')
-          .call(gridlinesY);
-      } else {
-        d3.select(`.${classElement}`).select('.gridY')
-          .transition()
-          .duration(200)
-          .style('stroke-opacity', 1e-6)
-          .transition()
-          .duration(300)
-          .style('stroke-opacity', 0.7);
-      }
-    }
-
-    // If specified, add label to the Y Axis
-    if (yAxisOptions.label.visible) {
-      if (d3.select(`.${classElement}`).select('.labelY').empty()) {
-        this.svg.append('text')
-          .attr('class', 'labelY')
-          .attr('transform',
-            `translate(${-this.config.margin.right - 40},
-            ${(this.config.height / 2) - this.config.margin.top})rotate(-90)`)
-          .attr('text-anchor', 'middle')
-          .attr('dy', '.70em')
-          .text(yAxisOptions.label.value);
-      } else {
-        d3.select(`.${classElement}`).select('.labelY')
-          .text(yAxisOptions.label.value);
-      }
-    }
-
-    // If specified, hide the Y axis line
-    if (!yAxisOptions.line.visible) {
-      d3.select(`.${classElement}`).selectAll('.y.axis path')
-        .attr('style', 'display: none;');
-    }
-
-    // If specified, hide the Y axis ticks
-    if (!yAxisOptions.ticks.visible) {
-      d3.select(`.${classElement}`).selectAll('.y.axis line')
-        .attr('style', 'display: none;');
-    }
-
-    // If specified, hide the Y axis tick labels
-    if (!yAxisOptions.tickLabels.visible) {
-      d3.select(`.${classElement}`).selectAll('.y.axis g.tick text')
-        .attr('style', 'display: none;');
-    }
-
-    const bars = d3.select(`.${classElement}`).select('g').selectAll('.bar');
-    const colorScale = d3[this.config.color.scale](d3[`schemeCategory${this.config.color.number}`]);
-
-    // If specified, add tooltip
-    const tooltip = d3.tip()
-      .attr('class', `${classElement} d3-tip bottom`)
-      .offset([-10, 0])
-      .direction('n')
-      .html(d => `
-        <strong>${this.config.axis.x.options.label.value}:</strong>
-        ${_.get(d, this.keyX)}</br>
-        <strong>${this.config.axis.y.options.label.value}:</strong>
-        ${_.get(d, this.keyY)}
-      `);
-
-    d3.select(`.${classElement}`)
-      .call(tooltip);
-
-    if (bars.empty()) {
+      // Remove unneeded existing bars
       bars
-        .data(data)
-        .enter().append('rect')
-        .attr('class', d => `bar _${_.get(d, this.keyX)}`)
-        .attr('x', d => x(_.get(d, this.keyX)))
-        .attr('y', this.config.height)
-        .attr('width', x.bandwidth())
-        .attr('height', 0)
-        .on('mouseover', tooltip.show)
-        .on('mouseout', tooltip.hide)
-        .attr('fill', (d, i) => colorScale(i))
-        .transition()
-        .duration(800)
-        .delay(250)
-        .attr('y', d => y(_.get(d, this.keyY)))
-        .attr('height', d => this.config.height - y(_.get(d, this.keyY)));
-    } else {
-      // Remove old data that is not present in the new data set
-      bars
-        .data(data)
+        .data(outer.data)
         .exit()
         .transition()
         .duration(350)
-        .attr('y', y(0))
-        .attr('height', this.config.height - y(0))
+        .attr('y', this.y(0))
+        .attr('height', this.config.height - this.y(0))
         .style('fill-opacity', 1e-6)
         .remove();
 
-      // Update data that was present in the old data set
+      // Update existing bars with new values
       bars
-        .data(data)
+        .data(outer.data)
         .transition()
-        .duration(850)
-        .attr('x', d => x(_.get(d, this.keyX)))
-        .attr('y', d => y(_.get(d, this.keyY)))
-        .attr('width', x.bandwidth())
-        .attr('fill', (d, i) => colorScale(i))
-        .attr('height', d => this.config.height - y(_.get(d, this.keyY)));
+        .duration(500)
+        .attr('x', d => this.x(_.get(d, this.keyX)))
+        .attr('y', d => this.y(_.get(d, this.keyY)))
+        .attr('width', this.x.bandwidth())
+        .attr('fill', (d, j) => this.colorScale(j))
+        .attr('height', d => this.config.height - this.y(_.get(d, this.keyY)));
 
-      // Add new data that was not present in the old data set
+      // Add new bars
       bars
-        .data(data)
+        .data(outer.data)
         .enter()
         .append('rect')
-        .attr('class', d => `bar _${_.get(d, this.keyX)}`)
-        .attr('x', d => x(_.get(d, this.keyX)))
+        .attr('class', () => `.igj-bar.bar_${i}`)
+        .attr('x', d => this.x(_.get(d, this.keyX)))
         .attr('y', this.config.height)
-        .attr('width', x.bandwidth())
+        .attr('width', this.x.bandwidth())
         .attr('height', 0)
-        .attr('fill', (d, i) => colorScale(i))
+        .attr('fill', (d, j) => this.colorScale(j))
         .transition()
-        .duration(850)
+        .duration(500)
         .delay(300)
-        .attr('y', d => y(_.get(d, this.keyY)))
-        .attr('height', d => this.config.height - y(_.get(d, this.keyY)));
-    }
-
-    // If specified, add title to the graph
-    if (this.config.title.visible) {
-      const graphTitle = d3.select(`.${classElement}`).select('g').select('.title');
-      if (graphTitle.empty()) {
-        this.svg.append('text')
-          .attr('x', (this.config.width / 2))
-          .attr('y', 0 - (this.config.margin.top / 2))
-          .attr('class', 'title')
-          .attr('text-anchor', 'middle')
-          .text(this.config.title.value);
-      } else {
-        graphTitle.text(this.config.title.value);
-      }
-    }
-
-    // If specified, add legend to the graph
-    if (this.config.legend.visible) {
-      const legendScale = d3.scaleOrdinal()
-        .domain(data.map(d => _.get(d, this.keyX)))
-        .range(data.map((d, i) => colorScale(i)));
-
-      // Position the legend
-      // TODO: Check this.config.legend.position
-      this.svg.append('g')
-        .attr('class', 'legend')
-        .attr('transform', `translate(${this.config.width - (this.config.margin.left + this.config.margin.right)},
-          ${this.config.margin.top})`);
-
-      let toggleLegend = true;
-
-      // Create the legend
-      const legend = legendColor()
-        .shape('path', d3.symbol().type(d3.symbolSquare).size(200)())
-        .shapePadding(12)
-        .shapeWidth(30)
-        .orient('vertical')
-        .scale(legendScale)
-        .cellFilter((d, i) => i < 10)
-        .on('cellclick', (c) => {
-          const b = d3.select(`.${classElement}`).selectAll('.bar');
-          const selected = d3.select(`.${classElement}`).selectAll(`.bar._${c}`);
-          toggleLegend = !toggleLegend;
-          if (toggleLegend) {
-            b.attr('display', 'none');
-            selected.attr('display', null);
-          } else {
-            b.attr('display', null);
-            selected.attr('display', null);
-          }
-        });
-
-      // Add the legend to the SVG
-      this.svg.select('.legend')
-        .call(legend);
-    }
-
-    return this.svg;
+        .attr('y', d => this.y(_.get(d, this.keyY)))
+        .attr('height', d => this.config.height - this.y(_.get(d, this.keyY)));
+    });
   }
 }
 

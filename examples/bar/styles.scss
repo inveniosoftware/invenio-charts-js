@@ -30,26 +30,12 @@ $tooltip: rgba(51, 51, 51, .8);;
 $shadow: rgba(0, 0, 0, .2);
 $white: #fff;
 
-body {
-  display: flex;
-  flex-direction: column;
-}
-
 svg {
-  align-self: center;
-  flex: 0 1 auto;
-  margin: 25px;
-  padding: 12px;
+  margin: 30px;
+  pointer-events: all;
 }
 
-#toggle {
-  align-self: center;
-  flex: 0 1 auto;
-  margin: 3px;
-  padding: 6px;
-}
-
-.axis {
+.igj-axisX, .igj-axisY {
 
   line {
     fill: none;
@@ -62,8 +48,7 @@ svg {
   }
 }
 
-.gridX,
-.gridY {
+.igj-gridX, .igj-gridY {
   path {
     stroke-width: 0;
   }
@@ -79,21 +64,20 @@ svg {
 
 }
 
-.title {
+.igj-title {
   font-size: 17px;
-  text-decoration: underline;
   font-weight: 500;
+  text-decoration: underline;
 }
 
-.labelX,
-.labelY {
+.igj-labelX,
+.igj-labelY {
   font-size: 14px;
   font-weight: normal;
 }
 
-.d3-tip {
+.igj-tip {
   background-color: $tooltip;
-
   border-radius: 5px;
   box-shadow: -10px 10px 20px 0 $shadow;
   box-sizing: border-box;
@@ -103,7 +87,7 @@ svg {
   padding: 10px;
   pointer-events: none;
   position: absolute;
-  transition: opacity 300ms linear;
+  transition: opacity 150ms linear;
   z-index: 2;
 
   &.bottom:after {
@@ -116,9 +100,42 @@ svg {
     position: absolute;
     top: 100%;
   }
+
+  &.top:after {
+    border-color: transparent transparent $tooltip;
+    border-style: solid;
+    border-width: 5px;
+    bottom: 100%;
+    content: '';
+    left: 50%;
+    margin-left: -5px;
+    position: absolute;
+  }
+
+  &.left:after {
+    border-color: transparent $tooltip transparent transparent;
+    border-style: solid;
+    border-width: 5px;
+    content: '';
+    margin-top: -5px;
+    position: absolute;
+    right: 100%;
+    top: 50%;
+  }
+
+  &.right:after {
+    border-color: transparent transparent transparent $tooltip;
+    border-style: solid;
+    border-width: 5px;
+    content: '';
+    left: 100%;
+    margin-top: -5px;
+    position: absolute;
+    top: 50%;
+  }
 }
 
-.legend {
+.igj-legend {
   text.label {
     font-size: 12px;
     font-weight: normal;

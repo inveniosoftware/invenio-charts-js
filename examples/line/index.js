@@ -23,24 +23,21 @@
 
 import './styles.scss';
 import config from './config';
-import dataCDS from '../data/data-cds';
+import dataCDS from '../data/data';
 import { LineGraph } from '../../src/index';
 
-const graphPageviews2 = new LineGraph(config.pageviewsVideosInterval1month);
-graphPageviews2.render(dataCDS.pageviewsVIdeosInterval1month0, 'pageviews_month');
+// LineGraph 1
+const cfg1 = config.pageviewsVideosInterval1month;
+const data1 = dataCDS.pageviewsVideosInterval1month;
+const data1Update = dataCDS.pageviewsVideosInterval1monthUpdate;
+const class1 = 'pageviews_month';
+const g1 = new LineGraph(cfg1, data1, class1);
+g1.render();
+setTimeout(() => g1.update(data1Update), 3000);
 
-const graphPageviews = new LineGraph(config.pageviewsVideosInterval1day);
-graphPageviews.render(dataCDS.pageviewsVideosInterval1day, 'pageviews_day');
-
-function update() {
-  toggle = !toggle;
-  if (toggle) {
-    graphPageviews2.render(dataCDS.pageviewsVIdeosInterval1month0, 'pageviews_month');
-  } else {
-    graphPageviews2.render(dataCDS.pageviewsVIdeosInterval1month1, 'pageviews_month');
-  }
-}
-
-if (document.getElementById('toggle')) {
-  document.getElementById('toggle').addEventListener('click', update);
-}
+// LineGraph 2
+const cfg2 = config.downloadVideosInterval1day;
+const data2 = dataCDS.downloadVideosInterval1day;
+const class2 = 'downloads_day';
+const g2 = new LineGraph(cfg2, data2, class2);
+g2.render();

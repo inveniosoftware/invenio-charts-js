@@ -28,7 +28,7 @@ $tooltip: rgba(51, 51, 51, .8);;
 $shadow: rgba(0, 0, 0, .2);
 $white: #fff;
 
-.dot {
+.igj-dot {
   clip-path: url('#clip');
   stroke: $white;
   stroke-width: 2px;
@@ -38,35 +38,21 @@ $white: #fff;
   cursor: ew-resize;
 }
 
-.focus {
+.igj-focus {
   circle {
+    fill: none;
     stroke-opacity: .75;
-    stroke-width: 6px;
-    z-index: 1;
+    stroke-width: 7px;
   }
   transition: transform 150ms;
 }
 
-body {
-  display: flex;
-  flex-direction: column;
-}
-
-#toggle {
-  align-self: center;
-  flex: 0 1 auto;
-  margin: 5px;
-  padding: 6px;
-}
-
 svg {
-  align-self: center;
-  flex: 0 1 auto;
   margin: 30px;
   pointer-events: all;
 }
 
-.line {
+.igj-line {
   clip-path: url('#clip');
   fill: none;
   stroke-linecap: round;
@@ -74,12 +60,12 @@ svg {
   stroke-width: 3;
 }
 
-.area {
+.igj-area {
   clip-path: url('#clip');
-  fill-opacity: .3;
+  fill-opacity: .1;
 }
 
-.axis {
+.igj-axisX, .igj-axisY {
 
   line {
     fill: none;
@@ -92,7 +78,7 @@ svg {
   }
 }
 
-.gridX, .gridY {
+.igj-gridX, .igj-gridY {
   path {
     stroke-width: 0;
   }
@@ -107,18 +93,18 @@ svg {
   }
 }
 
-.title {
+.igj-title {
   font-size: 17px;
   font-weight: 500;
   text-decoration: underline;
 }
 
-.labelX, .labelY {
+.igj-labelX, .igj-labelY {
   font-size: 14px;
   font-weight: normal;
 }
 
-.d3-tip {
+.igj-tip {
   background-color: $tooltip;
   border-radius: 5px;
   box-shadow: -10px 10px 20px 0 $shadow;
@@ -177,7 +163,7 @@ svg {
   }
 }
 
-.legend {
+.igj-legend {
   text.label {
     font-size: 12px;
     font-weight: normal;

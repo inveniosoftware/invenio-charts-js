@@ -21,6 +21,3 @@ package-lock.json
 # Bundle
 dist/
 docs/
-
-# CDS data
-data-cds.js

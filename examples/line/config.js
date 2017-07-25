@@ -35,10 +35,8 @@ config.downloadVideosInterval1day = {
   graph: {
     type: 'line',
     options: {
-      curved: true,
       curveType: 'curveLinear',
-      fillArea: false,
-      fillAreaColor: '#E8F5E9'
+      fillArea: true
     }
   },
   axis: {
@@ -94,31 +92,15 @@ config.downloadVideosInterval1day = {
       }
     }
   },
-  color: {
-    scale: 'linearGradient',
-    thresholds: [
-      {
-        offset: 0,
-        value: '#4CAF50',
-        opacity: 0.9
-      },
-      {
-        offset: 100,
-        value: '#C8E6C9',
-        opacity: 0.9
-      }
-    ]
-  },
+  colorScale: 'schemeCategory20b',
   tooltip: false,
   legend: {
-    value: 'series1',
     visible: true,
-    position: 'bottom'
+    position: 'side'
   },
   circles: {
     visible: true,
-    radius: 5.5,
-    color: '#4CAF50'
+    radius: 5.5
   },
   title: {
     visible: true,
@@ -138,10 +120,8 @@ config.pageviewsVideosInterval1day = {
   graph: {
     type: 'line',
     options: {
-      curved: true,
       curveType: 'curveMonotoneX',
-      fillArea: true,
-      fillAreaColor: '#FFCDD2'
+      fillArea: true
     }
   },
   axis: {
@@ -197,31 +177,15 @@ config.pageviewsVideosInterval1day = {
       }
     }
   },
-  color: {
-    scale: 'linearGradient',
-    thresholds: [
-      {
-        offset: 0,
-        value: '#E53935',
-        opacity: 0.9
-      },
-      {
-        offset: 100,
-        value: '#FFEBEE',
-        opacity: 0.9
-      }
-    ]
-  },
+  colorScale: 'schemeCategory10',
   tooltip: false,
   legend: {
-    value: 'series1',
     visible: true,
-    position: 'bottom'
+    position: 'side'
   },
   circles: {
     visible: true,
-    radius: 5.5,
-    color: '#E53935'
+    radius: 5.5
   },
   title: {
     visible: true,
@@ -241,10 +205,8 @@ config.pageviewsVideosInterval1month = {
   graph: {
     type: 'line',
     options: {
-      curved: true,
       curveType: 'curveMonotoneX',
-      fillArea: true,
-      fillAreaColor: '#E8F5E9'
+      fillArea: true
     }
   },
   axis: {
@@ -304,31 +266,15 @@ config.pageviewsVideosInterval1month = {
     visible: true,
     value: 'Pageviews per month'
   },
-  color: {
-    scale: 'linearGradient',
-    thresholds: [
-      {
-        offset: 0,
-        value: '#1565C0',
-        opacity: 0.9
-      },
-      {
-        offset: 100,
-        value: '#BBDEFB',
-        opacity: 0.9
-      }
-    ]
-  },
+  colorScale: 'schemeCategory10',
   tooltip: true,
   legend: {
-    value: 'series1',
     visible: true,
     position: 'bottom'
   },
   circles: {
     visible: true,
-    radius: 5.5,
-    color: '#1565C0'
+    radius: 5.5
   }
 };
 

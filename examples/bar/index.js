@@ -23,8 +23,14 @@
 
 import './styles.scss';
 import config from './config';
-import dataCDS from '../data/data-cds';
+import dataCDS from '../data/data';
 import { BarGraph } from '../../src/index';
 
-const pageviewsPerCountry = new BarGraph(config.pageviewsVideosPerCountry);
-pageviewsPerCountry.render(dataCDS.pageviewsVideosPerCountry, 'pageviews');
+// BarGraph 1
+const cfg1 = config.pageviewsVideosPerCountry;
+const data1 = dataCDS.pageviewsVideosPerCountry;
+const data1Update = dataCDS.pageviewsVideosPerCountryUpdate;
+const class1 = 'pageviews';
+const g1 = new BarGraph(cfg1, data1, class1);
+g1.render();
+setTimeout(() => g1.update(data1Update), 3000);
