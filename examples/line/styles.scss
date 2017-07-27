@@ -41,14 +41,14 @@ $white: #fff;
 .igj-focus {
   circle {
     fill: none;
-    stroke-opacity: .75;
+    stroke-opacity: .85;
     stroke-width: 7px;
   }
   transition: transform 150ms;
 }
 
 svg {
-  margin: 30px;
+  margin: 12px;
   pointer-events: all;
 }
 

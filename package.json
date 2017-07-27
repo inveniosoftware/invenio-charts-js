@@ -29,8 +29,8 @@
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.1.0",
     "istanbul": "^0.4.5",
-    "jasmine": "^2.6.0",
-    "jasmine-core": "^2.6.4",
+    "jasmine": "^2.7.0",
+    "jasmine-core": "^2.7.0",
     "jsdoc": "^3.5.3",
     "karma": "^1.7.0",
     "karma-coverage": "^1.1.1",
@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "d3": "^4.10.0",
+    "d3-extended": "^1.2.10",
     "d3-svg-legend": "^2.24.1",
     "d3-tip": "^0.7.1",
     "lodash": "^4.17.4"

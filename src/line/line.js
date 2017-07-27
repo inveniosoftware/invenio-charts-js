@@ -34,6 +34,9 @@ class LineGraph extends Graph {
    * Instantiate a Line Graph.
    */
   render() {
+    // Class context reference
+    const that = this;
+
     // Initialize the container element
     super.initialize();
 
@@ -58,13 +61,11 @@ class LineGraph extends Graph {
     // Add zoom functionality
     super.enableZoom(zoomed);
 
-    // Class context reference
-    const that = this;
+    // Scale when resizing window
+    super.scaleOnResize(resized);
 
     // Iterate over input data
     this.input.forEach((outer, i) => {
-      const data = outer.data;
-
       // Add a line to the SVG element
       if (d3.select(`.${this.classElement}`).select(`.igj-line.line_${i}`).empty()) {
         this.line = d3[this.config.graph.type]()
@@ -72,11 +73,12 @@ class LineGraph extends Graph {
           .y(d => this.y(_.get(d, this.keyY)))
           .curve(d3[this.config.graph.options.curveType]);
 
+        // Bind all data to one element
         this.svg.append('path')
-          .data([data])
+          .data([outer.data])
           .attr('class', `igj-line line_${i}`)
           .attr('stroke', () => this.colorScale(i))
-          .attr('d', this.line(data));
+          .attr('d', this.line(outer.data));
       }
 
       // If specified, add a colored aera under the line
@@ -85,34 +87,36 @@ class LineGraph extends Graph {
           this.area = d3.area()
             .curve(d3[this.config.graph.options.curveType])
             .x(d => this.x(_.get(d, this.keyX)))
-            .y0(this.config.height)
-            .y1(d => this.y(_.get(d, this.keyY)));
+            .y1(d => this.y(_.get(d, this.keyY)))
+            .y0(this.y(0));
 
+          // Bind all data to one element
           this.svg.append('path')
-            .data([data])
+            .data([outer.data])
             .transition()
             .delay(100)
             .duration(400)
             .attr('class', `igj-area area_${i}`)
             .attr('fill', () => this.colorScale(i))
-            .attr('d', this.area(data));
+            .attr('d', this.area(outer.data));
         }
       }
 
       // Add focus circle over line
-      // Call this before circles
       d3.select(`.${this.classElement}`).select('g')
         .append('g')
         .attr('class', `igj-focus focus_${i}`)
         .style('display', 'none')
         .append('circle')
+        .attr('r', 6)
         .attr('stroke', () => this.colorScale(i));
 
       // If specified, add circles to the line
-      const circles = this.svg.selectAll(`igj-dot dot_${i}`);
+      // Bind data to multiple elements
+      const circles = this.svg.selectAll(`igj-dot dot_${i}`).data(outer.data);
       if (circles.empty()) {
-        // Add new circles
-        circles.data(data)
+        // Enter selection - add new circles
+        circles
           .enter()
           .append('circle')
           .on('mouseover', this.tooltip.show)
@@ -120,9 +124,9 @@ class LineGraph extends Graph {
           .attr('class', `igj-dot dot_${i}`)
           .attr('cx', d => this.x(_.get(d, this.keyX)))
           .attr('cy', d => this.y(_.get(d, this.keyY)))
-          .attr('r', this.config.circles.radius)
+          .attr('r', this.config.graph.options.circles.radius)
           .attr('fill', () => this.colorScale(i))
-          .attr('opacity', this.config.circles.visible ? 1 : 0)
+          .attr('opacity', this.config.graph.options.circles.visible ? 1 : 0)
           .style('cursor', 'pointer');
       }
     });
@@ -207,15 +211,23 @@ class LineGraph extends Graph {
         .call(that.makeGridlinesX(that.altX))
         .style('stroke-opacity', 0.7);
     }
+
+    // Handler function on window resize
+    function resized() {
+      that.update(that.input);
+    }
   }
 
   /**
    * Update the input data of the Line Graph.
    * @param {Array<Object>} - The updated data.
    */
-  update(newInput) {
+  update(newData) {
+    // Re-initialize the container of the graph
+    super.initialize();
+
     // Update the input data of the graph
-    super.updateData(newInput);
+    super.updateInput(newData);
 
     // Parse the current input data
     super.parseData();
@@ -226,9 +238,20 @@ class LineGraph extends Graph {
     // Create the vertical axis
     super.makeAxisY();
 
+    // Create the title
+    super.makeTitle();
+
+    // Create the legend
+    super.makeLegend();
+
+    // Update dimension of the clip path
+    d3.select(`.${this.classElement}`).select('#clip').select('rect')
+      .attr('width', this.config.width + this.marginHorizontal)
+      .attr('height', this.config.height + this.marginVertical);
+
     this.input.forEach((outer, i) => {
       // Update already existing lines
-      d3.select(`.${this.classElement}`).select('g').select(`.igj-line.line_${i}`)
+      d3.select(`.${this.classElement}`).select(`.igj-line.line_${i}`)
         .data([outer.data])
         .transition()
         .delay(100)
@@ -236,20 +259,26 @@ class LineGraph extends Graph {
         .attr('d', this.line(outer.data));
 
       // Update already existing areas
-      d3.select(`.${this.classElement}`).select('g').select(`.igj-area.area_${i}`)
-        .data([outer.data])
-        .transition()
-        .delay(100)
-        .duration(350)
-        .attr('d', this.area(outer.data));
+      if (this.config.graph.options.fillArea) {
+        this.area
+          .y1(d => this.y(_.get(d, this.keyY)))
+          .y0(this.y(0));
+
+        d3.select(`.${this.classElement}`).select(`.igj-area.area_${i}`)
+          .data([outer.data])
+          .transition()
+          .delay(100)
+          .duration(350)
+          .attr('d', this.area(outer.data));
+      }
 
       // Select already existing circles in the graph
-      const circles = d3.select(`.${this.classElement}`).select('g')
-        .selectAll(`.igj-dot.dot_${i}`);
+      const circles = d3.select(`.${this.classElement}`)
+        .selectAll(`.igj-dot.dot_${i}`)
+        .data(outer.data);
 
       // Add new circles
       circles
-        .data(outer.data)
         .enter()
         .append('circle')
         .on('mouseover', this.tooltip.show)
@@ -257,14 +286,13 @@ class LineGraph extends Graph {
         .attr('class', `igj-dot dot_${i}`)
         .attr('cx', d => this.x(_.get(d, this.keyX)))
         .attr('cy', d => this.y(_.get(d, this.keyY)))
-        .attr('r', this.config.circles.radius)
+        .attr('r', this.config.graph.options.circles.radius)
         .attr('fill', () => this.colorScale(i))
-        .attr('opacity', this.config.circles.visible ? 1 : 0)
+        .attr('opacity', this.config.graph.options.circles.visible ? 1 : 0)
         .style('cursor', 'pointer');
 
       // Remove unneeded existing circles
       circles
-        .data(outer.data)
         .exit()
         .transition()
         .delay(100)
@@ -274,13 +302,14 @@ class LineGraph extends Graph {
 
       // Update existing circles with new values
       circles
-        .data(outer.data)
         .transition()
         .delay(100)
         .duration(350)
         .attr('cx', d => this.x(_.get(d, this.keyX)))
         .attr('cy', d => this.y(_.get(d, this.keyY)))
-        .attr('r', this.config.circles.radius);
+        .attr('r', this.config.graph.options.circles.radius);
+
+      circles.moveToFront();
     });
   }
 }

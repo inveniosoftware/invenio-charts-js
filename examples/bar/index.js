@@ -26,11 +26,12 @@ import config from './config';
 import dataCDS from '../data/data';
 import { BarGraph } from '../../src/index';
 
-// BarGraph 1
 const cfg1 = config.pageviewsVideosPerCountry;
 const data1 = dataCDS.pageviewsVideosPerCountry;
 const data1Update = dataCDS.pageviewsVideosPerCountryUpdate;
-const class1 = 'pageviews';
+const class1 = 'pageviews_country';
 const g1 = new BarGraph(cfg1, data1, class1);
+
+// BarGraph 1
 g1.render();
 setTimeout(() => g1.update(data1Update), 3000);

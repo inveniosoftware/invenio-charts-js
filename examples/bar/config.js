@@ -24,13 +24,11 @@
 // Export configuration object
 const config = {};
 config.pageviewsVideosPerCountry = {
-  width: 1000,
-  height: 450,
   margin: {
-    top: 30,
-    right: 80,
-    bottom: 80,
-    left: 80
+    top: 50,
+    right: 60,
+    bottom: 70,
+    left: 60
   },
   graph: {
     type: 'bar'
@@ -97,6 +95,11 @@ config.pageviewsVideosPerCountry = {
   legend: {
     visible: false,
     position: 'side'
+  },
+  resize: {
+    enabled: true,
+    breakPointX: 500,
+    breakPointY: 350
   }
 };
 

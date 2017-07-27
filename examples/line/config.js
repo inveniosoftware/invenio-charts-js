@@ -24,19 +24,21 @@
 // Export configuration object
 const config = {};
 config.downloadVideosInterval1day = {
-  width: 1000,
-  height: 450,
   margin: {
-    top: 30,
-    right: 80,
-    bottom: 80,
-    left: 80
+    top: 50,
+    right: 60,
+    bottom: 70,
+    left: 60
   },
   graph: {
     type: 'line',
     options: {
       curveType: 'curveLinear',
-      fillArea: true
+      fillArea: true,
+      circles: {
+        visible: true,
+        radius: 5.5
+      }
     }
   },
   axis: {
@@ -49,7 +51,7 @@ config.downloadVideosInterval1day = {
       options: {
         label: {
           value: 'Date',
-          visible: false
+          visible: true
         },
         line: {
           visible: false
@@ -57,7 +59,7 @@ config.downloadVideosInterval1day = {
         ticks: {
           number: 5,
           format: '',
-          visible: true
+          visible: false
         },
         tickLabels: {
           visible: true,
@@ -75,66 +77,7 @@ config.downloadVideosInterval1day = {
       options: {
         label: {
           value: 'Downloads',
-          visible: false
-        },
-        line: {
-          visible: false
-        },
-        ticks: {
-          number: 5,
-          format: '',
           visible: true
-        },
-        tickLabels: {
-          visible: true
-        },
-        gridlines: false
-      }
-    }
-  },
-  colorScale: 'schemeCategory20b',
-  tooltip: false,
-  legend: {
-    visible: true,
-    position: 'side'
-  },
-  circles: {
-    visible: true,
-    radius: 5.5
-  },
-  title: {
-    visible: true,
-    value: 'Video Downloads per day'
-  }
-};
-
-config.pageviewsVideosInterval1day = {
-  width: 1000,
-  height: 450,
-  margin: {
-    top: 30,
-    right: 30,
-    bottom: 60,
-    left: 85
-  },
-  graph: {
-    type: 'line',
-    options: {
-      curveType: 'curveMonotoneX',
-      fillArea: true
-    }
-  },
-  axis: {
-    x: {
-      mapTo: 'time',
-      scale: {
-        type: 'scaleTime',
-        format: '%d-%b-%y'
-      },
-      options: {
-        label: {
-          value: 'Date',
-          visible: false
         },
         line: {
           visible: false
@@ -146,67 +89,45 @@ config.pageviewsVideosInterval1day = {
         },
         tickLabels: {
           visible: true,
-          rotated: true
+          rotated: false
         },
-        gridlines: true
-      }
-    },
-    y: {
-      mapTo: 'count',
-      scale: {
-        type: 'scaleLinear',
-        format: ''
-      },
-      options: {
-        label: {
-          value: 'Pageviews',
-          visible: false
-        },
-        line: {
-          visible: false
-        },
-        ticks: {
-          number: 5,
-          format: '',
-          visible: false
-        },
-        tickLabels: {
-          visible: true
-        },
-        gridlines: true
+        gridlines: false
       }
     }
   },
-  colorScale: 'schemeCategory10',
+  colorScale: 'schemeCategory20b',
   tooltip: false,
   legend: {
     visible: true,
     position: 'side'
   },
-  circles: {
-    visible: true,
-    radius: 5.5
-  },
   title: {
     visible: true,
-    value: 'Pageviews per day'
+    value: 'Video Downloads per day'
+  },
+  resize: {
+    enabled: true,
+    breakPointX: 500,
+    breakPointY: 350
   }
 };
 
 config.pageviewsVideosInterval1month = {
-  width: 1000,
-  height: 450,
   margin: {
-    top: 30,
-    right: 30,
-    bottom: 60,
-    left: 85
+    top: 50,
+    right: 60,
+    bottom: 70,
+    left: 60
   },
   graph: {
     type: 'line',
     options: {
       curveType: 'curveMonotoneX',
-      fillArea: true
+      fillArea: true,
+      circles: {
+        visible: true,
+        radius: 5.5
+      }
     }
   },
   axis: {
@@ -256,7 +177,8 @@ config.pageviewsVideosInterval1month = {
           visible: false
         },
         tickLabels: {
-          visible: true
+          visible: true,
+          rotated: false
         },
         gridlines: true
       }
@@ -272,9 +194,10 @@ config.pageviewsVideosInterval1month = {
     visible: true,
     position: 'bottom'
   },
-  circles: {
-    visible: true,
-    radius: 5.5
+  resize: {
+    enabled: true,
+    breakPointX: 500,
+    breakPointY: 350
   }
 };
 

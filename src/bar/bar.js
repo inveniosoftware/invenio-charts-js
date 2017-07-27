@@ -34,6 +34,9 @@ class BarGraph extends Graph {
    * Instantiate a Bar Graph.
    */
   render() {
+    // Class context reference
+    const that = this;
+
     // Initialize the container element
     super.initialize();
 
@@ -55,26 +58,27 @@ class BarGraph extends Graph {
     // Add tooltip
     super.makeTooltip();
 
+    // Scale when resizing window
+    super.scaleOnResize(resized);
+
     // Iterate over input data
     this.input.forEach((outer, i) => {
-      const data = outer.data;
-
-      // Create the bars
+      // Bind data to multiple elements
       const bars = d3.select(`.${this.classElement}`).select('g')
-        .selectAll(`.igj-bar.bar_${i}`);
+        .selectAll(`.igj-bar.bar_${i}`)
+        .data(outer.data);
 
       if (bars.empty()) {
-        // Add new bars
+        // Enter selection - add new bars
         bars
-          .data(data)
           .enter().append('rect')
+          .on('mouseover', this.tooltip.show)
+          .on('mouseout', this.tooltip.hide)
           .attr('class', `igj-bar bar_${i}`)
           .attr('x', d => this.x(_.get(d, this.keyX)))
           .attr('y', this.config.height)
           .attr('width', this.x.bandwidth())
           .attr('height', 0)
-          .on('mouseover', this.tooltip.show)
-          .on('mouseout', this.tooltip.hide)
           .attr('fill', (d, j) => this.colorScale(j))
           .transition()
           .duration(450)
@@ -84,11 +88,19 @@ class BarGraph extends Graph {
           .style('cursor', 'pointer');
       }
     });
+
+    // Handler function on window resize
+    function resized() {
+      that.update(that.input);
+    }
   }
 
   update(newInput) {
+    // Re-initialize the container of the graph
+    super.initialize();
+
     // Update the input data of the graph
-    super.updateData(newInput);
+    super.updateInput(newInput);
 
     // Parse the current input data
     super.parseData();
@@ -99,14 +111,20 @@ class BarGraph extends Graph {
     // Create the vertical axis
     super.makeAxisY();
 
-    this.input.forEach((outer, i) => {
-      // Select already existing bars in the graph
-      const bars = d3.select(`.${this.classElement}`).select('g')
-        .selectAll(`.igj-bar.bar_${i}`);
+    // Create the title
+    super.makeTitle();
 
-      // Remove unneeded existing bars
+    // Create the legend
+    super.makeLegend();
+
+    this.input.forEach((outer, i) => {
+      // Select already existing bars
+      const bars = d3.select(`.${this.classElement}`).select('g')
+        .selectAll(`.igj-bar.bar_${i}`)
+        .data(outer.data);
+
+      // Exit selection - remove unneeded bars
       bars
-        .data(outer.data)
         .exit()
         .transition()
         .duration(350)
@@ -115,9 +133,8 @@ class BarGraph extends Graph {
         .style('fill-opacity', 1e-6)
         .remove();
 
-      // Update existing bars with new values
+      // Update selection - update existing bars
       bars
-        .data(outer.data)
         .transition()
         .duration(500)
         .attr('x', d => this.x(_.get(d, this.keyX)))
@@ -126,22 +143,24 @@ class BarGraph extends Graph {
         .attr('fill', (d, j) => this.colorScale(j))
         .attr('height', d => this.config.height - this.y(_.get(d, this.keyY)));
 
-      // Add new bars
+      // Enter selection - add new bars
       bars
-        .data(outer.data)
         .enter()
         .append('rect')
-        .attr('class', () => `.igj-bar.bar_${i}`)
+        .on('mouseover', this.tooltip.show)
+        .on('mouseout', this.tooltip.hide)
+        .attr('class', `igj-bar bar_${i}`)
         .attr('x', d => this.x(_.get(d, this.keyX)))
         .attr('y', this.config.height)
         .attr('width', this.x.bandwidth())
         .attr('height', 0)
         .attr('fill', (d, j) => this.colorScale(j))
         .transition()
-        .duration(500)
-        .delay(300)
+        .duration(450)
+        .delay(250)
         .attr('y', d => this.y(_.get(d, this.keyY)))
-        .attr('height', d => this.config.height - this.y(_.get(d, this.keyY)));
+        .attr('height', d => this.config.height - this.y(_.get(d, this.keyY)))
+        .style('cursor', 'pointer');
     });
   }
 }

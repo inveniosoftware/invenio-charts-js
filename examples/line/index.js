@@ -26,18 +26,19 @@ import config from './config';
 import dataCDS from '../data/data';
 import { LineGraph } from '../../src/index';
 
-// LineGraph 1
 const cfg1 = config.pageviewsVideosInterval1month;
 const data1 = dataCDS.pageviewsVideosInterval1month;
 const data1Update = dataCDS.pageviewsVideosInterval1monthUpdate;
 const class1 = 'pageviews_month';
+// const cfg2 = config.downloadVideosInterval1day;
+// const data2 = dataCDS.downloadVideosInterval1day;
+// const class2 = 'downloads_day';
+
+// LineGraph 1
 const g1 = new LineGraph(cfg1, data1, class1);
 g1.render();
 setTimeout(() => g1.update(data1Update), 3000);
 
 // LineGraph 2
-const cfg2 = config.downloadVideosInterval1day;
-const data2 = dataCDS.downloadVideosInterval1day;
-const class2 = 'downloads_day';
-const g2 = new LineGraph(cfg2, data2, class2);
-g2.render();
+// const g2 = new LineGraph(cfg2, data2, class2);
+// g2.render();
