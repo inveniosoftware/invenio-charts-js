@@ -25,7 +25,7 @@ import * as d3 from 'd3';
 import _ from 'lodash';
 import { legendColor } from 'd3-svg-legend';
 import d3Tip from 'd3-tip';
-import * as util from '../util/util';
+import isOut from '../util/util';
 
 require('d3-extended')(d3);
 
@@ -67,6 +67,22 @@ class Graph {
    */
   getType() {
     return this.config.type;
+  }
+
+  /**
+   * Get the scale of the horizontal axis.
+   * @return {Function} - The the scale of the X axis.
+   */
+  getXScale() {
+    return this.x;
+  }
+
+  /**
+   * Get the scale of the vertical axis.
+   * @return {Function} - The the scale of the Y axis.
+   */
+  getYScale() {
+    return this.y;
   }
 
   /**
@@ -440,7 +456,7 @@ class Graph {
       .attr('class', `${this.classElement} igj-tip`)
       .offset((d) => {
         const offset = [0, 0];
-        const out = util.isOut(this.x(_.get(d, this.keyX)), this.y(_.get(d, this.keyY)),
+        const out = isOut(this.x(_.get(d, this.keyX)), this.y(_.get(d, this.keyY)),
           this.config.width, this.config.height);
         if (out.top) {
           offset[0] = 10;
@@ -458,7 +474,7 @@ class Graph {
       })
       .direction((d) => {
         let dir = '';
-        const out = util.isOut(this.x(_.get(d, this.keyX)), this.y(_.get(d, this.keyY)),
+        const out = isOut(this.x(_.get(d, this.keyX)), this.y(_.get(d, this.keyY)),
           this.config.width, this.config.height);
         if (out.top) {
           dir = 's';

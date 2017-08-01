@@ -68,7 +68,7 @@ class LineGraph extends Graph {
     this.input.forEach((outer, i) => {
       // Add a line to the SVG element
       if (d3.select(`.${this.classElement}`).select(`.igj-line.line_${i}`).empty()) {
-        this.line = d3[this.config.graph.type]()
+        this.line = d3.line()
           .x(d => this.x(_.get(d, this.keyX)))
           .y(d => this.y(_.get(d, this.keyY)))
           .curve(d3[this.config.graph.options.curveType]);
@@ -85,10 +85,10 @@ class LineGraph extends Graph {
       if (this.config.graph.options.fillArea) {
         if (d3.select(`.${this.classElement}`).select(`.igj-area.area_${i}`).empty()) {
           this.area = d3.area()
-            .curve(d3[this.config.graph.options.curveType])
             .x(d => this.x(_.get(d, this.keyX)))
             .y1(d => this.y(_.get(d, this.keyY)))
-            .y0(this.y(0));
+            .y0(this.y(0))
+            .curve(d3[this.config.graph.options.curveType]);
 
           // Bind all data to one element
           this.svg.append('path')
@@ -113,7 +113,7 @@ class LineGraph extends Graph {
 
       // If specified, add circles to the line
       // Bind data to multiple elements
-      const circles = this.svg.selectAll(`igj-dot dot_${i}`).data(outer.data);
+      const circles = this.svg.selectAll(`.igj-dot.dot_${i}`).data(outer.data);
       if (circles.empty()) {
         // Enter selection - add new circles
         circles
@@ -133,13 +133,14 @@ class LineGraph extends Graph {
 
     // Listen to mouseover movement on the graph
     this.svg
-      .on('mouseover', () => this.svg.selectAll('.igj-focus')
-        .style('display', null))
-      .on('mouseout', () => this.svg.selectAll('.igj-focus')
-        .style('display', 'none'))
+      .on('mouseover', () => this.svg.selectAll('.igj-focus').style('display', null))
+      .on('mouseout', () => this.svg.selectAll('.igj-focus').style('display', 'none'))
       .on('mousemove', mousemove);
 
-    // Handler function on mouse movement
+    /**
+     * Mousemove event handler function
+     * @private
+     */
     function mousemove() {
       // Map the x-value of the mouse movement
       const x0 = that.altX.invert(d3.mouse(this)[0]);
@@ -157,7 +158,7 @@ class LineGraph extends Graph {
           const d1 = set.data[idx];
           const point = x0 - _.get(d0, that.keyX) > _.get(d1, that.keyX) - x0 ? d1 : d0;
 
-          // Translate the focus element to the corret position
+          // Translate the focus element to the correct position
           d3.select(`.${that.classElement}`).select(`.igj-focus.focus_${k}`)
             .attr('transform', `translate(
               ${that.altX(_.get(point, that.keyX))},
@@ -166,7 +167,10 @@ class LineGraph extends Graph {
       });
     }
 
-    // Handler function when zooming
+    /**
+     * Handle zoom events.
+     * @private
+     */
     function zoomed() {
       // Rescale horizontal axis based on point of zoom
       that.altX = d3.event.transform.rescaleX(that.x);
@@ -212,10 +216,16 @@ class LineGraph extends Graph {
         .style('stroke-opacity', 0.7);
     }
 
-    // Handler function on window resize
+    /**
+     * Handle container resize events.
+     * @private
+     */
     function resized() {
       that.update(that.input);
     }
+
+    // Return the SVG element containing the graph
+    return d3.select(`.${this.classElement}`).select('svg').node();
   }
 
   /**
@@ -287,7 +297,7 @@ class LineGraph extends Graph {
         .attr('cx', d => this.x(_.get(d, this.keyX)))
         .attr('cy', d => this.y(_.get(d, this.keyY)))
         .attr('r', this.config.graph.options.circles.radius)
-        .attr('fill', () => this.colorScale(i))
+        .attr('fill', this.colorScale(i))
         .attr('opacity', this.config.graph.options.circles.visible ? 1 : 0)
         .style('cursor', 'pointer');
 
@@ -311,6 +321,10 @@ class LineGraph extends Graph {
 
       circles.moveToFront();
     });
+  }
+
+  getScaleX() {
+    return this.x;
   }
 }
 

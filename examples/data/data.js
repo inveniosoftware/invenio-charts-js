@@ -880,39 +880,39 @@ dataCDS.pageviewsVideosInterval1month = [
          }
       ]
    },
-   {
-      label: 'dataset2',
-      data: [
-         {
-            "time":1483228800000,
-            "count":1730678
-         },
-         {
-            "time":1485907200000,
-            "count":1899236
-         },
-         {
-            "time":1488326400000,
-            "count":937458
-         },
-         {
-            "time":1491004800000,
-            "count":1059326
-         },
-         {
-            "time":1493596800000,
-            "count":1183001
-         },
-         {
-            "time":1496275200000,
-            "count":1339100
-         },
-         {
-            "time":1498867200000,
-            "count":789573
-         }
-      ]
-   },
+  //  {
+  //     label: 'dataset2',
+  //     data: [
+  //        {
+  //           "time":1483228800000,
+  //           "count":1730678
+  //        },
+  //        {
+  //           "time":1485907200000,
+  //           "count":1899236
+  //        },
+  //        {
+  //           "time":1488326400000,
+  //           "count":937458
+  //        },
+  //        {
+  //           "time":1491004800000,
+  //           "count":1059326
+  //        },
+  //        {
+  //           "time":1493596800000,
+  //           "count":1183001
+  //        },
+  //        {
+  //           "time":1496275200000,
+  //           "count":1339100
+  //        },
+  //        {
+  //           "time":1498867200000,
+  //           "count":789573
+  //        }
+  //     ]
+  //  },
   //  {
   //     label: 'dataset3',
   //     data: [
@@ -1088,133 +1088,133 @@ dataCDS.pageviewsVideosPerCountry = [{
     label: 'pageviews',
     data: [
       {
-        term:  'CH',
-        count:  675866
-     },
-     {
-        term:  'FR',
-        count:  612115
-     },
-     {
-        term:  'US',
-        count:  385141
-     },
-     {
-        term:  'GB',
-        count:  300612
-     },
-     {
-        term:  'IN',
-        count:  236008
-     },
-     {
-        term:  'IT',
-        count:  233017
-     },
-     {
-        term:  'DE',
-        count:  181927
-     },
-     {
-        term:  'GR',
-        count:  181636
-     },
-     {
-        term:  'PK',
-        count:  164673
-     },
-     {
-        term:  'ES',
-        count:  163742
-     },
-     {
-        term:  'PL',
-        count:  89485
-     },
-     {
-        term:  'CA',
-        count:  83971
-     },
-     {
-        term:  'TR',
-        count:  66127
-     },
-     {
-        term:  'NL',
-        count:  65974
-     },
-     {
-        term:  'NO',
-        count:  50996
-     },
-     {
-        term:  'BR',
-        count:  50850
-     },
-     {
-        term:  'BE',
-        count:  48797
-     },
-     {
-        term:  'RU',
-        count:  46022
-     },
-     {
-        term:  'PT',
-        count:  45180
-     },
-     {
-        term:  'SE',
-        count:  41965
-     },
-     {
-        term:  'FI',
-        count:  36684
-     },
-     {
-        term:  'AT',
-        count:  33898
-     },
-     {
-        term:  'AU',
-        count:  31521
-     },
-     {
-        term:  'RO',
-        count:  27462
-     },
-     {
-        term:  'DK',
-        count:  27261
-     },
-     {
-        term:  'CZ',
-        count:  26707
-     },
-     {
-        term:  'MX',
-        count:  22205
-     },
-     {
-        term:  'ID',
-        count:  20539
-     },
-     {
-        term:  'JP',
-        count:  20179
-     },
-     {
-        term:  'IR',
-        count:  19635
-     },
-     {
-        term:  'HU',
-        count:  19375
-     },
-     {
-        term:  'BG',
-        count:  18254
-     }
+         term:  'CH',
+         count:  375866
+      },
+      {
+         term:  'FR',
+         count:  412115
+      },
+      {
+         term:  'US',
+         count:  685141
+      },
+      {
+         term:  'GB',
+         count:  250612
+      },
+      {
+         term:  'IN',
+         count:  166008
+      },
+      {
+         term:  'IT',
+         count:  153017
+      },
+      {
+         term:  'DE',
+         count:  111927
+      },
+      {
+         term:  'GR',
+         count:  281636
+      },
+      {
+         term:  'PK',
+         count:  204673
+      },
+      {
+         term:  'ES',
+         count:  183742
+      },
+      {
+         term:  'PL',
+         count:  119485
+      },
+      {
+         term:  'CA',
+         count:  53971
+      },
+      {
+         term:  'TR',
+         count:  36127
+      },
+      {
+         term:  'NL',
+         count:  75974
+      },
+      {
+         term:  'NO',
+         count:  55996
+      },
+      {
+         term:  'BR',
+         count:  40850
+      },
+      {
+         term:  'BE',
+         count:  98797
+      },
+      {
+         term:  'RU',
+         count:  26022
+      },
+      {
+         term:  'PT',
+         count:  49180
+      },
+      {
+         term:  'SE',
+         count:  61965
+      },
+      {
+         term:  'FI',
+         count:  33684
+      },
+      {
+         term:  'AT',
+         count:  30898
+      },
+      {
+         term:  'AU',
+         count:  15521
+      },
+      {
+         term:  'RO',
+         count:  45462
+      },
+      {
+         term:  'DK',
+         count:  77261
+      },
+      {
+         term:  'CZ',
+         count:  15707
+      },
+      {
+         term:  'MX',
+         count:  30205
+      },
+      {
+         term:  'ID',
+         count:  15539
+      },
+      {
+         term:  'JP',
+         count:  21179
+      },
+      {
+         term:  'IR',
+         count:  20635
+      },
+      {
+         term:  'HU',
+         count:  45375
+      },
+      {
+         term:  'BG',
+         count:  13254
+      }
    ]
   }
 ]
@@ -1222,7 +1222,7 @@ dataCDS.pageviewsVideosPerCountry = [{
 dataCDS.pageviewsVideosPerCountryUpdate = [{
     label: 'pageviews',
     data: [
-      {
+     {
         term:  'CH',
         count:  375866
      },

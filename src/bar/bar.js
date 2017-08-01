@@ -93,6 +93,9 @@ class BarGraph extends Graph {
     function resized() {
       that.update(that.input);
     }
+
+    // Return the SVG element containing the graph
+    return d3.select(`.${this.classElement}`).select('svg').node();
   }
 
   update(newInput) {

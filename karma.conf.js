@@ -15,15 +15,17 @@ module.exports = (config) => {
     plugins: [
       'karma-webpack',
       'karma-jasmine',
+      'karma-coverage',
       'karma-phantomjs-launcher',
-      'karma-coverage'
+      'karma-coverage-istanbul-reporter',
+      'karma-sourcemap-loader'
     ],
 
     // list of files / patterns to load in the browser
     files: [
       { pattern: 'node_modules/d3/build/d3.js', watched: false },
       { pattern: 'src/**/*.js' },
-      { pattern: 'tests/**/*.spec.js' }
+      { pattern: 'test/**/*.spec.js' }
     ],
 
     // list of files to exclude
@@ -33,7 +35,7 @@ module.exports = (config) => {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'tests/**/*.spec.js': ['webpack'],
+      'test/**/*.spec.js': ['webpack', 'sourcemap'],
       'src/**/*.js': ['webpack', 'coverage']
     },
 
@@ -43,7 +45,19 @@ module.exports = (config) => {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'coverage'],
+    reporters: ['progress', 'coverage-istanbul'],
+
+    coverageIstanbulReporter: {
+      reports: ['html', 'lcovonly'],
+      dir: path.join(__dirname, 'coverage'),
+      fixWebpackSourcePaths: true,
+      skipFilesWithNoCoverage: true,
+      'report-config': {
+        html: {
+          subdir: 'html'
+        }
+      }
+    },
 
     // web server port
     port: 9876,
@@ -71,22 +85,12 @@ module.exports = (config) => {
     // how many browser should be started simultaneous
     concurrency: Infinity,
 
+    processKillTimeout: 5000,
+
     // No config for webpackServer
     webpackServer: {
       noInfo: true
-    },
-
-    // Configure the reporter
-    coverageIstanbulReporter: {
-      reports: ['html', 'lcovonly'],
-      dir: path.join(__dirname, 'coverage'),
-      fixWebpackSourcePaths: true,
-      skipFilesWithNoCoverage: true,
-      'report-config': {
-        html: {
-          subdir: 'html'
-        }
-      }
     }
+
   });
 };

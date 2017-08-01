@@ -1,4 +1,4 @@
-# Coverage directory used by tools like istanbul
+# Coverage directory
 coverage
 
 # Logs
@@ -20,4 +20,7 @@ package-lock.json
 
 # Bundle
 dist/
+
+# JS Docs
 docs/
+jsdocs-conf.json

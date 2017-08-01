@@ -1,15 +1,20 @@
-const path = require('path');
 const fs = require('fs');
+const path = require('path');
+const env = require('yargs').argv.env;
 const BannerWebpackPlugin = require('banner-webpack-plugin');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
+/* Common module loaders for all configuration objects */
 const moduleLoaders = {
   rules: [
     {
       test: /(\.jsx|\.js)$/,
       exclude: /(node_modules)/,
-      use: {
+      use: [{
         loader: 'babel-loader'
-      }
+      }, {
+        loader: 'eslint-loader'
+      }]
     },
     {
       test: /\.scss$/,
@@ -20,28 +25,35 @@ const moduleLoaders = {
       }, {
         loader: 'sass-loader'
       }]
+    },
+    {
+      test: /\.js$|\.jsx$/,
+      use: {
+        loader: 'istanbul-instrumenter-loader',
+        options: {
+          esModules: true
+        }
+      },
+      enforce: 'post',
+      exclude: [/test/, /node_modules/, /src\/util/]
     }
   ]
 };
 
-module.exports = [{
-  /* Entry for the main library */
+/* Configuration for bundling the core library */
+const libConfig = {
   entry: {
     lib: path.resolve(__dirname, './src/index.js')
   },
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist')
   },
-  devServer: {
-    hot: false,
-    contentBase: path.resolve(__dirname, 'examples'),
-    publicPath: '/'
-  },
   watch: true,
   module: moduleLoaders,
   plugins: [
+    new FriendlyErrorsWebpackPlugin(),
     new BannerWebpackPlugin({
       chunks: {
         lib: {
@@ -50,9 +62,10 @@ module.exports = [{
       }
     })
   ]
-},
-{
-  /* Entry for the examples */
+};
+
+/* Configuration for bundling the examples */
+const examplesConfig = {
   entry: {
     bar: path.resolve(__dirname, './examples/bar/index.js'),
     line: path.resolve(__dirname, './examples/line/index.js')
@@ -64,6 +77,7 @@ module.exports = [{
   watch: true,
   module: moduleLoaders,
   plugins: [
+    new FriendlyErrorsWebpackPlugin(),
     new BannerWebpackPlugin({
       chunks: {
         line: {
@@ -75,4 +89,11 @@ module.exports = [{
       }
     })
   ]
-}];
+};
+
+/* Export the correct webpack configuration, based on env variable */
+if (env === 'dev') {
+  module.exports = [libConfig];
+} else if (env === 'examples') {
+  module.exports = [examplesConfig];
+}
