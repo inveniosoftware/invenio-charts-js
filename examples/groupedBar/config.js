@@ -23,7 +23,7 @@
 
 // Export configuration object
 const config = {};
-config.downloadVideosInterval1day = {
+config.multiVideosPerCountry = {
   margin: {
     top: 50,
     right: 60,
@@ -31,27 +31,19 @@ config.downloadVideosInterval1day = {
     left: 60
   },
   graph: {
-    type: 'line',
-    options: {
-      curveType: 'curveLinear',
-      fillArea: true,
-      circles: {
-        visible: true,
-        radius: 5.5
-      }
-    }
+    type: 'groupedBar'
   },
   axis: {
     x: {
-      mapTo: 'time',
+      mapTo: 'term',
       scale: {
-        type: 'scaleTime',
-        format: '%b-%Y'
+        type: 'scaleBand',
+        format: null
       },
       options: {
         label: {
-          value: 'Date',
-          visible: true
+          value: 'Country',
+          visible: false
         },
         line: {
           visible: false
@@ -76,7 +68,7 @@ config.downloadVideosInterval1day = {
       },
       options: {
         label: {
-          value: 'Downloads',
+          value: 'Count',
           visible: true
         },
         line: {
@@ -88,97 +80,7 @@ config.downloadVideosInterval1day = {
           visible: false
         },
         tickLabels: {
-          visible: true,
-          rotated: false
-        },
-        gridlines: false
-      }
-    }
-  },
-  colorScale: 'schemeCategory20b',
-  tooltip: false,
-  legend: {
-    visible: true,
-    position: 'side'
-  },
-  title: {
-    visible: true,
-    value: 'Video Downloads per day'
-  },
-  resize: {
-    enabled: true,
-    breakPointX: 500,
-    breakPointY: 350
-  }
-};
-
-config.pageviewsVideosInterval1month = {
-  margin: {
-    top: 50,
-    right: 60,
-    bottom: 70,
-    left: 60
-  },
-  graph: {
-    type: 'line',
-    options: {
-      curveType: 'curveLinear',
-      fillArea: true,
-      circles: {
-        visible: true,
-        radius: 5.5
-      }
-    }
-  },
-  axis: {
-    x: {
-      mapTo: 'time',
-      scale: {
-        type: 'scaleTime',
-        format: '%d %b %Y'
-      },
-      options: {
-        label: {
-          value: 'Date',
-          visible: false
-        },
-        line: {
-          visible: false
-        },
-        ticks: {
-          number: null,
-          format: '',
-          visible: false
-        },
-        tickLabels: {
-          visible: true,
-          rotated: false
-        },
-        gridlines: true
-      }
-    },
-    y: {
-      mapTo: 'count',
-      scale: {
-        type: 'scaleLinear',
-        format: ''
-      },
-      options: {
-        label: {
-          value: 'Pageviews',
-          visible: false
-        },
-        line: {
-          visible: false
-        },
-        ticks: {
-          number: null,
-          format: '',
-          visible: false
-        },
-        tickLabels: {
-          visible: true,
-          rotated: false
+          visible: true
         },
         gridlines: true
       }
@@ -186,9 +88,9 @@ config.pageviewsVideosInterval1month = {
   },
   title: {
     visible: true,
-    value: 'Pageviews per month'
+    value: 'Statistics per Country'
   },
-  colorScale: 'schemeCategory10',
+  colorScale: 'schemeCategory20',
   tooltip: true,
   legend: {
     visible: true,

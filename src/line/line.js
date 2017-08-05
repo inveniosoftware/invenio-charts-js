@@ -129,6 +129,9 @@ class LineGraph extends Graph {
           .attr('opacity', this.config.graph.options.circles.visible ? 1 : 0)
           .style('cursor', 'pointer');
       }
+
+      // Move all circle elements to the outer layer for tooltip
+      circles.moveToFront();
     });
 
     // Listen to mouseover movement on the graph
@@ -210,8 +213,6 @@ class LineGraph extends Graph {
       // Update the x-values of the x-gridlines
       el.select('.igj-gridX')
         .style('stroke-opacity', 1e-6)
-        .transition()
-        .duration(75)
         .call(that.makeGridlinesX(that.altX))
         .style('stroke-opacity', 0.7);
     }
@@ -319,6 +320,7 @@ class LineGraph extends Graph {
         .attr('cy', d => this.y(_.get(d, this.keyY)))
         .attr('r', this.config.graph.options.circles.radius);
 
+      // Move all circle elements to the outer layer for tooltip
       circles.moveToFront();
     });
   }

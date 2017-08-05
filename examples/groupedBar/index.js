@@ -21,9 +21,16 @@
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
 
-import Graph from './graph/graph';
-import LineGraph from './line/line';
-import BarGraph from './bar/bar';
-import GroupedBarGraph from './groupedBar/groupedBar';
+import './styles.scss';
+import config from './config';
+import dataCDS from '../data/data';
+import { GroupedBarGraph } from '../../src/index';
 
-export { Graph, LineGraph, BarGraph, GroupedBarGraph };
+const cfg = config.multiVideosPerCountry;
+const data = dataCDS.multiVideosPerCountry;
+const dataUpdate = dataCDS.multiVideosPerCountryUpdate;
+const g = new GroupedBarGraph(cfg, data, 'multi_country');
+
+// Grouped Bar Chart
+g.render();
+setTimeout(() => g.update(dataUpdate), 3000);

@@ -68,7 +68,8 @@ const libConfig = {
 const examplesConfig = {
   entry: {
     bar: path.resolve(__dirname, './examples/bar/index.js'),
-    line: path.resolve(__dirname, './examples/line/index.js')
+    line: path.resolve(__dirname, './examples/line/index.js'),
+    groupedBar: path.resolve(__dirname, './examples/groupedBar/index.js')
   },
   output: {
     filename: '[name].bundle.js',

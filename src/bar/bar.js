@@ -109,7 +109,7 @@ class BarGraph extends Graph {
     super.parseData();
 
     // Create the horizontal axis
-    super.makeAxisX(0.1);
+    super.makeAxisX(0.05);
 
     // Create the vertical axis
     super.makeAxisY();
@@ -130,6 +130,7 @@ class BarGraph extends Graph {
       bars
         .exit()
         .transition()
+        .delay(50)
         .duration(350)
         .attr('y', this.y(0))
         .attr('height', this.config.height - this.y(0))
@@ -139,7 +140,8 @@ class BarGraph extends Graph {
       // Update selection - update existing bars
       bars
         .transition()
-        .duration(500)
+        .delay(50)
+        .duration(450)
         .attr('x', d => this.x(_.get(d, this.keyX)))
         .attr('y', d => this.y(_.get(d, this.keyY)))
         .attr('width', this.x.bandwidth())
@@ -159,8 +161,8 @@ class BarGraph extends Graph {
         .attr('height', 0)
         .attr('fill', (d, j) => this.colorScale(j))
         .transition()
+        .delay(150)
         .duration(450)
-        .delay(250)
         .attr('y', d => this.y(_.get(d, this.keyY)))
         .attr('height', d => this.config.height - this.y(_.get(d, this.keyY)))
         .style('cursor', 'pointer');

@@ -56,6 +56,10 @@ class Graph {
     this.marginHorizontal = this.config.margin.left + this.config.margin.right;
     this.marginVertical = this.config.margin.top + this.config.margin.bottom;
 
+    // Get axis configuration
+    this.xAxisOptions = this.config.axis.x.options;
+    this.yAxisOptions = this.config.axis.y.options;
+
     // Breakpoints for resizing
     this.breakPointX = this.config.resize.breakPointX;
     this.breakPointY = this.config.resize.breakPointY;
@@ -146,20 +150,19 @@ class Graph {
    * Create the X axis of the graph.
    * @param padding {number}: optional padding.
    */
-  makeAxisX(padding) {
-    const xAxisOptions = this.config.axis.x.options;
-    this.altX = this.x;
-
+  makeAxisX(padding = 0, x0) {
     // Create the scale for the X axis
-    this.x = d3[this.config.axis.x.scale.type]()
-      .range([0, this.config.width]);
-
-    // Create the scale for the zoom on X axis
-    this.altX = this.x;
+    if (typeof (x0) !== 'undefined') {
+      this.x = x0;
+    } else {
+      this.x = d3[this.config.axis.x.scale.type]()
+        .range([0, this.config.width]);
+    }
 
     // Add range and domain to the X axis
     if (this.config.axis.x.scale.type === 'scaleTime') {
       this.x.domain(d3.extent(this.input[0].data, d => _.get(d, this.keyX)));
+      this.x.nice((2 * this.input[0].data.length));
     } else {
       this.x.domain(this.input[0].data.map(d => _.get(d, this.keyX)));
       this.x.padding(padding);
@@ -170,7 +173,7 @@ class Graph {
 
     if (this.config.axis.x.scale.type === 'scaleTime') {
       if (this.config.width > this.breakPointX) {
-        this.xAxis.ticks(xAxisOptions.ticks.number);
+        this.xAxis.ticks(this.xAxisOptions.ticks.number);
       } else {
         this.xAxis.ticks(d3.select(`.${this.classElement}`)
           .selectAll('g.igj-axisX g.tick text').size() / 2);
@@ -178,7 +181,7 @@ class Graph {
       this.xAxis.tickFormat(d3.timeFormat(this.config.axis.x.scale.format));
     } else {
       this.xAxis.tickValues(
-        this.x.domain().filter((d, i) => !(i % xAxisOptions.ticks.number)));
+        this.x.domain().filter((d, i) => !(i % this.xAxisOptions.ticks.number)));
     }
 
     // Add the X Axis to the container element
@@ -190,14 +193,15 @@ class Graph {
     } else {
       axisX
         .transition()
-        .duration(500)
+        .delay(50)
+        .duration(450)
         .call(this.xAxis);
     }
     // Place the X axis at the bottom of the graph
     axisX.attr('transform', `translate(0, ${this.config.height})`);
 
     // If specified, add gridlines along the X axis
-    if (xAxisOptions.gridlines) {
+    if (this.xAxisOptions.gridlines) {
       let gridX = d3.select(`.${this.classElement}`).select('.igj-gridX');
       if (gridX.empty()) {
         gridX = this.svg.append('g')
@@ -218,7 +222,7 @@ class Graph {
     }
 
     // If specified, rotate the tick labels
-    if (xAxisOptions.tickLabels.rotated) {
+    if (this.xAxisOptions.tickLabels.rotated) {
       d3.select(`.${this.classElement}`).selectAll('g.igj-axisX g.tick text')
         .style('text-anchor', 'middle')
         .attr('dx', '-.8em')
@@ -227,37 +231,37 @@ class Graph {
     }
 
     // If specified, add label to the X Axis
-    if (xAxisOptions.label.visible) {
+    if (this.xAxisOptions.label.visible) {
       let xAxisLabel = d3.select(`.${this.classElement}`).select('.igj-labelX');
       if (xAxisLabel.empty()) {
         xAxisLabel = this.svg.append('text')
           .attr('class', 'igj-labelX')
-          .text(xAxisOptions.label.value)
+          .text(this.xAxisOptions.label.value)
           .attr('text-anchor', 'middle');
       }
       xAxisLabel
         .transition()
         .delay(100)
         .duration(250)
-        .text(xAxisOptions.label.value)
+        .text(this.xAxisOptions.label.value)
         .attr('x', `${this.config.width / 2}`)
         .attr('y', `${this.config.height + (this.config.margin.bottom / 2)}`);
     }
 
     // If specified, hide the X axis line
-    if (!xAxisOptions.line.visible) {
+    if (!this.xAxisOptions.line.visible) {
       d3.select(`.${this.classElement}`).selectAll('.igj-axisX path')
         .attr('style', 'display: none;');
     }
 
     // If specified, hide the X axis ticks
-    if (!xAxisOptions.ticks.visible) {
+    if (!this.xAxisOptions.ticks.visible) {
       d3.select(`.${this.classElement}`).selectAll('.igj-axisX line')
         .attr('style', 'display: none;');
     }
 
     // If specified, hide the X axis tick labels
-    if (!xAxisOptions.tickLabels.visible) {
+    if (!this.xAxisOptions.tickLabels.visible) {
       d3.select(`.${this.classElement}`).selectAll('.igj-axisX g.tick text')
         .attr('style', 'display: none;');
     }
@@ -267,7 +271,6 @@ class Graph {
    * Create the Y axis of the graph.
    */
   makeAxisY() {
-    const yAxisOptions = this.config.axis.y.options;
     const maxValuesY = [];
 
     this.input.forEach(arr =>
@@ -280,10 +283,10 @@ class Graph {
       .domain([0, _.max(maxValuesY)]);
 
     // Create the Y Axis
-    this.yAxis = d3.axisLeft(this.y);
+    this.yAxis = d3.axisLeft(this.y).tickPadding(5);
 
     if (this.config.height > this.breakPointY) {
-      this.yAxis.ticks(yAxisOptions.ticks.number, 's');
+      this.yAxis.ticks(this.yAxisOptions.ticks.number, 's');
     } else {
       this.yAxis.ticks(d3.select(`.${this.classElement}`)
         .selectAll('g.igj-axisY g.tick text').size() / 2, 's');
@@ -298,12 +301,13 @@ class Graph {
     } else {
       yAxis
         .transition()
-        .duration(500)
+        .delay(50)
+        .duration(450)
         .call(this.yAxis);
     }
 
     // If specified, add gridlines along the Y axis
-    if (yAxisOptions.gridlines) {
+    if (this.yAxisOptions.gridlines) {
       let gridY = d3.select(`.${this.classElement}`).select('.igj-gridY');
       if (gridY.empty()) {
         gridY = this.svg.append('g')
@@ -322,7 +326,7 @@ class Graph {
     }
 
     // If specified, rotate the tick labels
-    if (yAxisOptions.tickLabels.rotated) {
+    if (this.yAxisOptions.tickLabels.rotated) {
       d3.select(`.${this.classElement}`).selectAll('g.igj-axisY g.tick text')
         .style('text-anchor', 'middle')
         .attr('dx', '-.85em')
@@ -331,12 +335,12 @@ class Graph {
     }
 
     // If specified, add label to the Y Axis
-    if (yAxisOptions.label.visible) {
+    if (this.yAxisOptions.label.visible) {
       let yAxisLabel = d3.select(`.${this.classElement}`).select('.igj-labelY');
       if (yAxisLabel.empty()) {
         yAxisLabel = this.svg.append('text')
           .attr('class', 'igj-labelY')
-          .text(yAxisOptions.label.value);
+          .text(this.yAxisOptions.label.value);
       }
       yAxisLabel
         .attr('transform',
@@ -347,17 +351,17 @@ class Graph {
     }
 
     // If specified, hide the Y axis line
-    if (!yAxisOptions.line.visible) {
+    if (!this.yAxisOptions.line.visible) {
       yAxis.selectAll('path').attr('style', 'display: none;');
     }
 
     // If specified, hide the Y axis ticks
-    if (!yAxisOptions.ticks.visible) {
+    if (!this.yAxisOptions.ticks.visible) {
       yAxis.selectAll('g.tick line').attr('style', 'display: none;');
     }
 
     // If specified, hide the Y axis tick labels
-    if (!yAxisOptions.tickLabels.visible) {
+    if (!this.yAxisOptions.tickLabels.visible) {
       yAxis.selectAll('g.tick text').attr('style', 'display: none;');
     }
   }
@@ -381,17 +385,21 @@ class Graph {
       // Create the legend
       const colorLegend = legendColor()
         .shape('path', d3.symbol().type(d3.symbolSquare).size(200)())
-        .shapePadding(40)
         .orient(this.config.legend.position === 'bottom' ? 'horizontal' : 'vertical')
+        .shapePadding(this.config.legend.position === 'bottom' ? 40 : 15)
         .scale(legendScale)
         .on('cellclick', (d) => {
           const idx = legendValues.indexOf(d);
-          const el = d3.select(`.${this.classElement}`)
+          const selectedElements = d3.select(`.${this.classElement}`)
             .selectAll(`.igj-line.line_${idx}, .igj-area.area_${idx},
                         .igj-focus.focus_${idx}, .igj-dot.dot_${idx},
-                        .igj-bar.bar_${idx}`);
+                        .igj-bar.bar_${idx}, .igj-bar.bar_${d}`);
           toggleLegend = !toggleLegend;
-          el.attr('display', toggleLegend ? null : 'none');
+          selectedElements
+            .transition()
+            .duration(200)
+            .ease(d3.easeLinear)
+            .attr('style', toggleLegend ? 'opacity: 1' : 'opacity: 0.3');
         });
 
       // Add the legend to the graph and change cursor
@@ -411,12 +419,10 @@ class Graph {
         this.svg.select('.igj-legend')
           .attr('transform', `translate(
             ${(this.config.width - legendBox.width) / 2},
-            ${this.config.height + (this.config.margin.bottom / 1.75)}
+            ${this.config.height + (this.config.margin.bottom / 2)}
           )`);
       } else {
         this.svg.select('.igj-legend')
-          .transition()
-          .duration(200)
           .attr('transform', `translate(
             ${this.config.width - legendBox.width},
             ${this.config.margin.top}
@@ -451,12 +457,16 @@ class Graph {
   /**
    * Create the tooltip the graph.
    */
-  makeTooltip() {
+  makeTooltip(
+    keyX = this.keyX,
+    keyY = this.keyY,
+    labelX = this.xAxisOptions.label.value,
+    labelY = this.xAxisOptions.label.value) {
     this.tooltip = d3.tip()
       .attr('class', `${this.classElement} igj-tip`)
       .offset((d) => {
         const offset = [0, 0];
-        const out = isOut(this.x(_.get(d, this.keyX)), this.y(_.get(d, this.keyY)),
+        const out = isOut(this.x(_.get(d, keyX)), this.y(_.get(d, keyY)),
           this.config.width, this.config.height);
         if (out.top) {
           offset[0] = 10;
@@ -474,7 +484,7 @@ class Graph {
       })
       .direction((d) => {
         let dir = '';
-        const out = isOut(this.x(_.get(d, this.keyX)), this.y(_.get(d, this.keyY)),
+        const out = isOut(this.x(_.get(d, keyX)), this.y(_.get(d, keyY)),
           this.config.width, this.config.height);
         if (out.top) {
           dir = 's';
@@ -500,17 +510,17 @@ class Graph {
         let res = '';
         if (this.config.axis.x.scale.type === 'scaleTime') {
           res = `
-            <strong>${this.config.axis.x.options.label.value}:</strong>
-            ${d3.timeFormat(this.config.axis.x.scale.format)(_.get(d, this.keyX))}</br>
+            <strong>${labelX}:</strong>
+            ${d3.timeFormat(this.config.axis.x.scale.format)(_.get(d, keyX))}</br>
           `;
         } else {
           res = `
-              <strong>${this.config.axis.x.options.label.value}:</strong>
-              ${_.get(d, this.keyX)}</br>`;
+              <strong>${labelX}:</strong>
+              ${_.get(d, keyX)}</br>`;
         }
         res += `
-          <strong>${this.config.axis.y.options.label.value}:</strong>
-          ${_.get(d, this.keyY)} `;
+          <strong>${labelY}:</strong>
+          ${_.get(d, keyY)} `;
         return res;
       });
 
@@ -522,12 +532,15 @@ class Graph {
    * Enable zoom in the graph.
    */
   enableZoom(f) {
+    // Create the scale for the zoom on X axis
+    this.altX = this.x;
+
     // Define clip path to focus on domain
     this.svg
       .append('defs').append('clipPath')
       .attr('id', 'clip')
       .append('rect')
-      .attr('transform', 'translate(-7.5, -7.5)')
+      .attr('transform', 'translate(-5, -5)')
       .attr('width', this.config.width + this.marginHorizontal)
       .attr('height', this.config.height + this.marginVertical);
 

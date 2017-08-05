@@ -24,7 +24,7 @@
 /* eslint-disable */
 const dataCDS = {};
 
-// Linegraph Data
+// Line Graph Data
 dataCDS.downloadVideosInterval1day = [
    {
       label: 'dataset0',
@@ -812,7 +812,6 @@ dataCDS.downloadVideosInterval1day = [
       ]
    }
  ]
-
 dataCDS.pageviewsVideosInterval1month = [
    {
       label: 'dataset0',
@@ -851,103 +850,69 @@ dataCDS.pageviewsVideosInterval1month = [
       label: 'dataset1',
       data: [
          {
-            "time":1483228800000,
-            "count":3357363
+            time: 1483228800000,
+            count: 3357363
          },
          {
-            "time":1485907200000,
-            "count":2955902
+            time: 1485907200000,
+            count: 2955902
          },
          {
-            "time":1488326400000,
-            "count":3710712
+            time: 1488326400000,
+            count: 3710712
          },
          {
-            "time":1491004800000,
-            "count":3428567
+            time: 1491004800000,
+            count: 3428567
          },
          {
-            "time":1493596800000,
-            "count":3524159
+            time: 1493596800000,
+            count: 3524159
          },
          {
-            "time":1496275200000,
-            "count":3362457
+            time: 1496275200000,
+            count: 3362457
          },
          {
-            "time":1498867200000,
-            "count":1618705
+            time: 1498867200000,
+            count: 1618705
          }
       ]
    },
-  //  {
-  //     label: 'dataset2',
-  //     data: [
-  //        {
-  //           "time":1483228800000,
-  //           "count":1730678
-  //        },
-  //        {
-  //           "time":1485907200000,
-  //           "count":1899236
-  //        },
-  //        {
-  //           "time":1488326400000,
-  //           "count":937458
-  //        },
-  //        {
-  //           "time":1491004800000,
-  //           "count":1059326
-  //        },
-  //        {
-  //           "time":1493596800000,
-  //           "count":1183001
-  //        },
-  //        {
-  //           "time":1496275200000,
-  //           "count":1339100
-  //        },
-  //        {
-  //           "time":1498867200000,
-  //           "count":789573
-  //        }
-  //     ]
-  //  },
-  //  {
-  //     label: 'dataset3',
-  //     data: [
-  //        {
-  //           "time":1483228800000,
-  //           "count":1188840
-  //        },
-  //        {
-  //           "time":1485907200000,
-  //           "count":1302069
-  //        },
-  //        {
-  //           "time":1488326400000,
-  //           "count":1445212
-  //        },
-  //        {
-  //           "time":1491004800000,
-  //           "count":1403048
-  //        },
-  //        {
-  //           "time":1493596800000,
-  //           "count":1518127
-  //        },
-  //        {
-  //           "time":1496275200000,
-  //           "count":1347483
-  //        },
-  //        {
-  //           "time":1498867200000,
-  //           "count":567617
-  //        }
-  //     ]
-  //  }
+   {
+      label: 'dataset2',
+      data: [
+         {
+            time: 1483228800000,
+            count: 1730678
+         },
+         {
+            time: 1485907200000,
+            count: 1899236
+         },
+         {
+            time: 1488326400000,
+            count: 937458
+         },
+         {
+            time: 1491004800000,
+            count: 1059326
+         },
+         {
+            time: 1493596800000,
+            count: 1183001
+         },
+         {
+            time: 1496275200000,
+            count: 1339100
+         },
+         {
+            time: 1498867200000,
+            count: 789573
+         }
+      ]
+   }
 ]
-
 dataCDS.pageviewsVideosInterval1monthUpdate = [
    {
       label: 'dataset0',
@@ -982,108 +947,75 @@ dataCDS.pageviewsVideosInterval1monthUpdate = [
         }
       ]
    },
-      {
-         label: 'dataset1',
-         data: [
-            {
-               "time":1483228800000,
-               "count":3357363
-            },
-            {
-               "time":1485907200000,
-               "count":2955902
-            },
-            {
-               "time":1488326400000,
-               "count":3710712
-            },
-            {
-               "time":1491004800000,
-               "count":3428567
-            },
-            {
-               "time":1493596800000,
-               "count":3524159
-            },
-            {
-               "time":1496275200000,
-               "count":3362457
-            },
-            {
-               "time":1498867200000,
-               "count":1618705
-            }
-         ]
-      },
-      {
-         label: 'dataset2',
-         data: [
-            {
-               "time":1483228800000,
-               "count":1730678
-            },
-            {
-               "time":1485907200000,
-               "count":1899236
-            },
-            {
-               "time":1488326400000,
-               "count":937458
-            },
-            {
-               "time":1491004800000,
-               "count":1059326
-            },
-            {
-               "time":1493596800000,
-               "count":1183001
-            },
-            {
-               "time":1496275200000,
-               "count":1339100
-            },
-            {
-               "time":1498867200000,
-               "count":789573
-            }
-         ]
-      },
-      // // {
-      //    label: 'dataset3',
-      //    data: [
-      //       {
-      //          "time":1483228800000,
-      //          "count":1188840
-      //       },
-      //       {
-      //          "time":1485907200000,
-      //          "count":1302069
-      //       },
-      //       {
-      //          "time":1488326400000,
-      //          "count":1445212
-      //       },
-      //       {
-      //          "time":1491004800000,
-      //          "count":1403048
-      //       },
-      //       {
-      //          "time":1493596800000,
-      //          "count":1518127
-      //       },
-      //       {
-      //          "time":1496275200000,
-      //          "count":1347483
-      //       },
-      //       {
-      //          "time":1498867200000,
-      //          "count":567617
-      //       }
-      //    ]
-      // }
+    {
+       label: 'dataset1',
+       data: [
+          {
+             time: 1483228800000,
+             count: 3357363
+          },
+          {
+             time: 1485907200000,
+             count: 2955902
+          },
+          {
+             time: 1488326400000,
+             count: 3710712
+          },
+          {
+             time: 1491004800000,
+             count: 3428567
+          },
+          {
+             time: 1493596800000,
+             count: 3524159
+          },
+          {
+             time: 1496275200000,
+             count: 3362457
+          },
+          {
+             time: 1498867200000,
+             count: 1618705
+          }
+       ]
+    },
+    {
+       label: 'dataset2',
+       data: [
+          {
+             time: 1483228800000,
+             count: 1730678
+          },
+          {
+             time: 1485907200000,
+             count: 1899236
+          },
+          {
+             time: 1488326400000,
+             count: 937458
+          },
+          {
+             time: 1491004800000,
+             count: 1059326
+          },
+          {
+             time: 1493596800000,
+             count: 1183001
+          },
+          {
+             time: 1496275200000,
+             count: 1339100
+          },
+          {
+             time: 1498867200000,
+             count: 789573
+          }
+       ]
+    }
 ]
 
-// Histogram Data
+// Bar Graph Data
 dataCDS.pageviewsVideosPerCountry = [{
     label: 'pageviews',
     data: [
@@ -1218,7 +1150,6 @@ dataCDS.pageviewsVideosPerCountry = [{
    ]
   }
 ]
-
 dataCDS.pageviewsVideosPerCountryUpdate = [{
     label: 'pageviews',
     data: [
@@ -1355,6 +1286,390 @@ dataCDS.pageviewsVideosPerCountryUpdate = [{
         count:  48254
      }
    ]
+  }
+]
+
+// Grouped Bar Graph Data
+dataCDS.multiVideosPerCountry = [
+  {
+    label: 'pageviews',
+    data: [
+      {
+         term:  'CH',
+         count:  375866
+      },
+      {
+         term:  'FR',
+         count:  412115
+      },
+      {
+         term:  'US',
+         count:  685141
+      },
+      {
+         term:  'GB',
+         count:  250612
+      },
+      {
+         term:  'IN',
+         count:  166008
+      },
+      {
+         term:  'IT',
+         count:  153017
+      },
+      {
+         term:  'DE',
+         count:  111927
+      },
+      {
+         term:  'GR',
+         count:  281636
+      },
+      {
+         term:  'PK',
+         count:  204673
+      },
+      {
+         term:  'ES',
+         count:  183742
+      },
+      {
+         term:  'PL',
+         count:  119485
+      },
+      {
+         term:  'CA',
+         count:  53971
+      },
+      {
+         term:  'TR',
+         count:  36127
+      },
+      {
+         term:  'NL',
+         count:  75974
+      }
+    ]
+  },
+  {
+    label: 'downloads',
+    data: [
+      {
+         term:  'CH',
+         count:  75866
+      },
+      {
+         term:  'FR',
+         count:  42115
+      },
+      {
+         term:  'US',
+         count:  65141
+      },
+      {
+         term:  'GB',
+         count:  50612
+      },
+      {
+         term:  'IN',
+         count:  66008
+      },
+      {
+         term:  'IT',
+         count:  53017
+      },
+      {
+         term:  'DE',
+         count:  11927
+      },
+      {
+         term:  'GR',
+         count:  21636
+      },
+      {
+         term:  'PK',
+         count:  24673
+      },
+      {
+         term:  'ES',
+         count:  83742
+      },
+      {
+         term:  'PL',
+         count:  19485
+      },
+      {
+         term:  'CA',
+         count:  3971
+      },
+      {
+         term:  'TR',
+         count:  6127
+      },
+      {
+         term:  'NL',
+         count:  7974
+      }
+    ]
+  },
+  {
+    label: 'uploads',
+    data: [
+      {
+         term:  'CH',
+         count:  150866
+      },
+      {
+         term:  'FR',
+         count:  85115
+      },
+      {
+         term:  'US',
+         count:  130141
+      },
+      {
+         term:  'GB',
+         count:  100612
+      },
+      {
+         term:  'IN',
+         count:  120008
+      },
+      {
+         term:  'IT',
+         count:  105017
+      },
+      {
+         term:  'DE',
+         count:  22927
+      },
+      {
+         term:  'GR',
+         count:  42636
+      },
+      {
+         term:  'PK',
+         count:  48673
+      },
+      {
+         term:  'ES',
+         count:  152742
+      },
+      {
+         term:  'PL',
+         count:  38485
+      },
+      {
+         term:  'CA',
+         count:  8971
+      },
+      {
+         term:  'TR',
+         count:  12127
+      },
+      {
+         term:  'NL',
+         count:  14974
+      }
+    ]
+  }
+]
+dataCDS.multiVideosPerCountryUpdate = [
+  {
+    label: 'pageviews',
+    data: [
+      {
+         term:  'CH',
+         count:  375866
+      },
+      {
+         term:  'FR',
+         count:  412115
+      },
+      {
+         term:  'US',
+         count:  685141
+      },
+      {
+         term:  'GB',
+         count:  250612
+      },
+      {
+         term:  'IN',
+         count:  166008
+      },
+      {
+         term:  'IT',
+         count:  153017
+      },
+      {
+         term:  'DE',
+         count:  111927
+      },
+      {
+         term:  'GR',
+         count:  281636
+      },
+      {
+         term:  'PK',
+         count:  204673
+      },
+      {
+         term:  'ES',
+         count:  183742
+      },
+      {
+         term:  'PL',
+         count:  119485
+      },
+      {
+         term:  'CA',
+         count:  53971
+      },
+      {
+         term:  'TR',
+         count:  36127
+      },
+      {
+         term:  'NL',
+         count:  75974
+      },
+      {
+         term:  'SG',
+         count:  35974
+      }
+    ]
+  },
+  {
+    label: 'downloads',
+    data: [
+      {
+         term:  'CH',
+         count:  75866
+      },
+      {
+         term:  'FR',
+         count:  42115
+      },
+      {
+         term:  'US',
+         count:  65141
+      },
+      {
+         term:  'GB',
+         count:  50612
+      },
+      {
+         term:  'IN',
+         count:  66008
+      },
+      {
+         term:  'IT',
+         count:  53017
+      },
+      {
+         term:  'DE',
+         count:  11927
+      },
+      {
+         term:  'GR',
+         count:  21636
+      },
+      {
+         term:  'PK',
+         count:  24673
+      },
+      {
+         term:  'ES',
+         count:  83742
+      },
+      {
+         term:  'PL',
+         count:  19485
+      },
+      {
+         term:  'CA',
+         count:  3971
+      },
+      {
+         term:  'TR',
+         count:  6127
+      },
+      {
+         term:  'NL',
+         count:  7974
+      },
+      {
+         term:  'SG',
+         count:  12974
+      }
+    ]
+  },
+  {
+    label: 'uploads',
+    data: [
+      {
+         term:  'CH',
+         count:  150866
+      },
+      {
+         term:  'FR',
+         count:  85115
+      },
+      {
+         term:  'US',
+         count:  130141
+      },
+      {
+         term:  'GB',
+         count:  100612
+      },
+      {
+         term:  'IN',
+         count:  120008
+      },
+      {
+         term:  'IT',
+         count:  105017
+      },
+      {
+         term:  'DE',
+         count:  22927
+      },
+      {
+         term:  'GR',
+         count:  42636
+      },
+      {
+         term:  'PK',
+         count:  48673
+      },
+      {
+         term:  'ES',
+         count:  152742
+      },
+      {
+         term:  'PL',
+         count:  38485
+      },
+      {
+         term:  'CA',
+         count:  8971
+      },
+      {
+         term:  'TR',
+         count:  12127
+      },
+      {
+         term:  'NL',
+         count:  14974
+      },
+      {
+         term:  'SG',
+         count:  25974
+      }
+    ]
   }
 ]
 

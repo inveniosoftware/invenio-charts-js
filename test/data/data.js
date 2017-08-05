@@ -214,4 +214,147 @@ testData.lineUpdate = [
    }
 ];
 
+testData.groupedBar = [
+  {
+    label: 'pageviews',
+    data: [
+      {
+         term:  'CH',
+         count:  375866
+      },
+      {
+         term:  'FR',
+         count:  412115
+      },
+      {
+         term:  'US',
+         count:  685141
+      },
+      {
+         term:  'GB',
+         count:  250612
+      }
+    ]
+  },
+  {
+    label: 'downloads',
+    data: [
+      {
+         term:  'CH',
+         count:  75866
+      },
+      {
+         term:  'FR',
+         count:  42115
+      },
+      {
+         term:  'US',
+         count:  65141
+      },
+      {
+         term:  'GB',
+         count:  50612
+      }
+    ]
+  },
+  {
+    label: 'uploads',
+    data: [
+      {
+         term:  'CH',
+         count:  150866
+      },
+      {
+         term:  'FR',
+         count:  85115
+      },
+      {
+         term:  'US',
+         count:  130141
+      },
+      {
+         term:  'GB',
+         count:  100612
+      }
+    ]
+  }
+]
+
+testData.groupedBarUpdate = [
+  {
+    label: 'pageviews',
+    data: [
+      {
+         term:  'CH',
+         count:  475866
+      },
+      {
+         term:  'FR',
+         count:  312115
+      },
+      {
+         term:  'US',
+         count:  585141
+      },
+      {
+         term:  'GB',
+         count:  280612
+      },
+      {
+         term:  'IN',
+         count:  336008
+      }
+    ]
+  },
+  {
+    label: 'downloads',
+    data: [
+      {
+         term:  'CH',
+         count:  65866
+      },
+      {
+         term:  'FR',
+         count:  32115
+      },
+      {
+         term:  'US',
+         count:  45141
+      },
+      {
+         term:  'GB',
+         count:  40612
+      },
+      {
+         term:  'IN',
+         count:  56008
+      }
+    ]
+  },
+  {
+    label: 'uploads',
+    data: [
+      {
+         term:  'CH',
+         count:  250866
+      },
+      {
+         term:  'FR',
+         count:  65115
+      },
+      {
+         term:  'US',
+         count:  230141
+      },
+      {
+         term:  'GB',
+         count:  120612
+      },
+      {
+         term:  'IN',
+         count:  180008
+      }
+    ]
+  }
+]
 export default testData;

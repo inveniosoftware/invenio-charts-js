@@ -28,7 +28,7 @@ import { LineGraph } from '../../src/index';
 
 const cfg1 = config.pageviewsVideosInterval1month;
 const data1 = dataCDS.pageviewsVideosInterval1month;
-const data1Update = dataCDS.pageviewsVideosInterval1monthUpdate;
+// const data1Update = dataCDS.pageviewsVideosInterval1monthUpdate;
 const class1 = 'pageviews_month';
 // const cfg2 = config.downloadVideosInterval1day;
 // const data2 = dataCDS.downloadVideosInterval1day;
@@ -37,7 +37,7 @@ const class1 = 'pageviews_month';
 // LineGraph 1
 const g1 = new LineGraph(cfg1, data1, class1);
 g1.render();
-setTimeout(() => g1.update(data1Update), 3000);
+// setTimeout(() => g1.update(data1Update), 3000);
 
 // LineGraph 2
 // const g2 = new LineGraph(cfg2, data2, class2);
