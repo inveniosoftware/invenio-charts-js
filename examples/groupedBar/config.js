@@ -21,12 +21,14 @@
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
 
-// Export configuration object
+// Export default configuration object
 const config = {};
-config.multiVideosPerCountry = {
+
+// For keyType : other
+config.other = {
   margin: {
     top: 50,
-    right: 60,
+    right: 40,
     bottom: 70,
     left: 60
   },
@@ -49,8 +51,6 @@ config.multiVideosPerCountry = {
           visible: false
         },
         ticks: {
-          number: null,
-          format: '',
           visible: false
         },
         tickLabels: {
@@ -75,12 +75,11 @@ config.multiVideosPerCountry = {
           visible: false
         },
         ticks: {
-          number: null,
-          format: '',
           visible: false
         },
         tickLabels: {
-          visible: true
+          visible: true,
+          rotated: false
         },
         gridlines: true
       }
@@ -98,8 +97,8 @@ config.multiVideosPerCountry = {
   },
   resize: {
     enabled: true,
-    breakPointX: 500,
-    breakPointY: 350
+    breakPointX: 550,
+    breakPointY: 275
   }
 };
 

@@ -30,10 +30,11 @@ import config from '../../examples/bar/config';
 let graph = {};
 const data = testData.bar;
 const dataUpdate = testData.barUpdate;
-const conf = config.pageviewsVideosPerCountry;
+const conf = config.other;
 const title = conf.title.value;
 const labelX = conf.axis.x.options.label.value;
 const labelY = conf.axis.y.options.label.value;
+const marginVertical = conf.margin.top + conf.margin.bottom;
 const testWidth = 600;
 const testHeight = 450;
 const className = 'pageviews_country';
@@ -63,6 +64,17 @@ describe('D3 Bar initial render', () => {
 
   function getLabel(n) {
     return d3.select(`.${className}`).select('svg').selectAll(`.igj-label${n}`);
+  }
+
+  function parseData(originalData) {
+    const parsed = [];
+    Object.keys(originalData).forEach((k) => {
+      const obj = {};
+      obj.label = k;
+      obj.data = originalData[k].buckets;
+      parsed.push(obj);
+    });
+    return parsed;
   }
 
   beforeAll(done => {
@@ -103,14 +115,15 @@ describe('D3 Bar initial render', () => {
     expect(getAxis('Y').size()).toEqual(1);
   });
 
-  it('should create 4 bars with correct height', () => {
+  it('should create 5 bars with correct height', () => {
     let yScale = graph.getYScale();
-    expect(getBars().size()).toEqual(4);
-    data.forEach((d, i) => {
+    expect(getBars().size()).toEqual(5);
+    console.log(parseData(data));
+    parseData(data).forEach((d, i) => {
       const bars = d3.select(`.${className}`).select('svg').selectAll(`.igj-bar.bar_${i}`);
       for (let idx = 0 ; idx < d.data.length; idx++) {
         expect(+bars.nodes()[idx].getAttribute('height'))
-          .toEqual(testHeight - conf.margin.top - conf.margin.bottom - yScale(d.data[idx].count));
+          .toEqual(testHeight - marginVertical - yScale(d.data[idx].value));
       }
     })
   });

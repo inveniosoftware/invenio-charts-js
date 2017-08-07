@@ -44,7 +44,7 @@ class BarGraph extends Graph {
     super.parseData();
 
     // Create the horizontal axis
-    super.makeAxisX(0.1);
+    super.makeAxisX(0.05);
 
     // Create the vertical axis
     super.makeAxisY();
@@ -58,13 +58,21 @@ class BarGraph extends Graph {
     // Add tooltip
     super.makeTooltip();
 
+    // Enable zoom
+    if (this.config.zoom.enabled) {
+      super.enableZoom(zoomed);
+    }
+
     // Scale when resizing window
     super.scaleOnResize(resized);
 
     // Iterate over input data
     this.input.forEach((outer, i) => {
       // Bind data to multiple elements
-      const bars = d3.select(`.${this.classElement}`).select('g')
+      const bars = this.svg
+        .append('g')
+        .attr('class', '.igj-bars')
+        .attr('clip-path', "url('#clip')")
         .selectAll(`.igj-bar.bar_${i}`)
         .data(outer.data);
 
@@ -89,24 +97,70 @@ class BarGraph extends Graph {
       }
     });
 
-    // Handler function on window resize
+    /**
+     * Handle container resize events.
+     * @private
+     */
     function resized() {
-      that.update(that.input);
+      that.update();
+    }
+
+    /**
+     * Handle zoom events.
+     * @private
+     */
+    function zoomed() {
+      // Rescale horizontal axis based on point of zoom
+      that.altX = (that.x.rangeRound([0, that.config.width * d3.event.transform.k]));
+      const el = d3.select(`.${that.classElement}`);
+
+      el.selectAll('.igj-bar')
+        .transition()
+        .duration(50)
+        .attr('transform', `translate(${d3.event.transform.x}, 0) scale(${d3.event.transform.k}, 1)`);
+
+      // If zoomed, transform the cursor icon except for dots and legend
+      if (d3.event.transform.k > 1) {
+        el.style('cursor', 'ew-resize');
+      } else {
+        el.style('cursor', 'auto');
+      }
+      el.selectAll('.legendCells')
+        .style('cursor', 'pointer');
+
+      // Update the x axis
+      el.select('g').select('.igj-axisX')
+        .transition()
+        .duration(50)
+        .attr('transform', `translate(${d3.event.transform.x}, ${that.config.height})`)
+        .call(that.xAxis.scale(that.altX));
+
+      // Update the x-values of the x-gridlines
+      el.select('.igj-gridX')
+        .style('stroke-opacity', 1e-6)
+        .transition()
+        .duration(50)
+        .attr('transform', `translate(${d3.event.transform.x}, ${that.config.height})`)
+        .call(that.makeGridlinesX(that.altX))
+        .style('stroke-opacity', 0.7);
     }
 
     // Return the SVG element containing the graph
     return d3.select(`.${this.classElement}`).select('svg').node();
   }
 
-  update(newInput) {
+  /**
+   * Update the input data of the Line Graph.
+   * @param {Array<Object>} - The updated data.
+   */
+  update(newData) {
     // Re-initialize the container of the graph
     super.initialize();
 
     // Update the input data of the graph
-    super.updateInput(newInput);
-
-    // Parse the current input data
-    super.parseData();
+    if (typeof (newData) !== 'undefined') {
+      super.updateData(newData);
+    }
 
     // Create the horizontal axis
     super.makeAxisX(0.05);
@@ -119,6 +173,11 @@ class BarGraph extends Graph {
 
     // Create the legend
     super.makeLegend();
+
+    // Update dimension of the clip path
+    this.svg.select('#clip').select('rect')
+      .attr('width', this.config.width + 10)
+      .attr('height', this.config.height + this.marginVertical);
 
     this.input.forEach((outer, i) => {
       // Select already existing bars

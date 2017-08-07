@@ -48,7 +48,6 @@ $white: #fff;
 }
 
 svg {
-  margin: 12px;
   pointer-events: all;
 }
 
@@ -66,7 +65,6 @@ svg {
 }
 
 .igj-axisX, .igj-axisY {
-
   line {
     fill: none;
     stroke: $axiscolor;

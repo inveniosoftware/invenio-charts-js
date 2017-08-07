@@ -50,6 +50,12 @@ const libConfig = {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist')
   },
+  externals: {
+    d3: 'd3',
+    lodash: '_',
+    'd3-tip': 'd3Tip',
+    'd3-svg-legend': 'legendColor'
+  },
   watch: true,
   module: moduleLoaders,
   plugins: [
@@ -76,6 +82,12 @@ const examplesConfig = {
     path: path.resolve(__dirname, 'examples/dist')
   },
   watch: true,
+  externals: {
+    d3: 'd3',
+    lodash: '_',
+    'd3-tip': 'd3Tip',
+    'd3-svg-legend': 'legendColor'
+  },
   module: moduleLoaders,
   plugins: [
     new FriendlyErrorsWebpackPlugin(),

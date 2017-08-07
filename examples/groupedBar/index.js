@@ -26,11 +26,12 @@ import config from './config';
 import dataCDS from '../data/data';
 import { GroupedBarGraph } from '../../src/index';
 
-const cfg = config.multiVideosPerCountry;
-const data = dataCDS.multiVideosPerCountry;
-const dataUpdate = dataCDS.multiVideosPerCountryUpdate;
-const g = new GroupedBarGraph(cfg, data, 'multi_country');
+const data = dataCDS.response3;
+const keyType = data[Object.keys(data)[0]].keyType;
+const cfg = config[keyType];
+const elementClass = 'grouped_country';
 
 // Grouped Bar Chart
+const g = new GroupedBarGraph(cfg, data, elementClass);
 g.render();
-setTimeout(() => g.update(dataUpdate), 3000);
+// setTimeout(() => g.update(newData), 3000);

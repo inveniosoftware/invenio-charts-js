@@ -24,6 +24,9 @@ module.exports = (config) => {
     // list of files / patterns to load in the browser
     files: [
       { pattern: 'node_modules/d3/build/d3.js', watched: false },
+      { pattern: 'node_modules/d3-tip/index.js', watched: false },
+      { pattern: 'node_modules/d3-svg-legend/d3-legend.js', watched: false },
+      { pattern: 'node_modules/lodash/lodash.js', watched: false },
       { pattern: 'src/**/*.js' },
       { pattern: 'test/**/*.spec.js' }
     ],

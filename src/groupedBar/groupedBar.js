@@ -36,7 +36,9 @@ class GroupedBarGraph extends Graph {
   render() {
     // Class context reference
     const that = this;
-    const keys = [];
+
+    // Initialize arrays for indexing and grouping
+    const innerKeys = [];
     const data = [];
 
     // Initialize the container element
@@ -46,7 +48,7 @@ class GroupedBarGraph extends Graph {
     super.parseData();
 
     this.input.forEach((set, i) => {
-      keys.push(set.label);
+      innerKeys.push(set.label);
       set.data.forEach((inner, j) => {
         if (i === 0) {
           data[j] = {};
@@ -56,29 +58,37 @@ class GroupedBarGraph extends Graph {
       });
     });
 
+    // Create the outer scale of the X-axis (outerKeys)
     const x0 = d3.scaleBand()
-      .rangeRound([0, this.config.width])
       .paddingInner(0.1)
-      .domain(this.input[0].data.map(d => _.get(d, this.keyX)));
+      .domain(this.input[0].data.map(d => _.get(d, this.keyX)))
+      .rangeRound([0, this.config.width]);
 
+    // Create the inner scale of the X-axis (innerKeys per outerKey)
     const x1 = d3.scaleBand()
       .padding(0.05)
-      .domain(keys).rangeRound([0, x0.bandwidth()]);
+      .domain(innerKeys)
+      .rangeRound([0, x0.bandwidth()]);
 
-    // Create the horizontal axis
+    // Add the horizontal axis, passing the outer scale
     super.makeAxisX(0.1, x0);
 
-    // Create the vertical axis
+    // Add the vertical axis
     super.makeAxisY();
 
-    // Add title
+    // Add the title
     super.makeTitle();
 
-    // Add legend
+    // Add the legend
     super.makeLegend();
 
-    // Add tooltip
-    super.makeTooltip('metric', 'value', 'Metric', 'Value');
+    // Add the tooltip
+    const tooltipKeys = ['metric', 'value'];
+    const tooltipLabels = ['Metric', 'Value'];
+    super.makeTooltip(tooltipKeys, tooltipLabels);
+
+    // Scale when resizing window
+    super.scaleOnResize(resized);
 
     this.svg.append('g')
       .attr('class', 'igj-groups')
@@ -89,8 +99,8 @@ class GroupedBarGraph extends Graph {
       .attr('transform', d => `translate(${x0(_.get(d, this.keyX))}, 0)`)
       .attr('class', d => `igj-group group_${_.get(d, this.keyX)}`)
       .selectAll('rect')
-      .data(d => keys.map(key =>
-        ({ metric: key, value: d[key] })
+      .data(d => innerKeys.map(k =>
+        ({ outerKey: _.get(d, this.keyX), metric: k, value: d[k] })
       ))
       .enter()
       .append('rect')
@@ -109,30 +119,29 @@ class GroupedBarGraph extends Graph {
       .attr('height', d => this.config.height - this.y(d.value))
       .style('cursor', 'pointer');
 
-    // Scale when resizing window
-    super.scaleOnResize(resized);
-
-    // Handler function on window resize
+    /**
+     * Handle container resize events.
+     * @private
+     */
     function resized() {
-      that.update(that.input);
+      that.update();
     }
 
     // Return the SVG element containing the graph
     return d3.select(`.${this.classElement}`).select('svg').node();
   }
 
-  update(newInput) {
+  update(newData) {
+    const keys = [];
+    const data = [];
+
     // Re-initialize the container of the graph
     super.initialize();
 
     // Update the input data of the graph
-    super.updateInput(newInput);
-
-    // Parse the current input data
-    super.parseData();
-
-    const keys = [];
-    const data = [];
+    if (typeof (newData) !== 'undefined') {
+      super.updateData(newData);
+    }
 
     this.input.forEach((set, i) => {
       keys.push(_.get(set, 'label'));

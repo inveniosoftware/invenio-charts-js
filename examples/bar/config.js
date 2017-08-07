@@ -21,12 +21,14 @@
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
 
-// Export configuration object
+// Export default configuration object
 const config = {};
-config.pageviewsVideosPerCountry = {
+
+// For keyType : other
+config.other = {
   margin: {
     top: 50,
-    right: 60,
+    right: 40,
     bottom: 70,
     left: 60
   },
@@ -35,7 +37,7 @@ config.pageviewsVideosPerCountry = {
   },
   axis: {
     x: {
-      mapTo: 'term',
+      mapTo: 'key',
       scale: {
         type: 'scaleBand',
         format: null
@@ -49,38 +51,35 @@ config.pageviewsVideosPerCountry = {
           visible: false
         },
         ticks: {
-          number: null,
-          format: '',
           visible: false
         },
         tickLabels: {
           visible: true,
-          rotated: true
+          rotated: false
         },
         gridlines: true
       }
     },
     y: {
-      mapTo: 'count',
+      mapTo: 'value',
       scale: {
         type: 'scaleLinear',
         format: ''
       },
       options: {
         label: {
-          value: 'Pageviews',
+          value: 'Count',
           visible: true
         },
         line: {
           visible: false
         },
         ticks: {
-          number: null,
-          format: '',
           visible: false
         },
         tickLabels: {
-          visible: true
+          visible: true,
+          rotated: false
         },
         gridlines: true
       }
@@ -88,7 +87,7 @@ config.pageviewsVideosPerCountry = {
   },
   title: {
     visible: true,
-    value: 'Pageviews per Country'
+    value: 'Count per Country'
   },
   colorScale: 'schemeCategory20',
   tooltip: true,
@@ -96,10 +95,13 @@ config.pageviewsVideosPerCountry = {
     visible: false,
     position: 'side'
   },
+  zoom: {
+    enabled: true
+  },
   resize: {
     enabled: true,
-    breakPointX: 500,
-    breakPointY: 350
+    breakPointX: 550,
+    breakPointY: 275
   }
 };
 

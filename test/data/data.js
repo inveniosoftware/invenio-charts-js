@@ -24,200 +24,216 @@
 /* eslint-disable */
 const testData = {};
 
-testData.bar = [
-  {
-    label: 'pageviews',
-    data: [
+// Test data for LineGraph
+testData.line = {
+  "downloads": {
+    "type": "bucket",
+    "keyType": "date",
+    "interval": "week",
+    "buckets": [
       {
-        term: 'CH',
-        count: 675866
+         "value": 61.0,
+         "key": 1480550400000
       },
       {
-        term: 'FR',
-        count: 612115
+         "value": 11.0,
+         "key": 1480636800000
       },
       {
-        term: 'US',
-        count: 385141
+         "value": 31.0,
+         "key": 1480723200000
       },
       {
-        term: 'GB',
-        count: 300612
-      }
-    ]
-  }
-];
-
-testData.barUpdate = [
-  {
-    label: 'pageviews',
-    data: [
-      {
-        term: 'CH',
-        count: 675866
+         "value": 31.0,
+         "key": 1480809600000
       },
       {
-        term: 'FR',
-        count: 612115
+         "value": 71.0,
+         "key": 1480896000000
       },
       {
-        term: 'US',
-        count: 385141
+         "value": 71.0,
+         "key": 1480982400000
       },
       {
-        term: 'GB',
-        count: 300612
-      },
-      {
-        term: 'US',
-        count: 140612
-      }
-    ]
-  }
-];
-
-testData.line = [
-  {
-    label: 'dataset0',
-    data: [
-      {
-        time: 1483228800000,
-        count: 4259339
-      },
-      {
-        time: 1485907200000,
-        count: 6247896
-      },
-      {
-        time: 1488326400000,
-        count: 4845656
-      },
-      {
-        time: 1491004800000,
-        count: 4702646
-      },
-      {
-        time: 1493596800000,
-        count: 5258057
-      },
-      {
-        time: 1496275200000,
-        count: 5219734
-      },
-      {
-        time: 1498867200000,
-        count: 1944084
+         "value": 91.0,
+         "key": 1481068800000
       }
     ]
   },
-  {
-    label: 'dataset1',
-    data: [
+  "uploads": {
+    "type": "bucket",
+    "keyType": "date",
+    "interval": "week",
+    "buckets": [
       {
-        time: 1483228800000,
-        count: 3357363
+       "value": 6.0,
+       "key": 1480550400000
       },
       {
-        time: 1485907200000,
-        count: 2955902
+       "value": 1.0,
+       "key": 1480636800000
       },
       {
-        time: 1488326400000,
-        count: 3710712
+       "value": 3.0,
+       "key": 1480723200000
       },
       {
-        time: 1491004800000,
-        count: 3428567
+       "value": 3.0,
+       "key": 1480809600000
       },
       {
-        time: 1493596800000,
-        count: 3524159
+       "value": 7.0,
+       "key": 1480896000000
       },
       {
-        time: 1496275200000,
-        count: 3362457
+       "value": 7.0,
+       "key": 1480982400000
       },
       {
-        time: 1498867200000,
-        count: 1618705
+       "value": 9.0,
+       "key": 1481068800000
       }
     ]
   }
-];
-
-testData.lineUpdate = [
-  {
-     label: 'dataset0',
-     data: [
-       {
-          time: 1483228800000,
-          count: 5259339
-       },
-       {
-          time: 1485907200000,
-          count: 7247896
-       },
-       {
-          time: 1488326400000,
-          count: 2845656
-       },
-       {
-          time: 1491004800000,
-          count: 4702646
-       },
-       {
-          time: 1493596800000,
-          count: 6758057
-       },
-       {
-          time: 1496275200000,
-          count: 4419734
-       },
-       {
-          time: 1498867200000,
-          count: 1244084
-       }
-     ]
+}
+testData.lineUpdate = {
+  "downloads": {
+    "type": "bucket",
+    "keyType": "date",
+    "interval": "week",
+    "buckets": [
+      {
+         "value": 41.0,
+         "key": 1480550400000
+      },
+      {
+         "value": 5.0,
+         "key": 1480636800000
+      },
+      {
+         "value": 51.0,
+         "key": 1480723200000
+      },
+      {
+         "value": 21.0,
+         "key": 1480809600000
+      },
+      {
+         "value": 55.0,
+         "key": 1480896000000
+      },
+      {
+         "value": 45.0,
+         "key": 1480982400000
+      },
+      {
+         "value": 66.0,
+         "key": 1481068800000
+      }
+    ]
   },
-   {
-      label: 'dataset1',
-      data: [
-         {
-            "time":1483228800000,
-            "count":3357363
-         },
-         {
-            "time":1485907200000,
-            "count":2955902
-         },
-         {
-            "time":1488326400000,
-            "count":3710712
-         },
-         {
-            "time":1491004800000,
-            "count":3428567
-         },
-         {
-            "time":1493596800000,
-            "count":3524159
-         },
-         {
-            "time":1496275200000,
-            "count":3362457
-         },
-         {
-            "time":1498867200000,
-            "count":1618705
-         }
-      ]
-   }
-];
+  "uploads": {
+    "type": "bucket",
+    "keyType": "date",
+    "interval": "week",
+    "buckets": [
+      {
+       "value": 3.0,
+       "key": 1480550400000
+      },
+      {
+       "value": 2.0,
+       "key": 1480636800000
+      },
+      {
+       "value": 3.0,
+       "key": 1480723200000
+      },
+      {
+       "value": 6.0,
+       "key": 1480809600000
+      },
+      {
+       "value": 12.0,
+       "key": 1480896000000
+      },
+      {
+       "value": 14.0,
+       "key": 1480982400000
+      },
+      {
+       "value": 4.0,
+       "key": 1481068800000
+      }
+    ]
+  }
+}
 
-testData.groupedBar = [
-  {
-    label: 'pageviews',
-    data: [
+// Test data for BarGraph
+testData.bar = {
+  "pageviews": {
+    "type": "bucket",
+    "keyType": "other",
+    "buckets": [
+        {
+           "key": 'CH',
+           "value": 375866
+        },
+        {
+           "key": 'FR',
+           "value": 412115
+        },
+        {
+           "key": 'US',
+           "value": 685141
+        },
+        {
+           "key": 'GB',
+           "value": 250612
+        },
+        {
+           "key": 'IN',
+           "value": 166008
+        }
+    ]
+  }
+}
+testData.barUpdate = {
+  "pageviews": {
+    "type": "bucket",
+    "keyType": "other",
+    "buckets": [
+        {
+           "key": 'CH',
+           "value": 175866
+        },
+        {
+           "key": 'FR',
+           "value": 812115
+        },
+        {
+           "key": 'US',
+           "value": 485141
+        },
+        {
+           "key": 'GB',
+           "value": 150612
+        },
+        {
+           "key": 'IN',
+           "value": 366008
+        }
+    ]
+  }
+}
+
+// Test data for GroupedBarGraph
+testData.groupedBar = {
+  "pageviews": {
+    "type": "bucket",
+    "keyType": "other",
+    "buckets": [
       {
          term:  'CH',
          count:  375866
@@ -233,128 +249,145 @@ testData.groupedBar = [
       {
          term:  'GB',
          count:  250612
+      },
+      {
+         term:  'IN',
+         count:  166008
       }
     ]
   },
-  {
-    label: 'downloads',
-    data: [
-      {
-         term:  'CH',
-         count:  75866
-      },
-      {
-         term:  'FR',
-         count:  42115
-      },
-      {
-         term:  'US',
-         count:  65141
-      },
-      {
-         term:  'GB',
-         count:  50612
-      }
+  "downloads": {
+    "type": "bucket",
+    "keyType": "other",
+    "buckets": [
+        {
+           term:  'CH',
+           count:  75866
+        },
+        {
+           term:  'FR',
+           count:  42115
+        },
+        {
+           term:  'US',
+           count:  65141
+        },
+        {
+           term:  'GB',
+           count:  50612
+        },
+        {
+           term:  'IN',
+           count:  66008
+        }
     ]
   },
-  {
-    label: 'uploads',
-    data: [
-      {
-         term:  'CH',
-         count:  150866
-      },
-      {
-         term:  'FR',
-         count:  85115
-      },
-      {
-         term:  'US',
-         count:  130141
-      },
-      {
-         term:  'GB',
-         count:  100612
-      }
-    ]
-  }
-]
+  "uploads": {
+     "type": "bucket",
+     "keyType": "other",
+     "buckets": [
+         {
+            term:  'CH',
+            count:  150866
+         },
+         {
+            term:  'FR',
+            count:  85115
+         },
+         {
+            term:  'US',
+            count:  130141
+         },
+         {
+            term:  'GB',
+            count:  100612
+         },
+         {
+            term:  'IN',
+            count:  120008
+         }
+     ]
+   }
+ }
+testData.groupedBarUpdate = {
+   "pageviews": {
+     "type": "bucket",
+     "keyType": "other",
+     "buckets": [
+       {
+          term:  'CH',
+          count:  175866
+       },
+       {
+          term:  'FR',
+          count:  612115
+       },
+       {
+          term:  'US',
+          count:  485141
+       },
+       {
+          term:  'GB',
+          count:  280612
+       },
+       {
+          term:  'IN',
+          count:  456008
+       }
+     ]
+   },
+   "downloads": {
+     "type": "bucket",
+     "keyType": "other",
+     "buckets": [
+         {
+            term:  'CH',
+            count:  35866
+         },
+         {
+            term:  'FR',
+            count:  62115
+         },
+         {
+            term:  'US',
+            count:  85141
+         },
+         {
+            term:  'GB',
+            count:  20612
+         },
+         {
+            term:  'IN',
+            count:  36008
+         }
+     ]
+   },
+   "uploads": {
+      "type": "bucket",
+      "keyType": "other",
+      "buckets": [
+          {
+             term:  'CH',
+             count:  170866
+          },
+          {
+             term:  'FR',
+             count:  45115
+          },
+          {
+             term:  'US',
+             count:  140141
+          },
+          {
+             term:  'GB',
+             count:  180612
+          },
+          {
+             term:  'IN',
+             count:  110008
+          }
+      ]
+    }
+}
 
-testData.groupedBarUpdate = [
-  {
-    label: 'pageviews',
-    data: [
-      {
-         term:  'CH',
-         count:  475866
-      },
-      {
-         term:  'FR',
-         count:  312115
-      },
-      {
-         term:  'US',
-         count:  585141
-      },
-      {
-         term:  'GB',
-         count:  280612
-      },
-      {
-         term:  'IN',
-         count:  336008
-      }
-    ]
-  },
-  {
-    label: 'downloads',
-    data: [
-      {
-         term:  'CH',
-         count:  65866
-      },
-      {
-         term:  'FR',
-         count:  32115
-      },
-      {
-         term:  'US',
-         count:  45141
-      },
-      {
-         term:  'GB',
-         count:  40612
-      },
-      {
-         term:  'IN',
-         count:  56008
-      }
-    ]
-  },
-  {
-    label: 'uploads',
-    data: [
-      {
-         term:  'CH',
-         count:  250866
-      },
-      {
-         term:  'FR',
-         count:  65115
-      },
-      {
-         term:  'US',
-         count:  230141
-      },
-      {
-         term:  'GB',
-         count:  120612
-      },
-      {
-         term:  'IN',
-         count:  180008
-      }
-    ]
-  }
-]
 export default testData;

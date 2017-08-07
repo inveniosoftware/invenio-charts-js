@@ -26,12 +26,12 @@ import config from './config';
 import dataCDS from '../data/data';
 import { BarGraph } from '../../src/index';
 
-const cfg1 = config.pageviewsVideosPerCountry;
-const data1 = dataCDS.pageviewsVideosPerCountry;
-const data1Update = dataCDS.pageviewsVideosPerCountryUpdate;
-const class1 = 'pageviews_country';
-const g1 = new BarGraph(cfg1, data1, class1);
+const data = dataCDS.response2;
+const keyType = data[Object.keys(data)[0]].keyType;
+const cfg = config[keyType];
+const elementClass = 'pageviews_country';
 
-// BarGraph 1
-g1.render();
-setTimeout(() => g1.update(data1Update), 3000);
+// BarGraph
+const g = new BarGraph(cfg, data, elementClass);
+g.render();
+// setTimeout(() => g.update(newData), 3000);

@@ -21,104 +21,11 @@
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
 
-// Export configuration object
+// Export default configuration object
 const config = {};
-config.downloadVideosInterval1day = {
-  margin: {
-    top: 50,
-    right: 60,
-    bottom: 70,
-    left: 60
-  },
-  graph: {
-    type: 'line',
-    options: {
-      curveType: 'curveLinear',
-      fillArea: true,
-      circles: {
-        visible: true,
-        radius: 5.5
-      }
-    }
-  },
-  axis: {
-    x: {
-      mapTo: 'time',
-      scale: {
-        type: 'scaleTime',
-        format: '%b-%Y'
-      },
-      options: {
-        label: {
-          value: 'Date',
-          visible: true
-        },
-        line: {
-          visible: false
-        },
-        ticks: {
-          number: null,
-          format: '',
-          visible: false
-        },
-        tickLabels: {
-          visible: true,
-          rotated: false
-        },
-        gridlines: false
-      }
-    },
-    y: {
-      mapTo: 'count',
-      scale: {
-        type: 'scaleLinear',
-        format: ''
-      },
-      options: {
-        label: {
-          value: 'Downloads',
-          visible: true
-        },
-        line: {
-          visible: false
-        },
-        ticks: {
-          number: null,
-          format: '',
-          visible: false
-        },
-        tickLabels: {
-          visible: true,
-          rotated: false
-        },
-        gridlines: false
-      }
-    }
-  },
-  colorScale: 'schemeCategory20b',
-  tooltip: false,
-  legend: {
-    visible: true,
-    position: 'side'
-  },
-  title: {
-    visible: true,
-    value: 'Video Downloads per day'
-  },
-  resize: {
-    enabled: true,
-    breakPointX: 500,
-    breakPointY: 350
-  }
-};
 
-config.pageviewsVideosInterval1month = {
-  margin: {
-    top: 50,
-    right: 60,
-    bottom: 70,
-    left: 60
-  },
+// For keyType : date
+config.date = {
   graph: {
     type: 'line',
     options: {
@@ -126,15 +33,22 @@ config.pageviewsVideosInterval1month = {
       fillArea: true,
       circles: {
         visible: true,
-        radius: 5.5
+        radius: 5
       }
     }
   },
+  margin: {
+    top: 40,
+    right: 30,
+    bottom: 75,
+    left: 60
+  },
   axis: {
     x: {
-      mapTo: 'time',
+      mapTo: 'key',
       scale: {
         type: 'scaleTime',
+        interval: 'timeWeek',
         format: '%d %b %Y'
       },
       options: {
@@ -146,8 +60,6 @@ config.pageviewsVideosInterval1month = {
           visible: false
         },
         ticks: {
-          number: null,
-          format: '',
           visible: false
         },
         tickLabels: {
@@ -158,22 +70,20 @@ config.pageviewsVideosInterval1month = {
       }
     },
     y: {
-      mapTo: 'count',
+      mapTo: 'value',
       scale: {
         type: 'scaleLinear',
         format: ''
       },
       options: {
         label: {
-          value: 'Pageviews',
+          value: 'Count',
           visible: false
         },
         line: {
           visible: false
         },
         ticks: {
-          number: null,
-          format: '',
           visible: false
         },
         tickLabels: {
@@ -186,7 +96,7 @@ config.pageviewsVideosInterval1month = {
   },
   title: {
     visible: true,
-    value: 'Pageviews per month'
+    value: 'Stats per week'
   },
   colorScale: 'schemeCategory10',
   tooltip: true,
@@ -194,10 +104,102 @@ config.pageviewsVideosInterval1month = {
     visible: true,
     position: 'bottom'
   },
+  zoom: {
+    enabled: true
+  },
   resize: {
     enabled: true,
-    breakPointX: 500,
-    breakPointY: 350
+    breakPointX: 550,
+    breakPointY: 275
+  }
+};
+
+// For keyType : other
+config.other = {
+  graph: {
+    type: 'line',
+    options: {
+      curveType: 'curveLinear',
+      fillArea: true,
+      circles: {
+        visible: true,
+        radius: 5
+      }
+    }
+  },
+  margin: {
+    top: 40,
+    right: 30,
+    bottom: 75,
+    left: 60
+  },
+  axis: {
+    x: {
+      mapTo: 'key',
+      scale: {
+        type: 'scaleBand',
+        padding: 0.2
+      },
+      options: {
+        label: {
+          value: 'Country',
+          visible: false
+        },
+        line: {
+          visible: false
+        },
+        ticks: {
+          visible: false
+        },
+        tickLabels: {
+          visible: true,
+          rotated: false
+        },
+        gridlines: true
+      }
+    },
+    y: {
+      mapTo: 'value',
+      scale: {
+        type: 'scaleLinear',
+        format: ''
+      },
+      options: {
+        label: {
+          value: 'Downloads',
+          visible: false
+        },
+        line: {
+          visible: false
+        },
+        ticks: {
+          visible: false
+        },
+        tickLabels: {
+          visible: true,
+          rotated: false
+        },
+        gridlines: true
+      }
+    }
+  },
+  title: {
+    visible: true,
+    value: 'Stats per country'
+  },
+  colorScale: 'schemeCategory10',
+  tooltip: true,
+  legend: {
+    visible: true,
+    position: 'bottom'
+  },
+  zoom: {
+    enabled: false
+  },
+  resize: {
+    enabled: true,
+    breakPointX: 550,
+    breakPointY: 275
   }
 };
 

@@ -30,7 +30,7 @@ import config from '../../examples/line/config';
 let graph = {};
 const data = testData.line;
 const dataUpdate = testData.lineUpdate;
-const conf = config.pageviewsVideosInterval1month;
+const conf = config.date;
 const title = conf.title.value;
 const testWidth = 600;
 const testHeight = 450;
@@ -68,6 +68,17 @@ describe('D3 Line initial render', () => {
 
   function getGrid(n) {
     return d3.select(`.${className}`).select('svg').select(`.igj-grid${n}`);
+  }
+
+  function parseData(originalData) {
+    const parsed = [];
+    Object.keys(originalData).forEach((k) => {
+      const obj = {};
+      obj.label = k;
+      obj.data = originalData[k].buckets;
+      parsed.push(obj);
+    });
+    return parsed;
   }
 
   beforeAll(done => {
@@ -118,12 +129,13 @@ describe('D3 Line initial render', () => {
   it('should create circles at correct points', () => {
     let xScale = graph.getXScale();
     let yScale = graph.getYScale();
-    expect(getCircles().size()).toEqual(2*data[0].data.length);
-    data.forEach((d, i) => {
+    let parsed = parseData(data);
+    expect(getCircles().size()).toEqual(2 * parsed[0].data.length);
+    parsed.forEach((d, i) => {
       let circles = d3.select(`.${className}`).select('svg').selectAll(`.igj-dot.dot_${i}`);
       for (let idx = 0 ; idx < d.data.length; idx++) {
-        expect(xScale(d.data[idx].time)).toEqual(+circles.nodes()[idx].getAttribute('cx'));
-        expect(yScale(d.data[idx].count)).toEqual(+circles.nodes()[idx].getAttribute('cy'));
+        expect(xScale(d.data[idx].key)).toEqual(+circles.nodes()[idx].getAttribute('cx'));
+        expect(yScale(d.data[idx].value)).toEqual(+circles.nodes()[idx].getAttribute('cy'));
       }
     });
   });
@@ -181,14 +193,16 @@ describe('D3 Line initial render', () => {
   describe('D3 Line update', () => {
     beforeAll(done => {
       spyOn(graph, 'update');
-      graph.update(dataUpdate);
+      let parsedUpdate = parseData(dataUpdate);
+      graph.update(parsedUpdate);
       setTimeout(() => {
         done();
       }, 500);
     });
 
     it('should call update', function() {
-      expect(graph.update).toHaveBeenCalledWith(dataUpdate);
+      let parsedUpdate = parseData(dataUpdate);
+      expect(graph.update).toHaveBeenCalledWith(parsedUpdate);
     });
   });
 

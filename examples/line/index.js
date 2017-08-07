@@ -26,19 +26,12 @@ import config from './config';
 import dataCDS from '../data/data';
 import { LineGraph } from '../../src/index';
 
-const cfg1 = config.pageviewsVideosInterval1month;
-const data1 = dataCDS.pageviewsVideosInterval1month;
-// const data1Update = dataCDS.pageviewsVideosInterval1monthUpdate;
-const class1 = 'pageviews_month';
-// const cfg2 = config.downloadVideosInterval1day;
-// const data2 = dataCDS.downloadVideosInterval1day;
-// const class2 = 'downloads_day';
+const data = dataCDS.response1;
+const keyType = data[Object.keys(data)[0]].keyType;
+const cfg = config[keyType];
+const elementClass = 'line_stats_week';
 
-// LineGraph 1
-const g1 = new LineGraph(cfg1, data1, class1);
+// LineGraph
+const g1 = new LineGraph(cfg, data, elementClass);
 g1.render();
-// setTimeout(() => g1.update(data1Update), 3000);
-
-// LineGraph 2
-// const g2 = new LineGraph(cfg2, data2, class2);
-// g2.render();
+// setTimeout(() => g1.update(newData), 3000);

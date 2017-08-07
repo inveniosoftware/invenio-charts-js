@@ -58,15 +58,17 @@ class LineGraph extends Graph {
     // Add tooltip
     super.makeTooltip();
 
-    // Add zoom functionality
-    super.enableZoom(zoomed);
+    // Enable zoom
+    if (this.config.zoom.enabled) {
+      super.enableZoom(zoomed);
+    }
 
     // Scale when resizing window
     super.scaleOnResize(resized);
 
     // Iterate over input data
     this.input.forEach((outer, i) => {
-      // Add a line to the SVG element
+    // Add a line to the SVG element
       if (d3.select(`.${this.classElement}`).select(`.igj-line.line_${i}`).empty()) {
         this.line = d3.line()
           .x(d => this.x(_.get(d, this.keyX)))
@@ -134,6 +136,8 @@ class LineGraph extends Graph {
       circles.moveToFront();
     });
 
+    this.svg.selectAll('.igj-dot').moveToFront();
+
     // Listen to mouseover movement on the graph
     this.svg
       .on('mouseover', () => this.svg.selectAll('.igj-focus').style('display', null))
@@ -145,9 +149,6 @@ class LineGraph extends Graph {
      * @private
      */
     function mousemove() {
-      // Map the x-value of the mouse movement
-      const x0 = that.altX.invert(d3.mouse(this)[0]);
-
       // Reveal the focus element
       d3.select(`.${that.classElement}`).selectAll('.igj-focus').select('circle')
         .attr('opacity', 1);
@@ -156,11 +157,26 @@ class LineGraph extends Graph {
       that.input.forEach((set, k) => {
         // Check if mouse moved inside the SVG element
         if (d3.mouse(this)[0] <= that.config.width && d3.mouse(this)[1] <= that.config.height) {
-          const idx = d3.bisector(d => _.get(d, that.keyX)).left(set.data, x0, 1);
-          const d0 = set.data[idx - 1];
-          const d1 = set.data[idx];
-          const point = x0 - _.get(d0, that.keyX) > _.get(d1, that.keyX) - x0 ? d1 : d0;
+          let point = {};
+          if (that.config.axis.x.scale.type === 'scaleTime') {
+            // Get the x-value of the current mouse position
+            const x0 = that.altX.invert(d3.mouse(this)[0]);
+            const idx = d3.bisector(d => _.get(d, that.keyX)).left(set.data, x0, 1);
+            const d0 = set.data[idx - 1];
+            const d1 = set.data[idx];
+            point = x0 - _.get(d0, that.keyX) > _.get(d1, that.keyX) - x0 ? d1 : d0;
+          } else {
+            const eachBand = that.altX.step();
+            let index = Math.floor((d3.mouse(this)[0] / eachBand));
 
+            // Make sure index is inside the domain
+            if (index < 0) {
+              index = 0;
+            } else if (index > that.input[0].data.length - 1) {
+              index = that.input[0].data.length - 1;
+            }
+            point = set.data[index];
+          }
           // Translate the focus element to the correct position
           d3.select(`.${that.classElement}`).select(`.igj-focus.focus_${k}`)
             .attr('transform', `translate(
@@ -196,6 +212,12 @@ class LineGraph extends Graph {
       el.select('g').select('.igj-axisX')
         .call(that.xAxis.scale(that.altX));
 
+      // Update the x-values of the x-gridlines
+      el.select('.igj-gridX')
+        .style('stroke-opacity', 1e-6)
+        .call(that.makeGridlinesX(that.altX))
+        .style('stroke-opacity', 0.7);
+
       // Update the x-values of all lines
       el.selectAll('.igj-line')
         .attr('d', that.line.x(d => that.altX(_.get(d, that.keyX))));
@@ -209,12 +231,6 @@ class LineGraph extends Graph {
       // Update the x-values of all dots
       el.selectAll('.igj-dot')
         .attr('cx', d => that.altX(_.get(d, that.keyX)));
-
-      // Update the x-values of the x-gridlines
-      el.select('.igj-gridX')
-        .style('stroke-opacity', 1e-6)
-        .call(that.makeGridlinesX(that.altX))
-        .style('stroke-opacity', 0.7);
     }
 
     /**
@@ -222,7 +238,7 @@ class LineGraph extends Graph {
      * @private
      */
     function resized() {
-      that.update(that.input);
+      that.update();
     }
 
     // Return the SVG element containing the graph
@@ -238,10 +254,9 @@ class LineGraph extends Graph {
     super.initialize();
 
     // Update the input data of the graph
-    super.updateInput(newData);
-
-    // Parse the current input data
-    super.parseData();
+    if (typeof (newData) !== 'undefined') {
+      super.updateData(newData);
+    }
 
     // Create the horizontal axis
     super.makeAxisX();
@@ -257,7 +272,7 @@ class LineGraph extends Graph {
 
     // Update dimension of the clip path
     d3.select(`.${this.classElement}`).select('#clip').select('rect')
-      .attr('width', this.config.width + this.marginHorizontal)
+      .attr('width', this.config.width + 10)
       .attr('height', this.config.height + this.marginVertical);
 
     this.input.forEach((outer, i) => {

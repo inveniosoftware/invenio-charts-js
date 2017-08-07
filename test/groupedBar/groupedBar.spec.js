@@ -30,7 +30,7 @@ import config from '../../examples/groupedBar/config';
 let graph = {};
 const data = testData.groupedBar;
 const dataUpdate = testData.groupedBarUpdate;
-const conf = config.multiVideosPerCountry;
+const conf = config.other;
 const title = conf.title.value;
 const labelX = conf.axis.x.options.label.value;
 const labelY = conf.axis.y.options.label.value;
@@ -73,6 +73,17 @@ describe('D3 GroupedBar initial render', () => {
     return d3.select(`.${className}`).select('svg').selectAll(`.igj-label${n}`);
   }
 
+  function parseData(originalData) {
+    const parsed = [];
+    Object.keys(originalData).forEach((k) => {
+      const obj = {};
+      obj.label = k;
+      obj.data = originalData[k].buckets;
+      parsed.push(obj);
+    });
+    return parsed;
+  }
+
   beforeAll(done => {
       let fixture = `<div class="${className}" style="${style}"></div>`;
       document.getElementsByTagName('body')[0].innerHTML += fixture;
@@ -109,16 +120,16 @@ describe('D3 GroupedBar initial render', () => {
     expect(getAxis('Y').size()).toEqual(1);
   });
 
-  it('should create 4 groups with 3 bars each', () => {
+  it('should create 3 groups with 5 bars each', () => {
     const yScale = graph.getYScale();
     const barGroups = getGroups().nodes();
-    expect(getGroups().size()).toEqual(4);
+    expect(getGroups().size()).toEqual(5);
     barGroups.forEach(d => expect(getBarsOfGroup(d).size()).toEqual(3));
     // data.forEach((d, i) => {
     //   const bars = d3.select(`.${className}`).select('svg').selectAll(`.igj-bar.bar_${i}`);
     //   for (let idx = 0 ; idx < d.data.length; idx++) {
     //     expect(+bars.nodes()[idx].getAttribute('height'))
-    //       .toEqual(testHeight - conf.margin.top - conf.margin.bottom - yScale(d.data[idx].count));
+    //       .toEqual(testHeight - conf.margin.top - conf.margin.bottom - yScale(d.data[idx].value));
     //   }
     // })
   });
