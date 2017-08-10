@@ -21,49 +21,55 @@
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
 
+/* eslint valid-jsdoc: "error" */
+/* eslint-env es6 */
+
 import * as d3 from 'd3';
 import _ from 'lodash';
 import isOut from '../util/util';
 
 require('d3-extended')(d3);
 
-/** Class representing an abstract Graph. */
+/**
+ * Class representing a graph.
+ */
 class Graph {
   /**
-   * Create a graph.
-   * @param {Object} config - The configuration of the graph.
-   * @param {Array<Object>} - The input data.
-   * @param {String} - The class of the SVG element.
+   * Create a general purpose graph.
+   * @constructor
+   * @param {Object} input - The input data passed to the graph.
+   * @param {String} classElement - The class of the DOM element placeholder.
+   * @param {Object} config - The JSON configuration of the graph.
    */
-  constructor(config, input, classElement) {
+  constructor(input, classElement, config) {
     // Setters
     this.config = config;
     this.input = input;
     this.classElement = classElement;
 
-    // Get the keys for the X, Y axis
+    // Set the keys for the axis based on the given configuration
     this.keyX = this.config.axis.x.mapTo;
     this.keyY = this.config.axis.y.mapTo;
 
-    // Set the colorScale of the graph
+    // Set the colorScale of the graph based on the given configuration
     this.colorScale = d3.scaleOrdinal(d3[`${this.config.colorScale}`]);
 
-    // Margin constants
+    // Set the margins of the graph based on the given configuration
     this.marginHorizontal = this.config.margin.left + this.config.margin.right;
     this.marginVertical = this.config.margin.top + this.config.margin.bottom;
 
-    // Get axis configuration
+    // Set the axis options based on the given configuration
     this.xAxisOptions = this.config.axis.x.options;
     this.yAxisOptions = this.config.axis.y.options;
 
-    // Breakpoints for resizing
+    // Set the breakpoints for resizing based on the given configuration
     this.breakPointX = this.config.resize.breakPointX;
     this.breakPointY = this.config.resize.breakPointY;
   }
 
   /**
    * Get the type of the graph.
-   * @return {string} The type value.
+   * @returns {string} - The type of the instantiated graph.
    */
   getType() {
     return this.config.type;
@@ -71,7 +77,7 @@ class Graph {
 
   /**
    * Get the scale of the horizontal axis.
-   * @return {Function} - The the scale of the X axis.
+   * @returns {function} - The scale of the X axis.
    */
   getXScale() {
     return this.x;
@@ -79,7 +85,7 @@ class Graph {
 
   /**
    * Get the scale of the vertical axis.
-   * @return {Function} - The the scale of the Y axis.
+   * @returns {function} - The scale of the Y axis.
    */
   getYScale() {
     return this.y;
@@ -87,6 +93,7 @@ class Graph {
 
   /**
    * Append an empty SVG element to the DOM.
+   * @returns {void}
    */
   initialize() {
     let element = d3.select(`.${this.classElement}`);
@@ -99,6 +106,7 @@ class Graph {
         .attr('style', 'width: 95vw; height: 95vh;');
     }
 
+    // Get the dimensions of the parent node in the DOM
     const parentElement = element.node().getBoundingClientRect();
 
     // Calculate the dimensions of the SVG
@@ -122,6 +130,8 @@ class Graph {
 
   /**
    * Update the input data
+   * @param {object} data - the new data of the graph
+   * @returns {void}
    */
   updateData(data) {
     this.input = data;
@@ -129,7 +139,18 @@ class Graph {
   }
 
   /**
+   * Update the dimensions of the clip path to match the resized graph ones
+   * @returns {void}
+   */
+  resizeClipPath() {
+    this.svg.select('#clip').select('rect')
+      .attr('width', this.config.width + this.config.margin.right)
+      .attr('height', this.config.height + this.marginVertical);
+  }
+
+  /**
    * Parse the input data
+   * @returns {void}
    */
   parseData() {
     const parsed = [];
@@ -156,7 +177,9 @@ class Graph {
 
   /**
    * Create the X axis of the graph.
-   * @param padding {number}: optional padding.
+   * @param {number} [padding = 0] - optional padding
+   * @param {function} [x0] - optional scale for the axis
+   * @returns {void}
    */
   makeAxisX(padding = 0, x0) {
     // Create the scale for the X axis
@@ -302,6 +325,7 @@ class Graph {
 
   /**
    * Create the Y axis of the graph.
+   * @returns {void}
    */
   makeAxisY() {
     const maxValuesY = [];
@@ -414,6 +438,7 @@ class Graph {
 
   /**
    * Create the legend of the graph.
+   * @returns {void}
    */
   makeLegend() {
     let toggleLegend = true;
@@ -484,30 +509,32 @@ class Graph {
 
   /**
    * Create the title of the graph.
+   * @returns {void}
    */
   makeTitle() {
-    if (this.config.title.visible) {
-      const graphTitle = d3.select(`.${this.classElement}`).select('.igj-title');
-      if (graphTitle.empty()) {
-        this.svg.append('text')
-          .attr('x', this.config.width / 2)
-          .attr('y', -(this.config.margin.top / 1.8))
-          .attr('class', 'igj-title')
-          .attr('text-anchor', 'middle')
-          .text(this.config.title.value);
-      } else {
-        graphTitle
-          .text(this.config.title.value)
-          .transition()
-          .delay(50)
-          .duration(250)
-          .attr('x', `${this.config.width / 2}`);
-      }
+    const graphTitle = d3.select(`.${this.classElement}`).select('.igj-title');
+    if (graphTitle.empty()) {
+      this.svg.append('text')
+        .attr('x', this.config.width / 2)
+        .attr('y', -(this.config.margin.top / 1.8))
+        .attr('class', 'igj-title')
+        .attr('text-anchor', 'middle')
+        .text(this.config.title.value);
+    } else {
+      graphTitle
+        .text(this.config.title.value)
+        .transition()
+        .delay(50)
+        .duration(250)
+        .attr('x', `${this.config.width / 2}`);
     }
   }
 
   /**
    * Create the tooltip the graph.
+   * @returns {void}
+   * @param {array} [keys=[]] - the keys to retrieve X Y values
+   * @param {array} [labels=[]] - the labels of the tooltip
    */
   makeTooltip(keys = [], labels = []) {
     let keyX = this.keyX;
@@ -603,6 +630,8 @@ class Graph {
 
   /**
    * Enable zoom in the graph.
+   * @param {function} f - the zoom handler function.
+   * @returns {void}
    */
   enableZoom(f) {
     // Define path to clip content when zooming
@@ -626,6 +655,8 @@ class Graph {
 
   /**
     * Listen to window resizing.
+    * @param {function} f - the window resize handler function.
+    * @returns {void}
     */
   scaleOnResize(f) {
     d3.select(window).on('resize', f);
@@ -633,7 +664,8 @@ class Graph {
 
   /**
    * Create the gridlines for the horizontal axis.
-   * @return {Function} gridlinesX - The gridlines of the X axis.
+   * @param {function} [scale = this.x] - The X axis scale.
+   * @return {function} - The gridlines of the X axis.
    */
   makeGridlinesX(scale = this.x) {
     const gridlinesX = d3.axisBottom(scale)
@@ -651,8 +683,9 @@ class Graph {
   }
 
   /**
-  * Create the gridlines for the vertical axis.
-   * @return {Function} gridlinesY - The gridlines of the Y axis.
+   * Create the gridlines for the vertical axis.
+   * @param {function} [scale = this.y] - The Y axis scale.
+   * @return {function} - The gridlines of the Y axis.
    */
   makeGridlinesY(scale = this.y) {
     const gridlinesY = d3.axisLeft(scale)
@@ -666,7 +699,6 @@ class Graph {
         [0, Math.round(0.25 * maxY), Math.round(0.5 * maxY), Math.round(0.75 * maxY), maxY]
       );
     }
-
     return gridlinesY;
   }
 }

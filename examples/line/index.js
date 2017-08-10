@@ -27,11 +27,11 @@ import dataCDS from '../data/data';
 import { LineGraph } from '../../src/index';
 
 const data = dataCDS.response1;
-const keyType = data[Object.keys(data)[0]].keyType;
+const keyType = data[Object.keys(data)[0]].key_type;
 const cfg = config[keyType];
 const elementClass = 'line_stats_week';
 
 // LineGraph
-const g1 = new LineGraph(cfg, data, elementClass);
-g1.render();
-// setTimeout(() => g1.update(newData), 3000);
+const g = new LineGraph(data, elementClass, cfg);
+g.render();
+// setTimeout(() => g.update(newData), 3000);

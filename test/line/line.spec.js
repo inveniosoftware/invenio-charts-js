@@ -25,7 +25,6 @@
 import testData from '../data/data';
 import LineGraph from '../../src/line/line';
 import config from '../../examples/line/config';
-// import validSVG from './validator';
 
 let graph = {};
 const data = testData.line;
@@ -90,11 +89,6 @@ describe('D3 Line initial render', () => {
         done();
       }, 500);
   });
-
-  // Only succeeds in Chrome browser
-  // it('should create a specific SVG element', () => {
-  //   expect(getSVG().node().parentNode.innerHTML).toBe(validSVG);
-  // });
 
   it('should contain an SVG element', () => {
     expect(getSVG().node()).not.toBe(null);

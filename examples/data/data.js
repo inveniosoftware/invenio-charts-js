@@ -694,7 +694,7 @@ dataCDS.multipleStatisticsPerCountry = [
 dataCDS.response1 = {
   "downloads": {
     "type": "bucket",
-    "keyType": "date",
+    "key_type": "date",
     "interval": "week",
     "buckets": [
       {
@@ -957,7 +957,7 @@ dataCDS.response1 = {
 dataCDS.response2 = {
   "pageviews": {
     "type": "bucket",
-    "keyType": "other",
+    "key_type": "other",
     "buckets": [
         {
            "key": 'CH',
@@ -1093,7 +1093,7 @@ dataCDS.response2 = {
 dataCDS.response3 = {
   "pageviews": {
     "type": "bucket",
-    "keyType": "other",
+    "key_type": "other",
     "buckets": [
       {
          term:  'CH',

@@ -95,11 +95,13 @@ config.date = {
     }
   },
   title: {
-    visible: true,
+    visible: false,
     value: 'Stats per week'
   },
   colorScale: 'schemeCategory10',
-  tooltip: true,
+  tooltip: {
+    enabled: true
+  },
   legend: {
     visible: true,
     position: 'bottom'
@@ -188,7 +190,9 @@ config.other = {
     value: 'Stats per country'
   },
   colorScale: 'schemeCategory10',
-  tooltip: true,
+  tooltip: {
+    enabled: true
+  },
   legend: {
     visible: true,
     position: 'bottom'

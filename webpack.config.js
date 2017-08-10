@@ -56,7 +56,7 @@ const libConfig = {
     'd3-tip': 'd3Tip',
     'd3-svg-legend': 'legendColor'
   },
-  watch: true,
+  watch: false,
   module: moduleLoaders,
   plugins: [
     new FriendlyErrorsWebpackPlugin(),

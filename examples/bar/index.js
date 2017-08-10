@@ -27,11 +27,11 @@ import dataCDS from '../data/data';
 import { BarGraph } from '../../src/index';
 
 const data = dataCDS.response2;
-const keyType = data[Object.keys(data)[0]].keyType;
+const keyType = data[Object.keys(data)[0]].key_type;
 const cfg = config[keyType];
 const elementClass = 'pageviews_country';
 
 // BarGraph
-const g = new BarGraph(cfg, data, elementClass);
+const g = new BarGraph(data, elementClass, cfg);
 g.render();
 // setTimeout(() => g.update(newData), 3000);

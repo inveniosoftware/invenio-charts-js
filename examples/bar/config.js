@@ -26,14 +26,14 @@ const config = {};
 
 // For keyType : other
 config.other = {
+  graph: {
+    type: 'bar'
+  },
   margin: {
     top: 50,
     right: 40,
     bottom: 70,
     left: 60
-  },
-  graph: {
-    type: 'bar'
   },
   axis: {
     x: {
@@ -86,11 +86,13 @@ config.other = {
     }
   },
   title: {
-    visible: true,
-    value: 'Count per Country'
+    value: 'Count per Country',
+    visible: true
   },
   colorScale: 'schemeCategory20',
-  tooltip: true,
+  tooltip: {
+    enabled: true
+  },
   legend: {
     visible: false,
     position: 'side'

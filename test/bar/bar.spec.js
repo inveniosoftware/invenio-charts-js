@@ -25,7 +25,6 @@
 import testData from '../data/data';
 import BarGraph from '../../src/bar/bar';
 import config from '../../examples/bar/config';
-// import validSVG from './validator';
 
 let graph = {};
 const data = testData.bar;
@@ -87,11 +86,6 @@ describe('D3 Bar initial render', () => {
       }, 750);
   });
 
-  // Only succeeds in Chrome browser
-  // it('should create a specific SVG element', () => {
-  //   expect(getSVG().node().parentNode.innerHTML).toBe(validSVG);
-  // });
-
   it('should contain an SVG element', () => {
     expect(getSVG().node()).not.toBe(null);
   });
@@ -118,7 +112,6 @@ describe('D3 Bar initial render', () => {
   it('should create 5 bars with correct height', () => {
     let yScale = graph.getYScale();
     expect(getBars().size()).toEqual(5);
-    console.log(parseData(data));
     parseData(data).forEach((d, i) => {
       const bars = d3.select(`.${className}`).select('svg').selectAll(`.igj-bar.bar_${i}`);
       for (let idx = 0 ; idx < d.data.length; idx++) {
