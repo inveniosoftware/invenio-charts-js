@@ -35,3 +35,6 @@ const elementClass = 'line_stats_week';
 const g = new LineGraph(data, elementClass, cfg);
 g.render();
 // setTimeout(() => g.update(newData), 3000);
+
+const g1 = new LineGraph(data, 'line1_stats_week', cfg);
+g1.render();

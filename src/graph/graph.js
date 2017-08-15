@@ -659,7 +659,10 @@ class Graph {
     * @returns {void}
     */
   scaleOnResize(f) {
-    d3.select(window).on('resize', f);
+    Graph.resizeHandlers.push(f);
+    d3.select(window).on('resize', () => {
+      Graph.resizeHandlers.forEach(h => h());
+    });
   }
 
   /**
@@ -702,5 +705,8 @@ class Graph {
     return gridlinesY;
   }
 }
+
+// Create a static member for registering resize event handlers
+Graph.resizeHandlers = [];
 
 export default Graph;
