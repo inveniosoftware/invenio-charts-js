@@ -43,9 +43,9 @@ class Graph {
    */
   constructor(input, classElement, config) {
     // Setters
+    this.classElement = classElement;
     this.config = config;
     this.input = input;
-    this.classElement = classElement;
 
     // Set the keys for the axis based on the given configuration
     this.keyX = this.config.axis.x.mapTo;
@@ -177,11 +177,10 @@ class Graph {
 
   /**
    * Create the X axis of the graph.
-   * @param {number} [padding = 0] - optional padding
    * @param {function} [x0] - optional scale for the axis
    * @returns {void}
    */
-  makeAxisX(padding = 0, x0) {
+  makeAxisX(x0) {
     // Create the scale for the X axis
     if (typeof (x0) !== 'undefined') {
       this.x = x0;
@@ -200,7 +199,7 @@ class Graph {
     } else {
       this.x.domain(this.input[0].data.map(d => _.get(d, this.keyX)));
       this.x.rangeRound([0, this.config.width]);
-      this.x.padding(padding);
+      this.x.padding(this.config.axis.x.options.padding);
     }
 
     // Create the X-axis (horizontal)
@@ -243,12 +242,13 @@ class Graph {
     axisX
       .transition()
       .delay(50)
-      .duration(250)
-      .attr('transform', `translate(0, ${this.config.height})`);
+      .duration(250);
 
-    // Translate to the left to align ticks, when padding is not specified
-    if (padding === 0 && this.config.axis.x.scale.type === 'scaleBand') {
+    // When zero-padded in band scale, move ticks to the left to align
+    if (this.config.axis.x.options.padding === 0 && this.config.axis.x.scale.type === 'scaleBand') {
       axisX.attr('transform', `translate(-${this.x.step() / 2}, ${this.config.height})`);
+    } else {
+      axisX.attr('transform', `translate(0, ${this.config.height})`);
     }
 
     // If specified, add gridlines along the X axis
@@ -272,7 +272,7 @@ class Graph {
       gridX.attr('transform', `translate(0, ${this.config.height})`);
 
       // Translate to the left to align ticks, when padding is not specified
-      if (padding === 0 && this.config.axis.x.scale.type === 'scaleBand') {
+      if (this.config.axis.x.options.padding === 0 && this.config.axis.x.scale.type === 'scaleBand') {
         gridX.attr('transform', `translate(-${this.x.step() / 2}, ${this.config.height})`);
       }
     }

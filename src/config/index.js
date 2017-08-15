@@ -21,13 +21,8 @@
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
 
-import './styles.scss';
-import dataCDS from '../data/data';
-import { LineGraph } from '../../src/index';
+import BarGraphConfig from './barConfig';
+import GroupedBarGraphConfig from './groupedBarConfig';
+import LineGraphConfig from './lineConfig';
 
-// Initialize parameters
-const data = dataCDS.response1;
-const elementClass = 'line_stats_week';
-
-// Line Graph
-new LineGraph(data, elementClass).render();
+export { BarGraphConfig, GroupedBarGraphConfig, LineGraphConfig };

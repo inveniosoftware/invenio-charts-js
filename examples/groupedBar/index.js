@@ -22,16 +22,12 @@
  */
 
 import './styles.scss';
-import config from './config';
 import dataCDS from '../data/data';
 import { GroupedBarGraph } from '../../src/index';
 
+// Initialize parameters
 const data = dataCDS.response3;
-const keyType = data[Object.keys(data)[0]].key_type;
-const cfg = config[keyType];
 const elementClass = 'grouped_country';
 
-// Grouped Bar Chart
-const g = new GroupedBarGraph(data, elementClass, cfg);
-g.render();
-// setTimeout(() => g.update(newData), 3000);
+// Grouped Bar Graph
+new GroupedBarGraph(data, elementClass).render();

@@ -27,12 +27,25 @@
 import _ from 'lodash';
 import * as d3 from 'd3';
 import Graph from '../graph/graph';
+import { LineGraphConfig } from '../config/';
 
 /**
  * Class representing a line graph.
  * @extends Graph
  */
 class LineGraph extends Graph {
+  /**
+   * Create a line graph.
+   * @constructor
+   * @param {Object} input - The input data passed to the graph.
+   * @param {String} classElement - The class of the DOM element placeholder.
+   * @param {Object} config - The custom JSON configuration of the graph.
+   */
+  constructor(input, classElement, config = {}) {
+    const keyType = input[Object.keys(input)[0]].key_type;
+    super(input, classElement, Object.assign({}, LineGraphConfig[keyType], config));
+  }
+
   /**
    * Instantiate and render a line graph.
    * @function

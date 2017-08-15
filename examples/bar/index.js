@@ -22,16 +22,12 @@
  */
 
 import './styles.scss';
-import config from './config';
 import dataCDS from '../data/data';
 import { BarGraph } from '../../src/index';
 
+// Initialize parameters
 const data = dataCDS.response2;
-const keyType = data[Object.keys(data)[0]].key_type;
-const cfg = config[keyType];
 const elementClass = 'pageviews_country';
 
-// BarGraph
-const g = new BarGraph(data, elementClass, cfg);
-g.render();
-// setTimeout(() => g.update(newData), 3000);
+// Bar Graph
+new BarGraph(data, elementClass).render();
