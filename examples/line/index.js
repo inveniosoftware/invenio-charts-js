@@ -21,13 +21,12 @@
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
 
-import './styles.scss';
 import dataCDS from '../data/data';
 import { LineGraph } from '../../src/index';
 
 // Initialize parameters
 const data = dataCDS.response1;
-const elementClass = 'line_stats_week';
+const elementClass = 'stats_per_week';
 
 // Line Graph
 new LineGraph(data, elementClass).render();

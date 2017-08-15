@@ -26,6 +26,7 @@
 
 import * as d3 from 'd3';
 import _ from 'lodash';
+import '../styles/styles.scss';
 import isOut from '../util/util';
 
 require('d3-extended')(d3);
@@ -455,9 +456,10 @@ class Graph {
 
       // Create the legend
       const colorLegend = d3.legendColor()
-        .shape('path', d3.symbol().type(d3.symbolSquare).size(200)())
+        .shape('rect')
+        .shapeWidth(this.config.width > this.config.resize.breakPointX ? 30 : 20)
         .orient(this.config.legend.position === 'bottom' ? 'horizontal' : 'vertical')
-        .shapePadding(this.config.legend.position === 'bottom' ? 40 : 15)
+        .shapePadding(this.config.legend.position === 'bottom' ? 35 : 15)
         .scale(legendScale)
         .on('cellclick', (d) => {
           const idx = legendValues.indexOf(d);
@@ -489,16 +491,16 @@ class Graph {
         this.svg.select('.igj-legend')
           .transition()
           .delay(50)
-          .duration(250)
+          .duration(200)
           .attr('transform', `translate(
             ${(this.config.width - legendBox.width) / 2},
             ${this.config.height + (this.config.margin.bottom / 2)}
           )`);
-      } else {
+      } else if (this.config.legend.position === 'side') {
         this.svg.select('.igj-legend')
           .transition()
           .delay(50)
-          .duration(250)
+          .duration(200)
           .attr('transform', `translate(
             ${this.config.width - legendBox.width},
             ${this.config.margin.top}
@@ -515,19 +517,19 @@ class Graph {
     const graphTitle = d3.select(`.${this.classElement}`).select('.igj-title');
     if (graphTitle.empty()) {
       this.svg.append('text')
-        .attr('x', this.config.width / 2)
+        .attr('x', `${this.config.width / 2}`)
         .attr('y', -(this.config.margin.top / 1.8))
         .attr('class', 'igj-title')
         .attr('text-anchor', 'middle')
         .text(this.config.title.value);
-    } else {
-      graphTitle
-        .text(this.config.title.value)
-        .transition()
-        .delay(50)
-        .duration(250)
-        .attr('x', `${this.config.width / 2}`);
     }
+
+    graphTitle
+      .text(this.config.title.value)
+      .transition()
+      .delay(50)
+      .duration(250)
+      .attr('x', `${this.config.width / 2}`);
   }
 
   /**

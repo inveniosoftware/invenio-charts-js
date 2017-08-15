@@ -21,13 +21,12 @@
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
 
-import './styles.scss';
 import dataCDS from '../data/data';
 import { GroupedBarGraph } from '../../src/index';
 
 // Initialize parameters
 const data = dataCDS.response3;
-const elementClass = 'grouped_country';
+const elementClass = 'stats_per_country';
 
 // Grouped Bar Graph
 new GroupedBarGraph(data, elementClass).render();

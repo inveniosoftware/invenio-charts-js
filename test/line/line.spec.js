@@ -24,16 +24,16 @@
 /* eslint-disable */
 import testData from '../data/data';
 import LineGraph from '../../src/line/line';
-import config from '../../examples/line/config';
+import { LineGraphConfig } from '../../src/config';
 
 let graph = {};
 const data = testData.line;
 const dataUpdate = testData.lineUpdate;
-const conf = config.date;
+const conf = LineGraphConfig.date;
 const title = conf.title.value;
 const testWidth = 600;
 const testHeight = 450;
-const className = 'pageviews_month';
+const className = 'stats_per_week';
 const style = `width: ${testWidth}px; height: ${testHeight}px;`;
 
 describe('D3 Line initial render', () => {
@@ -83,7 +83,8 @@ describe('D3 Line initial render', () => {
   beforeAll(done => {
       let fixture = `<div class='${className}' style='${style}'></div>`;
       document.getElementsByTagName('body')[0].innerHTML += fixture;
-      graph = new LineGraph(conf, data, className);
+      graph = new LineGraph(data, className);
+      spyOn(graph, 'update');
       graph.render();
       setTimeout(() => {
         done();
@@ -173,6 +174,7 @@ describe('D3 Line initial render', () => {
     const event = document.createEvent('MouseEvent');
     event.initMouseEvent('wheel', true, true, window);
     getCircles().nodes()[0].dispatchEvent(event);
+    expect(graph.update).toHaveBeenCalled();
   });
 
   it('should listen to legend click event', () => {
@@ -186,7 +188,6 @@ describe('D3 Line initial render', () => {
 
   describe('D3 Line update', () => {
     beforeAll(done => {
-      spyOn(graph, 'update');
       let parsedUpdate = parseData(dataUpdate);
       graph.update(parsedUpdate);
       setTimeout(() => {

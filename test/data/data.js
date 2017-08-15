@@ -28,7 +28,7 @@ const testData = {};
 testData.line = {
   "downloads": {
     "type": "bucket",
-    "keyType": "date",
+    "key_type": "date",
     "interval": "week",
     "buckets": [
       {
@@ -100,7 +100,7 @@ testData.line = {
 testData.lineUpdate = {
   "downloads": {
     "type": "bucket",
-    "keyType": "date",
+    "key_type": "date",
     "interval": "week",
     "buckets": [
       {
@@ -174,7 +174,7 @@ testData.lineUpdate = {
 testData.bar = {
   "pageviews": {
     "type": "bucket",
-    "keyType": "other",
+    "key_type": "other",
     "buckets": [
         {
            "key": 'CH',
@@ -202,7 +202,7 @@ testData.bar = {
 testData.barUpdate = {
   "pageviews": {
     "type": "bucket",
-    "keyType": "other",
+    "key_type": "other",
     "buckets": [
         {
            "key": 'CH',
@@ -232,7 +232,7 @@ testData.barUpdate = {
 testData.groupedBar = {
   "pageviews": {
     "type": "bucket",
-    "keyType": "other",
+    "key_type": "other",
     "buckets": [
       {
          term:  'CH',
@@ -312,7 +312,7 @@ testData.groupedBar = {
 testData.groupedBarUpdate = {
    "pageviews": {
      "type": "bucket",
-     "keyType": "other",
+     "key_type": "other",
      "buckets": [
        {
           term:  'CH',

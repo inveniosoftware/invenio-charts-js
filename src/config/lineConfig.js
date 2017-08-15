@@ -96,7 +96,7 @@ LineGraphConfig.date = {
     }
   },
   title: {
-    visible: false,
+    visible: true,
     value: 'Stats per week'
   },
   colorScale: 'schemeCategory10',

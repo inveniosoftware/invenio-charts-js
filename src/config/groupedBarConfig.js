@@ -96,7 +96,7 @@ GroupedBarGraphConfig.other = {
   },
   legend: {
     visible: true,
-    position: 'bottom'
+    position: 'side'
   },
   resize: {
     enabled: true,

@@ -24,19 +24,18 @@
 /* eslint-disable */
 import testData from '../data/data';
 import GroupedBarGraph from '../../src/groupedBar/groupedBar';
-import config from '../../examples/groupedBar/config';
-// import validSVG from './validator';
+import { GroupedBarGraphConfig } from '../../src/config';
 
 let graph = {};
 const data = testData.groupedBar;
 const dataUpdate = testData.groupedBarUpdate;
-const conf = config.other;
+const conf = GroupedBarGraphConfig.other;
 const title = conf.title.value;
 const labelX = conf.axis.x.options.label.value;
 const labelY = conf.axis.y.options.label.value;
 const testWidth = 600;
 const testHeight = 450;
-const className = 'multi_country';
+const className = 'stats_per_country';
 const style = `width: ${testWidth}px; height: ${testHeight}px;`;
 
 describe('D3 GroupedBar initial render', () => {
@@ -87,7 +86,7 @@ describe('D3 GroupedBar initial render', () => {
   beforeAll(done => {
       let fixture = `<div class="${className}" style="${style}"></div>`;
       document.getElementsByTagName('body')[0].innerHTML += fixture;
-      graph = new GroupedBarGraph(conf, data, className);
+      graph = new GroupedBarGraph(data, className);
       graph.render();
       setTimeout(() => {
         done();

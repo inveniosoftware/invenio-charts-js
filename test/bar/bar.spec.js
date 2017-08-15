@@ -24,19 +24,19 @@
 /* eslint-disable */
 import testData from '../data/data';
 import BarGraph from '../../src/bar/bar';
-import config from '../../examples/bar/config';
+import { BarGraphConfig } from '../../src/config';
 
 let graph = {};
 const data = testData.bar;
 const dataUpdate = testData.barUpdate;
-const conf = config.other;
+const conf = BarGraphConfig.other;
 const title = conf.title.value;
 const labelX = conf.axis.x.options.label.value;
 const labelY = conf.axis.y.options.label.value;
 const marginVertical = conf.margin.top + conf.margin.bottom;
 const testWidth = 600;
 const testHeight = 450;
-const className = 'pageviews_country';
+const className = 'count_per_country';
 const style = `width: ${testWidth}px; height: ${testHeight}px;`;
 
 describe('D3 Bar initial render', () => {
@@ -79,7 +79,8 @@ describe('D3 Bar initial render', () => {
   beforeAll(done => {
       let fixture = `<div class="${className}" style="${style}"></div>`;
       document.getElementsByTagName('body')[0].innerHTML += fixture;
-      graph = new BarGraph(conf, data, className);
+      graph = new BarGraph(data, className);
+      spyOn(graph, 'update');
       graph.render();
       setTimeout(() => {
         done();
@@ -141,9 +142,18 @@ describe('D3 Bar initial render', () => {
     expect(+tooltip.style.opacity).toEqual(0);
   });
 
+  it('should listen to zoom event', () => {
+    // The MouseEvent() constructor is not supported in PhantomJS
+    // const event = new MouseEvent('wheel');
+    // Using initMouseEvent() instead - deprecated
+    const event = document.createEvent('MouseEvent');
+    event.initMouseEvent('wheel', true, true, window);
+    getBars().nodes()[0].dispatchEvent(event);
+    expect(graph.update).toHaveBeenCalled();
+  });
+
   describe('D3 Bar update', () => {
     beforeAll(done => {
-      spyOn(graph, 'update');
       graph.update(dataUpdate);
       setTimeout(() => {
         done();

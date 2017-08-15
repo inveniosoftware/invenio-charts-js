@@ -42,8 +42,14 @@ class BarGraph extends Graph {
    * @param {Object} config - The custom JSON configuration of the graph.
    */
   constructor(input, classElement, config = {}) {
+    // Get the key_type from the input data
     const keyType = input[Object.keys(input)[0]].key_type;
-    super(input, classElement, Object.assign({}, BarGraphConfig[keyType], config));
+
+    // Merge the configuration objects, in case the default one is overridden
+    _.merge(BarGraphConfig[keyType], config);
+
+    // Call the constructor of the parent class with the required params
+    super(input, classElement, BarGraphConfig[keyType]);
   }
 
   /**
