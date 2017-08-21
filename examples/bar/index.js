@@ -26,7 +26,7 @@ import { BarGraph } from '../../src/index';
 
 // Initialize parameters
 const data = dataCDS.response2;
-const elementClass = 'count_per_country';
+const elementClass = 'bar-graph';
 
 // Bar Graph
 new BarGraph(data, elementClass).render();

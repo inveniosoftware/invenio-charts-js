@@ -74,35 +74,25 @@ class LineGraph extends Graph {
     super.makeAxisY();
 
     // If configured, add a title to the graph
-    if (this.config.title.visible) {
-      super.makeTitle();
-    }
+    if (this.config.title.visible) super.makeTitle();
 
     // If configured, add a legend to the graph
-    if (this.config.legend.visible) {
-      super.makeLegend();
-    }
+    if (this.config.legend.visible) super.makeLegend();
 
     // If configured, add a tooltip to the graph
-    if (this.config.tooltip.enabled) {
-      super.makeTooltip();
-    }
+    if (this.config.tooltip.enabled) super.makeTooltip();
 
     /**
      * If configured, enable zooming and panning
      * Pass the desired zoom handler function as parameter
      */
-    if (this.config.zoom.enabled) {
-      super.enableZoom(zoomed);
-    }
+    if (this.config.zoom.enabled) super.enableZoom(zoomed);
 
     /**
      * If configured, enable resizing
      * Pass the desired resize handler function as parameter
      */
-    if (this.config.resize.enabled) {
-      super.scaleOnResize(resized);
-    }
+    if (this.config.resize.enabled) super.scaleOnResize(resized);
 
     // Iterate over input data
     this.input.forEach((outer, i) => {
@@ -298,21 +288,19 @@ class LineGraph extends Graph {
     super.initialize();
 
     // If needed, update the data of the line graph
-    if (Object.keys(newData) > 0) {
-      super.updateData(newData);
-    }
+    if (Object.keys(newData) > 0) super.updateData(newData);
 
-    // Create the horizontal axis
+    // Update the horizontal axis, passing the desired padding
     super.makeAxisX();
 
-    // Create the vertical axis
+    // Update the vertical axis
     super.makeAxisY();
 
-    // Create the title
-    super.makeTitle();
+    // If configured, update the title of the graph
+    if (this.config.title.visible) super.makeTitle();
 
-    // Create the legend
-    super.makeLegend();
+    // If configured, update the legend of the graph
+    if (this.config.legend.visible) super.makeLegend();
 
     // If configured, update the dimensions of the clip path element
     if (this.config.zoom.enabled) {

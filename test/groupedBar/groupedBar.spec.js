@@ -84,9 +84,30 @@ describe('D3 GroupedBar initial render', () => {
   }
 
   beforeAll(done => {
-      let fixture = `<div class="${className}" style="${style}"></div>`;
+      const fixture = `<div class="${className}" style="${style}"></div>`;
+      const customConfig = {
+        axis: {
+          x: {
+            options: {
+              label: {
+                visible: true
+              }
+            }
+          },
+          y: {
+            options: {
+              label: {
+                visible: true
+              }
+            }
+          }
+        },
+        title: {
+          visible: true
+        }
+      }
       document.getElementsByTagName('body')[0].innerHTML += fixture;
-      graph = new GroupedBarGraph(data, className);
+      graph = new GroupedBarGraph(data, className, customConfig);
       graph.render();
       setTimeout(() => {
         done();
@@ -111,6 +132,7 @@ describe('D3 GroupedBar initial render', () => {
   });
 
   it('should create X and Y labels', () => {
+    expect(getLabel('X').node().textContent).toContain(labelX);
     expect(getLabel('Y').node().textContent).toContain(labelY);
   });
 

@@ -77,9 +77,27 @@ describe('D3 Bar initial render', () => {
   }
 
   beforeAll(done => {
-      let fixture = `<div class="${className}" style="${style}"></div>`;
+      const fixture = `<div class="${className}" style="${style}"></div>`;
+      const customConfig = {
+        axis: {
+          x: {
+            options: {
+              label: {
+                visible: true
+              }
+            }
+          },
+          y: {
+            options: {
+              label: {
+                visible: true
+              }
+            }
+          }
+        }
+      }
       document.getElementsByTagName('body')[0].innerHTML += fixture;
-      graph = new BarGraph(data, className);
+      graph = new BarGraph(data, className, customConfig);
       spyOn(graph, 'update');
       graph.render();
       setTimeout(() => {
@@ -94,10 +112,6 @@ describe('D3 Bar initial render', () => {
   it('should create X and Y gridlines', () => {
     expect(getGrid('X').size()).toEqual(1);
     expect(getGrid('Y').size()).toEqual(1);
-  });
-
-  it('should create title', () => {
-    expect(getTitle().node().textContent).toContain(title);
   });
 
   it('should create X and Y labels', () => {

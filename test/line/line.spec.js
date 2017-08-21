@@ -81,9 +81,15 @@ describe('D3 Line initial render', () => {
   }
 
   beforeAll(done => {
-      let fixture = `<div class='${className}' style='${style}'></div>`;
+      const fixture = `<div class='${className}' style='${style}'></div>`;
+      const customConfig = {
+        title: {
+          visible: true
+        }
+      }
       document.getElementsByTagName('body')[0].innerHTML += fixture;
-      graph = new LineGraph(data, className);
+
+      graph = new LineGraph(data, className,customConfig);
       spyOn(graph, 'update');
       graph.render();
       setTimeout(() => {

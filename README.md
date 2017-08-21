@@ -48,7 +48,7 @@ $ xdg-open docs/index.html
 
 ## Usage
 
-Getting started [guide](https://github.com/CERNDocumentServer/invenio-statistics-js/1_started.md)
+Getting started [guide](https://inveniosoftware.github.io/invenio-statistics-js/examples/tutorials/1_started.html)
 
 ## License
 

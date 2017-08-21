@@ -26,7 +26,7 @@ import { LineGraph } from '../../src/index';
 
 // Initialize parameters
 const data = dataCDS.response1;
-const elementClass = 'stats_per_week';
+const elementClass = 'line-graph';
 
 // Line Graph
 new LineGraph(data, elementClass).render();

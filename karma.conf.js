@@ -16,9 +16,8 @@ module.exports = (config) => {
       'karma-webpack',
       'karma-jasmine',
       'karma-coverage',
-      'karma-phantomjs-launcher',
       'karma-coverage-istanbul-reporter',
-      'karma-sourcemap-loader'
+      'karma-phantomjs-launcher'
     ],
 
     // list of files / patterns to load in the browser
@@ -38,7 +37,7 @@ module.exports = (config) => {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'test/**/*.spec.js': ['webpack', 'sourcemap'],
+      'test/**/*.spec.js': ['webpack'],
       'src/**/*.js': ['webpack', 'coverage']
     },
 
@@ -49,9 +48,8 @@ module.exports = (config) => {
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     reporters: ['progress', 'coverage-istanbul'],
-
     coverageIstanbulReporter: {
-      reports: ['html', 'lcovonly'],
+      reports: ['html', 'lcovonly', 'text-summary'],
       dir: path.join(__dirname, 'coverage'),
       fixWebpackSourcePaths: true,
       skipFilesWithNoCoverage: true,

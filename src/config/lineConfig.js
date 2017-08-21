@@ -78,7 +78,7 @@ LineGraphConfig.date = {
       },
       options: {
         label: {
-          value: 'Count',
+          value: 'LabelY',
           visible: false
         },
         line: {
@@ -96,8 +96,8 @@ LineGraphConfig.date = {
     }
   },
   title: {
-    visible: true,
-    value: 'Stats per week'
+    value: 'Title',
+    visible: false
   },
   colorScale: 'schemeCategory10',
   tooltip: {
@@ -141,12 +141,13 @@ LineGraphConfig.other = {
       mapTo: 'key',
       scale: {
         type: 'scaleBand',
-        padding: 0.2
+        padding: 0.2,
+        format: null
       },
       options: {
         padding: 0,
         label: {
-          value: 'Country',
+          value: 'LabelX',
           visible: false
         },
         line: {
@@ -166,11 +167,11 @@ LineGraphConfig.other = {
       mapTo: 'value',
       scale: {
         type: 'scaleLinear',
-        format: ''
+        format: null
       },
       options: {
         label: {
-          value: 'Downloads',
+          value: 'LabelY',
           visible: false
         },
         line: {
@@ -188,8 +189,8 @@ LineGraphConfig.other = {
     }
   },
   title: {
-    visible: true,
-    value: 'Stats per country'
+    value: 'Title',
+    visible: false
   },
   colorScale: 'schemeCategory10',
   tooltip: {

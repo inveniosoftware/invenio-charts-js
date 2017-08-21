@@ -26,8 +26,6 @@
 
 import * as d3 from 'd3';
 import _ from 'lodash';
-import '../styles/styles.scss';
-import isOut from '../util/util';
 
 require('d3-extended')(d3);
 
@@ -206,8 +204,8 @@ class Graph {
     // Create the X-axis (horizontal)
     this.xAxis = d3.axisBottom(this.x);
 
-    // If timescale, set the format of the ticks
-    if (this.config.axis.x.scale.type === 'scaleTime') {
+    // If specified, set the format of the ticks
+    if (this.config.axis.x.scale.format !== null) {
       this.xAxis.tickFormat(d3.timeFormat(this.config.axis.x.scale.format));
     }
 
@@ -471,7 +469,8 @@ class Graph {
           selectedElements
             .transition()
             .duration(250)
-            .attr('style', toggleLegend ? 'opacity: 1' : 'opacity: 0.3');
+            .attr('style', toggleLegend ? 'opacity: 1' : 'opacity: 0.3')
+            .style('cursor', 'pointer');
         });
 
       // Add the legend to the graph and change cursor
@@ -484,7 +483,8 @@ class Graph {
       }
 
       // Get the dimensions of the current legend
-      const legendBox = this.svg.select('.igj-legend').node().getBBox();
+      const legendBox = d3.select(`.${this.classElement}`)
+        .select('.igj-legend').node().getBBox();
 
       // Position the legend
       if (this.config.legend.position === 'bottom') {
@@ -552,6 +552,15 @@ class Graph {
       labelY = labels[1];
     }
 
+    // Helper function to calculate position of tooltip
+    function isOut(valX, valY, w, h) {
+      const out = {};
+      out.top = (valY / h) < 0.15;
+      out.left = (valX / w) < 0.1;
+      out.right = (valX / w) > 0.9;
+      return out;
+    }
+
     this.tooltip = d3.tip()
       .attr('class', `${this.classElement} igj-tip`)
       .offset((d) => {
@@ -609,16 +618,14 @@ class Graph {
         return dir;
       })
       .html((d) => {
-        let res = '';
-        if (this.config.axis.x.scale.type === 'scaleTime') {
+        let res = `
+          <strong>${labelX}:</strong>
+          ${_.get(d, keyX)}</br>`;
+        if (this.config.axis.x.scale.format !== null) {
           res = `
             <strong>${labelX}:</strong>
             ${d3.timeFormat(this.config.axis.x.scale.format)(_.get(d, keyX))}</br>
           `;
-        } else {
-          res = `
-              <strong>${labelX}:</strong>
-              ${_.get(d, keyX)}</br>`;
         }
         res += `
           <strong>${labelY}:</strong>
@@ -662,9 +669,9 @@ class Graph {
     */
   scaleOnResize(f) {
     Graph.resizeHandlers.push(f);
-    d3.select(window).on('resize', () => {
+    d3.select(window).on('resize', _.debounce(() => {
       Graph.resizeHandlers.forEach(h => h());
-    });
+    }, 150));
   }
 
   /**

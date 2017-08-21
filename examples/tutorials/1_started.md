@@ -25,5 +25,5 @@ a new classed `div` element will be created as the placeholder of the graph.*
 * A `JSON` object as the **configuration**. *If no configuration object is specified, the default one is used.*
 
 ## Usage
-* [Line Graph](https://github.com/CERNDocumentServer/invenio-statistics-js/2_line.md)
-* [Bar Graph](https://github.com/CERNDocumentServer/invenio-statistics-js/3_bar.md)
+* [Line Graph](https://inveniosoftware.github.io/invenio-statistics-js/examples/tutorials/2_line.html)
+* [Bar Graph](https://inveniosoftware.github.io/invenio-statistics-js/examples/tutorials/3_bar.html)

@@ -3,6 +3,8 @@ const path = require('path');
 const env = require('yargs').argv.env;
 const BannerWebpackPlugin = require('banner-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 /* Common module loaders for all configuration objects */
 const moduleLoaders = {
@@ -18,13 +20,10 @@ const moduleLoaders = {
     },
     {
       test: /\.scss$/,
-      use: [{
-        loader: 'style-loader'
-      }, {
-        loader: 'css-loader'
-      }, {
-        loader: 'sass-loader'
-      }]
+      use: ExtractTextPlugin.extract({
+        fallback: 'style-loader',
+        use: ['css-loader', 'sass-loader']
+      })
     },
     {
       test: /\.js$|\.jsx$/,
@@ -35,7 +34,7 @@ const moduleLoaders = {
         }
       },
       enforce: 'post',
-      exclude: [/test/, /node_modules/, /src\/util/]
+      exclude: [/test/, /node_modules/, /examples/]
     }
   ]
 };
@@ -43,7 +42,10 @@ const moduleLoaders = {
 /* Configuration for bundling the core library */
 const libConfig = {
   entry: {
-    lib: path.resolve(__dirname, './src/index.js')
+    lib: [
+      path.resolve(__dirname, './src/index.js'),
+      path.resolve(__dirname, './src/styles/styles.scss')
+    ]
   },
   devtool: 'inline-source-map',
   output: {
@@ -63,6 +65,10 @@ const libConfig = {
   module: moduleLoaders,
   plugins: [
     new FriendlyErrorsWebpackPlugin(),
+    new ExtractTextPlugin({
+      filename: 'styles.bundle.css'
+    }),
+    new UglifyJSPlugin(),
     new BannerWebpackPlugin({
       chunks: {
         lib: {
@@ -84,7 +90,7 @@ const examplesConfig = {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'examples/dist')
   },
-  watch: true,
+  watch: false,
   externals: {
     d3: 'd3',
     lodash: '_',

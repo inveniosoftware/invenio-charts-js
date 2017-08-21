@@ -97,14 +97,10 @@ class GroupedBarGraph extends Graph {
     super.makeAxisY();
 
     // If configured, add a title to the graph
-    if (this.config.title.visible) {
-      super.makeTitle();
-    }
+    if (this.config.title.visible) super.makeTitle();
 
     // If configured, add a legend to the graph
-    if (this.config.legend.visible) {
-      super.makeLegend();
-    }
+    if (this.config.legend.visible) super.makeLegend();
 
     // If configured, add a tooltip to the graph
     if (this.config.tooltip.enabled) {
@@ -114,9 +110,7 @@ class GroupedBarGraph extends Graph {
     }
 
     // If configured, enable resizing
-    if (this.config.resize.enabled) {
-      super.scaleOnResize(resized);
-    }
+    if (this.config.resize.enabled) super.scaleOnResize(resized);
 
     // Add multiple group elements, one for each outerKey
     const groups = this.svg.append('g')
@@ -183,9 +177,7 @@ class GroupedBarGraph extends Graph {
     super.initialize();
 
     // If needed, update the data of the grouped bar graph
-    if (Object.keys(newData) > 0) {
-      super.updateData(newData);
-    }
+    if (Object.keys(newData) > 0) super.updateData(newData);
 
     // Transform the parsed input data, after the update
     this.input.forEach((set, i) => {
@@ -208,21 +200,20 @@ class GroupedBarGraph extends Graph {
       .padding(0.05)
       .domain(keys).rangeRound([0, x0.bandwidth()]);
 
-    // Update the horizontal axis, passing the desired padding and the new outer scale
+    /**
+     * Update the horizontal axis, passing the desired padding and
+     * the new outer scale
+     */
     super.makeAxisX(x0);
 
     // Update the vertical axis
     super.makeAxisY();
 
     // If configured, update the title of the graph
-    if (this.config.title.visible) {
-      super.makeTitle();
-    }
+    if (this.config.title.visible) super.makeTitle();
 
     // If configured, update the legend of the graph
-    if (this.config.legend.visible) {
-      super.makeLegend();
-    }
+    if (this.config.legend.visible) super.makeLegend();
 
     // Select all existing group elements and bind with the new data
     const groups = d3.select(`.${this.classElement}`)

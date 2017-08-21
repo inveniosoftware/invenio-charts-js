@@ -21,6 +21,8 @@
  * as an Intergovernmental Organization or submit itself to any jurisdiction.
  */
 
+import _ from 'lodash';
+
 // Export default configuration object
 const GroupedBarGraphConfig = {};
 
@@ -45,7 +47,7 @@ GroupedBarGraphConfig.other = {
       options: {
         padding: 0.1,
         label: {
-          value: 'Country',
+          value: 'LabelX',
           visible: false
         },
         line: {
@@ -69,8 +71,8 @@ GroupedBarGraphConfig.other = {
       },
       options: {
         label: {
-          value: 'Count',
-          visible: true
+          value: 'LabelY',
+          visible: false
         },
         line: {
           visible: false
@@ -87,8 +89,8 @@ GroupedBarGraphConfig.other = {
     }
   },
   title: {
-    value: 'Statistics per Country',
-    visible: true
+    value: 'Title',
+    visible: false
   },
   colorScale: 'schemeCategory20',
   tooltip: {
@@ -104,5 +106,9 @@ GroupedBarGraphConfig.other = {
     breakPointY: 275
   }
 };
+
+// For keyType : date
+GroupedBarGraphConfig.date = _.cloneDeep(GroupedBarGraphConfig.other);
+GroupedBarGraphConfig.date.axis.x.scale.format = '%d %b %Y';
 
 export default GroupedBarGraphConfig;

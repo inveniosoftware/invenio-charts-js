@@ -26,7 +26,7 @@ import { GroupedBarGraph } from '../../src/index';
 
 // Initialize parameters
 const data = dataCDS.response3;
-const elementClass = 'stats_per_country';
+const elementClass = 'grouped-bar-graph';
 
 // Grouped Bar Graph
 new GroupedBarGraph(data, elementClass).render();
