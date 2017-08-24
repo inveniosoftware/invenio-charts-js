@@ -24,7 +24,7 @@ classed as `simple-line-graph` is the placeholder of our `SVG` graph and has fix
 
 ### 2. Fetching the data
 Assuming that we are working with `invenio-stats` as our backend, we have the following API and we'd like to
-display retrieved data using the `invenio-statistics-js`.
+display retrieved data using the `invenio-stats-js`.
 
 ```bash
 # Fetch the number of downloads for a specific file in a given time window
@@ -247,7 +247,7 @@ classed as `multi-line-graph` is the placeholder of our `SVG` graph and has fixe
 
 ### 2. Fetching the data
 Assuming that we are working with `invenio-stats` as our backend, we have the following API and we'd like to
-display retrieved data using the `invenio-statistics-js`.
+display retrieved data using the `invenio-stats-js`.
 
 ```bash
 # Fetch the number of downloads and number of views for a specific file in a given time window

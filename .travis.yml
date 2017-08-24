@@ -1,0 +1,69 @@
+# -*- coding: utf-8 -*-
+#
+# This file is part of Invenio.
+# Copyright (C) 2015, 2016 CERN.
+#
+# Invenio is free software; you can redistribute it
+# and/or modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# Invenio is distributed in the hope that it will be
+# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Invenio; if not, write to the
+# Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+# MA 02111-1307, USA.
+#
+# In applying this license, CERN does not
+# waive the privileges and immunities granted to it by virtue of its status
+# as an Intergovernmental Organization or submit itself to any jurisdiction.
+
+notifications:
+  email: false
+
+sudo: false
+
+language: node_js
+
+node_js:
+  - '6.11.2'
+  - '8.4.0'
+
+env:
+  global:
+    - GH_REF: 'github.com/inveniosoftware/invenio-stats-js.git'
+    - secure: "MVFBq+9KIgEHIbo/KmvQHTye9S8Ut0EFDe8qKDweZGJ26tEq0jQ1deVPRZ5winV2g1bYsA+2zhDSyPrM0W0Xa34qnFyV0FDyCo+RTQExPx7KujUF86h3t58dnmUoqhfIsIEQaKgw1z6FrgU5dZej3mg0lrIpOxDcSgZvTyCWyOsleNoV/DcQPyB05G1HFnEvtPRCpAxYYY0AKvAKouF1UqK06YZQM/KroPYobE7zTRTK0Pnl4aV5oOXzi9hVUn/vi5fEazExlI1kN3aA8Ordy8Gu5YwBJR82l9TV1l4uEFClhFhe1xcfwKrWkqzf6JTl4au68r90jfsvTun07zWO4gsVykpiFExoLxADOZ8JJ+/RosrHRJvD4ZWLBBUTSVXudgx61/EVyVqvYymBtu7TOkiVKD7F88s/JwfNACN8GuJdXIwQWsuG24i8mRBBmc8ajDMZc4wMf0gxASzgYlWrNgikuD5G0E7yZSwjlYaD/xXrQu+LrLah7F8HymJmmX+nrSSVbF0wO+ecSR+Hz5pOMtemqOHq5FIQWCjyQUAIVeFyUNzhXeQc0ulgjtJ9ate6MISJ5BQInvrArjPUCmvO0Ft3SuNYtSblYzRa8Bw708nEVwPsAc/D4qqx7wMWNIrliERS9UvrkkXsPhaQDPAoqJJWTr8K/4ieA6VsaM999M4="
+
+before_script:
+  - 'npm install -g webpack'
+
+before_install:
+  - 'npm i'
+
+script:
+  - 'npm test'
+
+after_success:
+  - cat ./coverage/lcov.info | node_modules/.bin/coveralls --verbose
+
+before_deploy:
+  - 'npm run-script build'
+
+deploy:
+  provider: npm
+  skip_cleanup: true
+  email: info@inveniosoftware.org
+  api_key:
+     secure: "SucdbmVFqC6tF6a9LWASdpVHOS2Wss23HdBrSXmP6KznQuDhs0mdNIaWety6BYvU7KG2yvmb+kMR1zAQ3p0BWbdP7HqkizLN4SNLJrchhIGJ3kgLAjlCG5BrNg1I5QS0KVca0VjowUVIr9+Cwbzzuma5XiLY0ibpVlNP5XJfjvxn19GA0oHp9eaPn7qEUts8ahYUEz7LLop313QUBMtBH7fr++erSaNtcjlbOlyQJZ6FBP3u3rheWljVhYjxAi5PgP544HkPDbyaQatSK6xosWJvQNr+SpdQ6DpgJnWs4xvtWNwppYNBZ3YZFY7Ek3kls7r9Anc1iuIh35Z9Ium87hU1M6g3wk8d31E4C7KybuYajhb0yDm9fykqkJvDUo4spsdXnexYZNjKQq9kVNsinF0rbdMFnSkvTbxj12AFbQTirg686rS87Vn1hc7t3yioyx1u4E/OUc9BH0o1SYX4JZtXaiK+MnghbzqTQsAJ3OZnB+/FD6eTDe+3To+2E/JdMfwCk4uWEY8dWR6qhHjYV7w/TRYmPk0uRMArQa3KP7+3XuEVy1y/2I9kjsFOuzvLWQ1umY0Z9LX+8p85q2rtWCy6bTRbWy6GM8I9jHX7R8ELX/36wCMSFVG5uSi8qBg580dQN4wHNlhzarRlXoA0qE4sPNLWTBP3OzoDmESUGw0="
+  on:
+    tags: true
+    repo: inveniosoftware/invenio-stats-js
+    branch: master
+    node: '6.11.2'
+
+after_deploy:
+  - ./deploy.sh

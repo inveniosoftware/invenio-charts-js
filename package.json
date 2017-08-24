@@ -1,5 +1,5 @@
 {
-  "name": "invenio-statistics-js",
+  "name": "invenio-stats-js",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -61,6 +61,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/CERNDocumentServer/invenio-statistics-js.git"
+    "url": "https://github.com/inveniosoftware/invenio-stats-js.git"
   }
 }

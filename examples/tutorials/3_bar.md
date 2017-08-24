@@ -24,7 +24,7 @@ classed as `simple-bar-graph` is the placeholder of our `SVG` graph and has fixe
 
 ### 2. Fetching the data
 Assuming that we are working with `invenio-stats` as our backend, we have the following API and we'd like to
-display retrieved data using the `invenio-statistics-js`.
+display retrieved data using the `invenio-stats-js`.
 
 ```bash
 # Fetch the total number of downloads for each individual file of a specific record in a given time window
