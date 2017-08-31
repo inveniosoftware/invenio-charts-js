@@ -1,7 +1,7 @@
-## invenio-stats-js
+## invenio-charts-js
 
-[![Release](https://img.shields.io/github/tag/inveniosoftware/invenio-stats-js.svg)](https://github.com/inveniosoftware/invenio-stats-js/releases)
-[![LICENSE](https://img.shields.io/github/license/inveniosoftware/invenio-stats-js.svg)](https://github.com/inveniosoftware/invenio-stats-js/blob/master/LICENSE)
+[![Release](https://img.shields.io/github/tag/inveniosoftware/invenio-charts-js.svg)](https://github.com/inveniosoftware/invenio-charts-js/releases)
+[![LICENSE](https://img.shields.io/github/license/inveniosoftware/invenio-charts-js.svg)](https://github.com/inveniosoftware/invenio-charts-js/blob/master/LICENSE)
 
 Invenio-Statistics is a reusable client library for integrating charts into modern web apps. All charts are built with D3.js.
 
@@ -48,7 +48,7 @@ $ firefox docs/index.html
 
 ## Usage
 
-Getting started [guide](https://inveniosoftware.github.io/invenio-stats-js/examples/tutorials/1_started.html)
+Getting started [guide](https://inveniosoftware.github.io/invenio-charts-js/examples/tutorials/1_started.html)
 
 ## License
 
