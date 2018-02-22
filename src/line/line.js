@@ -67,6 +67,9 @@ class LineGraph extends Graph {
     // Parse the current input data
     super.parseData();
 
+    // Render proper message if there is no data
+    if (super.checkForData()) { super.renderNoData(); return; }
+
     // Add the horizontal axis
     super.makeAxisX();
 
@@ -96,7 +99,7 @@ class LineGraph extends Graph {
 
     // Iterate over input data
     this.input.forEach((outer, i) => {
-    // Add a line to the SVG element
+      // Add a line to the SVG element
       if (d3.select(`.${this.classElement}`).select(`.igj-line.line_${i}`).empty()) {
         this.line = d3.line()
           .x(d => this.x(_.get(d, this.keyX)))
@@ -149,11 +152,12 @@ class LineGraph extends Graph {
         .data(outer.data);
       if (circles.empty()) {
         // Enter selection - add new circles
-        circles
+
+        const circlesD3 = circles
           .enter()
-          .append('circle')
-          .on('mouseover', this.tooltip.show)
-          .on('mouseout', this.tooltip.hide)
+          .append('circle');
+
+        circlesD3
           .attr('class', `igj-dot dot_${i}`)
           .attr('cx', d => this.x(_.get(d, this.keyX)))
           .attr('cy', d => this.y(_.get(d, this.keyY)))
@@ -161,6 +165,12 @@ class LineGraph extends Graph {
           .attr('fill', () => this.colorScale(i))
           .attr('opacity', this.config.graph.options.circles.visible ? 1 : 0)
           .style('cursor', 'pointer');
+
+        if (this.config.tooltip.enabled) {
+          circlesD3
+            .on('mouseover', this.tooltip.show)
+            .on('mouseout', this.tooltip.hide);
+        }
       }
     });
 
@@ -336,11 +346,11 @@ class LineGraph extends Graph {
         .data(outer.data);
 
       // Add new circles, based on the new data
-      circles
+      const circlesD3 = circles
         .enter()
-        .append('circle')
-        .on('mouseover', this.tooltip.show)
-        .on('mouseout', this.tooltip.hide)
+        .append('circle');
+
+      circlesD3
         .attr('class', `igj-dot dot_${i}`)
         .attr('cx', d => this.x(_.get(d, this.keyX)))
         .attr('cy', d => this.y(_.get(d, this.keyY)))
@@ -348,6 +358,12 @@ class LineGraph extends Graph {
         .attr('fill', this.colorScale(i))
         .attr('opacity', this.config.graph.options.circles.visible ? 1 : 0)
         .style('cursor', 'pointer');
+
+      if (this.config.tooltip.enabled) {
+        circlesD3
+          .on('mouseover', this.tooltip.show)
+          .on('mouseout', this.tooltip.hide);
+      }
 
       // Remove unneeded existing circles, based on the new data
       circles

@@ -68,6 +68,9 @@ class GroupedBarGraph extends Graph {
     // Parse the current input data
     super.parseData();
 
+    // Render proper message if there is no data
+    if (super.checkForData()) { super.renderNoData(); return; }
+
     // Transform parsed input data to fit a grouped graph
     this.input.forEach((set, i) => {
       innerKeys.push(set.label);

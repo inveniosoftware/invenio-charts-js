@@ -25,6 +25,8 @@
 /* eslint-env es6 */
 
 import * as d3 from 'd3';
+import d3Tip from 'd3-tip';
+import { legendColor } from 'd3-svg-legend';
 import _ from 'lodash';
 
 require('d3-extended')(d3);
@@ -152,15 +154,15 @@ class Graph {
    * @returns {void}
    */
   parseData() {
-    const parsed = [];
-    Object.keys(this.input).forEach((k) => {
-      const obj = {};
-      obj.label = k;
-      obj.data = this.input[k].buckets;
-      parsed.push(obj);
-    });
-
-    this.input = parsed;
+    this.input = Object.values(this.input).reduce((acc, current) => {
+      if (Array.isArray(current.buckets) || current.buckets.length) {
+        acc.push({
+          data: current.buckets,
+          label: current.label
+        });
+      }
+      return acc;
+    }, []);
 
     // If timeScale in X axis, parse miliseconds into Date
     // Make sure for number value in Y axis
@@ -172,6 +174,35 @@ class Graph {
         _.set(inner.data, this.keyY, +_.get(inner.data, this.keyY));
       });
     });
+  }
+
+  /**
+   * Checks if the parsed input data is not empty
+   * @returns {void}
+   */
+  checkForData() {
+    return !Array.isArray(this.input[0].data) || !this.input[0].data.length;
+  }
+
+  /**
+   * Render proper message when there is no data
+   * @returns {void}
+   */
+  renderNoData() {
+    let element = d3.select(`.${this.classElement}`);
+
+    // Check if the specified element exists
+    if (element.empty()) {
+      element = d3.select('body')
+        .append('div')
+        .attr('class', `${this.classElement}`)
+        .attr('style', 'width: 95vw; height: 95vh;');
+    }
+
+    // Append message to the element
+    element
+      .insert('p', ':first-child')
+      .html(`There is no ${this.classElement} yet.`);
   }
 
   /**
@@ -453,7 +484,7 @@ class Graph {
         .range(this.input.map((d, i) => this.colorScale(i)));
 
       // Create the legend
-      const colorLegend = d3.legendColor()
+      const colorLegend = legendColor()
         .shape('rect')
         .shapeWidth(this.config.width > this.config.resize.breakPointX ? 30 : 20)
         .orient(this.config.legend.position === 'bottom' ? 'horizontal' : 'vertical')
@@ -561,7 +592,7 @@ class Graph {
       return out;
     }
 
-    this.tooltip = d3.tip()
+    this.tooltip = d3Tip.tip()
       .attr('class', `${this.classElement} igj-tip`)
       .offset((d) => {
         let out = {};

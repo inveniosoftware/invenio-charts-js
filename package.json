@@ -1,10 +1,10 @@
 {
   "name": "invenio-charts-js",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rm -rf ./dist && webpack",
+    "build": "rm -rf ./dist && webpack -p",
     "dev": "rm -rf ./dist && webpack --progress",
     "examples": "rm -rf ./examples/dist && webpack --config webpack.config.examples.js",
     "docs": "rm -rf ./docs && node_modules/.bin/jsdoc -c .jsdoc -u examples/tutorials -d ./docs/",
@@ -58,7 +58,7 @@
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
     "uglifyjs-webpack-plugin": "^0.4.6",
-    "webpack": "^3.5.5",
+    "webpack": "^3.11.0",
     "yargs": "^8.0.2"
   },
   "dependencies": {
