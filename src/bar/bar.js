@@ -67,6 +67,9 @@ class BarGraph extends Graph {
     // Parse the current input data
     super.parseData();
 
+    // Render proper message if there is no data
+    if (super.checkForData()) { super.renderNoData(); return; }
+
     // Add the horizontal axis, passing the desired padding
     super.makeAxisX();
 
