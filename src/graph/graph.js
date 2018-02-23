@@ -180,8 +180,8 @@ class Graph {
    * Checks if the parsed input data is not empty
    * @returns {void}
    */
-  checkForData() {
-    return !Array.isArray(this.input[0].data) || !this.input[0].data.length;
+  hasInputData() {
+    return Array.isArray(this.input[0].data) && this.input[0].data.length;
   }
 
   /**
