@@ -155,7 +155,7 @@ class Graph {
    */
   parseData() {
     this.input = Object.values(this.input).reduce((acc, current) => {
-      if (Array.isArray(current.buckets) || current.buckets.length) {
+      if (Array.isArray(current.buckets) && current.buckets.length) {
         acc.push({
           data: current.buckets,
           label: current.label
