@@ -1,5 +1,6 @@
 ## invenio-charts-js
 
+[![Build Status](https://github.com/inveniosoftware/invenio-charts-js/workflows/CI/badge.svg)](https://github.com/inveniosoftware/invenio-charts-js/actions)
 [![Release](https://img.shields.io/github/tag/inveniosoftware/invenio-charts-js.svg)](https://github.com/inveniosoftware/invenio-charts-js/releases)
 [![LICENSE](https://img.shields.io/github/license/inveniosoftware/invenio-charts-js.svg)](https://github.com/inveniosoftware/invenio-charts-js/blob/master/LICENSE)
 
