@@ -31,12 +31,13 @@ jobs:
         run: |
           npm ci
           npm run build
-      - name: Deploy docs
-        run: bash deploy.sh
-        env:
-          GH_EMAIL: info@inveniosoftware.org
-          GH_NAME: inveniobot
-          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      # TODO: fix deploy docs
+      # - name: Deploy docs
+      #   run: bash deploy.sh
+      #   env:
+      #     GH_EMAIL: info@inveniosoftware.org
+      #     GH_NAME: inveniobot
+      #     GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: Publish on NPM
         run: npm publish
