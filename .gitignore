@@ -13,7 +13,6 @@ node_modules/
 
 # Optional npm cache directory
 .npm
-package-lock.json
 
 # dotenv environment variables file
 .env
