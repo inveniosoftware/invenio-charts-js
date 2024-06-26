@@ -24,8 +24,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 6
-          registry-url: 'https://registry.npmjs.org'
+          node-version: 14
+          registry-url: "https://registry.npmjs.org"
 
       - name: Install and Build
         run: |
