@@ -53,4 +53,4 @@ Getting started [guide](https://inveniosoftware.github.io/invenio-charts-js/exam
 
 ## License
 
-[GNU GPLv2](https://opensource.org/licenses/GPL-2.0)
+[MIT](https://opensource.org/licenses/MIT)
